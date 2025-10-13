@@ -1,0 +1,473 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 0: Conceptos Fundamentales}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué es Python?}
+
+\begin{frame}{Python: Un lenguaje amigable}
+\begin{conceptbox}{¿Por qué Python?}
+\small
+\begin{itemize}
+    \item[\faCheckCircle] Lenguaje de programación de alto nivel
+    \item[\faCheckCircle] Sintaxis clara y legible
+    \item[\faCheckCircle] Muy versátil: web, ciencia de datos, IA
+    \item[\faCheckCircle] Gran comunidad y documentación
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faCode \ Python es ideal para principiantes}
+\end{center}
+\end{frame}
+
+\section{Funciones Básicas}
+
+\begin{frame}[fragile]{La función print() \ \faTerminal}
+
+\begin{conceptbox}{¿Qué hace?}
+Muestra información en pantalla
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+print("Hola mundo")
+print(42)
+print("Python", "es", "genial")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Hola mundo\\
+42\\
+Python es genial}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{La función input() \ \faKeyboard}
+
+\begin{conceptbox}{¿Qué hace?}
+Lee datos ingresados por el usuario
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+nombre = input("¿Cómo te llamas? ")
+print("Hola", nombre)
+\end{lstlisting}
+
+\vspace{0.2cm}
+\begin{notebox}
+\small\faExclamationTriangle \ \textbf{Nota:} \texttt{input()} siempre retorna un string
+\end{notebox}
+\end{frame}
+
+\section{Variables}
+
+\begin{frame}[fragile]{Variables: Guardando información \ \faDatabase}
+
+\begin{conceptbox}{¿Qué son las variables?}
+Contenedores que almacenan datos en la memoria
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+nombre = "Ana"
+edad = 20
+altura = 1.65
+estudiante = True
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{block}{Reglas para nombres de variables}
+\small
+\begin{itemize}
+    \item[\faTimes] No pueden empezar con números
+    \item[\faCheck] Usan letras, números y guiones bajos
+    \item[\faExclamation] Sensibles a mayúsculas: \texttt{nombre} $\neq$ \texttt{Nombre}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Tipos de Datos}
+
+\begin{frame}[fragile]{Tipos de datos básicos \ \faCubes}
+
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{conceptbox}{\faFont \ String (str)}
+\vspace{-0.15cm}
+\begin{lstlisting}
+mensaje = "Hola"
+\end{lstlisting}
+\end{conceptbox}
+
+\vspace{0.1cm}
+\begin{conceptbox}{\faHashtag \ Integer (int)}
+\vspace{-0.15cm}
+\begin{lstlisting}
+edad = 25
+\end{lstlisting}
+\end{conceptbox}
+
+\column{0.48\textwidth}
+\begin{conceptbox}{\faCalculator \ Float}
+\vspace{-0.15cm}
+\begin{lstlisting}
+precio = 19.99
+\end{lstlisting}
+\end{conceptbox}
+
+\vspace{0.1cm}
+\begin{conceptbox}{\faToggleOn \ Boolean}
+\vspace{-0.15cm}
+\begin{lstlisting}
+activo = True
+\end{lstlisting}
+\end{conceptbox}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Conversión de tipos \ \faExchangeAlt}
+
+\begin{conceptbox}{¿Para qué convertir tipos?}
+Para realizar operaciones entre tipos compatibles
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+# String a entero
+edad = int("25")  # edad = 25
+
+# String a float
+precio = float("19.99")  # 19.99
+
+# Número a string
+numero = str(100)  # "100"
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb \ \textbf{Útil con input():} \texttt{edad = int(input("Edad: "))}
+\end{notebox}
+\end{frame}
+
+\section{Comentarios}
+
+\begin{frame}[fragile]{Comentarios en el código \ \faComment}
+
+\begin{conceptbox}{¿Para qué sirven?}
+Explican qué hace el código (Python los ignora)
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+# Comentario de una línea
+nombre = "Carlos"  # Al final de línea
+
+"""
+Comentario
+de múltiples líneas
+"""
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{block}{\faQuestionCircle \ ¿Por qué comentar?}
+\small
+\begin{itemize}
+    \item Documenta tu código
+    \item Ayuda a otros programadores
+    \item Te ayuda a recordar tu lógica
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Formateo de Strings}
+
+\begin{frame}[fragile]{F-strings: Formato moderno \ \faMagic}
+
+\begin{conceptbox}{Ventaja}
+Insertar variables en strings de forma elegante
+\end{conceptbox}
+
+\vspace{-0.2cm}
+\begin{lstlisting}
+nombre = "María"
+edad = 22
+
+# Método antiguo (NO recomendado)
+mensaje = "Hola " + nombre
+
+# F-string (RECOMENDADO)
+mensaje = f"Hola {nombre}, {edad} años"
+print(mensaje)
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt]
+\small\texttt{Hola María, 22 años}
+\end{tcolorbox}
+\end{frame}
+
+\section{Métodos de Strings}
+
+\begin{frame}[fragile]{Métodos útiles de strings \ \faTools}
+
+\begin{lstlisting}
+texto = "  hola mundo  "
+
+# Eliminar espacios
+limpio = texto.strip()  # "hola mundo"
+
+# Primera mayúscula de cada palabra
+titulo = texto.title()  # "Hola Mundo"
+
+# Solo primera mayúscula
+capital = texto.capitalize()  # "Hola mundo"
+
+# Dividir en lista
+palabras = texto.split()  # ["hola", "mundo"]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo práctico \ \faUserEdit}
+
+\begin{lstlisting}
+nombre = input("Tu nombre: ")
+
+# Limpiar y formatear
+nombre_limpio = nombre.strip().title()
+
+print(f"Bienvenido/a, {nombre_limpio}!")
+\end{lstlisting}
+
+\vspace{0.2cm}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=blue!10,colframe=blue,title={\small\faArrowDown \ Entrada},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{\ \ juan pérez\ \ }
+\end{tcolorbox}
+
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowUp \ Salida},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{Bienvenido/a, Juan Pérez!}
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+\section{Operadores Aritméticos}
+
+\begin{frame}[fragile]{Operaciones matemáticas \ \faCalculator}
+
+\begin{lstlisting}
+a = 10
+b = 3
+
+suma = a + b        # 13
+resta = a - b       # 7
+multiplicacion = a * b  # 30
+division = a / b    # 3.333...
+division_entera = a // b  # 3
+modulo = a % b      # 1 (residuo)
+potencia = a ** b   # 1000
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle \ El operador \texttt{\%} devuelve el residuo de la división
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo: Calculadora simple \ \faDesktop}
+
+\begin{lstlisting}
+# Solicitar números
+num1 = float(input("Primer número: "))
+num2 = float(input("Segundo número: "))
+
+# Calcular operaciones
+suma = num1 + num2
+producto = num1 * num2
+
+# Mostrar resultados
+print(f"Suma: {suma}")
+print(f"Producto: {producto}")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{center}
+\textcolor{brown}{\faRocket \ ¡Inténtalo tú mismo!}
+\end{center}
+\end{frame}
+
+\section{Ejemplo Integrador}
+
+\begin{frame}[fragile]{Programa completo \ \faIdCard}
+
+\begin{lstlisting}
+# Solicitar información
+nombre = input("Nombre: ").strip().title()
+edad = int(input("Edad: "))
+ciudad = input("Ciudad: ").strip().title()
+
+# Calcular año de nacimiento
+anio_actual = 2025
+anio_nacimiento = anio_actual - edad
+
+# Mostrar tarjeta
+print("\n--- TARJETA ---")
+print(f"Nombre: {nombre}")
+print(f"Edad: {edad} años")
+print(f"Ciudad: {ciudad}")
+print(f"Nacimiento: {anio_nacimiento}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Resumen \ \faListUl}
+
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Funciones: \texttt{print()}, \texttt{input()}
+    \item[\faCheck] Variables y tipos de datos
+    \item[\faCheck] Conversión de tipos (casting)
+    \item[\faCheck] Comentarios
+    \item[\faCheck] F-strings para formateo
+    \item[\faCheck] Métodos de strings
+    \item[\faCheck] Operadores aritméticos
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faCode \ ¡Siguiente paso: Practicar!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}

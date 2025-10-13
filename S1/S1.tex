@@ -1,0 +1,352 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 1: Condicionales y Control de Flujo}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{Operadores de comparación}
+
+\begin{frame}[fragile]{Operadores de comparación \ \faBalanceScale}
+\begin{conceptbox}{¿Para qué sirven?}
+Comparan valores y devuelven un resultado booleano (True/False)
+\end{conceptbox}
+
+\begin{lstlisting}
+5 > 3      # True
+2 < 1      # False
+4 >= 4     # True
+7 <= 10    # True
+3 == 3     # True
+2 != 5     # True
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida esperada},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{True\\
+False\\
+True\\
+True\\
+True\\
+True}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle \ El resultado de una comparación es siempre True o False
+\end{notebox}
+\end{frame}
+
+\section{Sentencias if, elif, else}
+
+\begin{frame}[fragile]{Estructura if, elif, else \ \faCodeBranch}
+\begin{conceptbox}{¿Para qué sirven?}
+Permiten ejecutar código solo si se cumple una condición
+\end{conceptbox}
+
+\begin{lstlisting}
+edad = 18
+if edad >= 18:
+    print("Eres mayor de edad")
+elif edad >= 13:
+    print("Eres adolescente")
+else:
+    print("Eres niño/a")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Eres mayor de edad}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle \ El bloque else es opcional
+\end{notebox}
+\end{frame}
+
+\section{Operadores lógicos}
+
+\begin{frame}[fragile]{Operadores lógicos \ \faProjectDiagram}
+\begin{conceptbox}{¿Para qué sirven?}
+Combinan condiciones para tomar decisiones más complejas
+\end{conceptbox}
+
+\begin{lstlisting}
+edad = 20
+es_estudiante = True
+
+if edad >= 18 and es_estudiante:
+    print("Descuento para estudiantes adultos")
+
+if edad < 18 or es_estudiante:
+    print("Descuento disponible")
+
+if not es_estudiante:
+    print("No eres estudiante")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Descuento para estudiantes adultos\\
+Descuento disponible}
+\end{tcolorbox}
+\end{frame}
+
+\section{Valores y expresiones booleanas}
+
+\begin{frame}[fragile]{Valores booleanos \ \faToggleOn}
+\begin{conceptbox}{True y False}
+Son los dos únicos valores booleanos en Python
+\end{conceptbox}
+
+\begin{lstlisting}
+mayor = 10 > 5      # True
+igual = 3 == 7      # False
+activo = True
+inactivo = False
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida esperada},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{mayor = True\\
+igual = False\\
+activo = True\\
+inactivo = False}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb \ Las expresiones de comparación devuelven booleanos
+\end{notebox}
+\end{frame}
+
+\section{Anidamiento de condicionales}
+
+\begin{frame}[fragile]{Condicionales anidados \ \faSitemap}
+\begin{conceptbox}{¿Para qué anidar?}
+Para tomar decisiones dentro de otras decisiones
+\end{conceptbox}
+
+\begin{lstlisting}
+edad = 16
+if edad >= 13:
+    if edad >= 18:
+        print("Adulto")
+    else:
+        print("Adolescente")
+else:
+    print("Niño/a")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Adolescente}
+\end{tcolorbox}
+\end{frame}
+
+\section{Operador match (switch)}
+
+\begin{frame}[fragile]{Operador match \ \faRandom}
+\begin{conceptbox}{¿Qué es match?}
+Permite comparar un valor contra varios casos (Python 3.10+)
+\end{conceptbox}
+
+\begin{lstlisting}
+comando = "saludar"
+match comando:
+    case "saludar":
+        print("¡Hola!")
+    case "despedir":
+        print("Adiós!")
+    case _:
+        print("Comando no reconocido")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{¡Hola!}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle \ El operador match es similar a switch en otros lenguajes
+\end{notebox}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}[fragile]{Ejemplo práctico \ \faUserCheck}
+\begin{lstlisting}
+edad = int(input("Edad: "))
+estudiante = input("¿Eres estudiante? (s/n): ").strip().lower() == "s"
+
+if edad >= 18:
+    if estudiante:
+        print("Eres un estudiante adulto")
+    else:
+        print("Eres un adulto no estudiante")
+elif edad >= 13:
+    print("Eres adolescente")
+else:
+    print("Eres niño/a")
+\end{lstlisting}
+
+\vspace{0.2cm}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=blue!10,colframe=blue,title={\small\faArrowDown \ Entrada},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{Edad: 20\\
+¿Eres estudiante? (s/n): s}
+\end{tcolorbox}
+
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowUp \ Salida},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{Eres un estudiante adulto}
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Resumen \ \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Operadores de comparación
+    \item[\faCheck] Sentencias if, elif, else
+    \item[\faCheck] Operadores lógicos
+    \item[\faCheck] Valores y expresiones booleanas
+    \item[\faCheck] Anidamiento de condicionales
+    \item[\faCheck] Operador match
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faCode \ ¡Practica con condicionales!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}
