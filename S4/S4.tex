@@ -1,0 +1,672 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 4: Librerías y Módulos}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué son los módulos y paquetes?}
+
+\begin{frame}{Módulos y Paquetes \faBoxOpen}
+\begin{conceptbox}{¿Qué son?}
+\small
+\begin{itemize}
+    \item[\faCube] \textbf{Módulo}: Archivo .py con funciones y variables reutilizables
+    \item[\faBoxes] \textbf{Paquete}: Colección de módulos organizados en carpetas
+    \item[\faRecycle] Permiten reutilizar código sin repetirlo
+    \item[\faUsers] Acceso a código creado por otros programadores
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faBook\ ¡No reinventes la rueda!}
+\end{center}
+\end{frame}
+
+\section{Importación de módulos}
+
+\begin{frame}[fragile]{Importar con import \faFileImport}
+\begin{conceptbox}{¿Cómo funciona?}
+Trae todo el módulo y accedes con punto (.)
+\end{conceptbox}
+
+\begin{lstlisting}
+import math
+
+# Usar funciones del módulo
+raiz = math.sqrt(16)
+print(f"Raíz cuadrada: {raiz}")
+
+pi = math.pi
+print(f"Valor de pi: {pi}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Raíz cuadrada: 4.0\\
+Valor de pi: 3.141592653589793}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Siempre usa el prefijo del módulo: \texttt{math.sqrt()}
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Importar con alias \faTag}
+\begin{conceptbox}{¿Para qué?}
+Acorta el nombre del módulo para escribir menos
+\end{conceptbox}
+
+\begin{lstlisting}
+import math as m
+import statistics as stats
+
+raiz = m.sqrt(25)
+media = stats.mean([1, 2, 3, 4, 5])
+
+print(f"Raíz: {raiz}")
+print(f"Media: {media}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Raíz: 5.0\\
+Media: 3}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Útil con nombres largos o convenciones (numpy as np)
+\end{notebox}
+\end{frame}
+
+\section{Importación selectiva}
+
+\begin{frame}[fragile]{from ... import ... \faFilter}
+\begin{conceptbox}{¿Cómo funciona?}
+Importa solo funciones específicas sin necesidad del prefijo
+\end{conceptbox}
+
+\begin{lstlisting}
+from math import sqrt, pi, pow
+
+# Usar directamente sin "math."
+raiz = sqrt(16)
+potencia = pow(2, 3)
+
+print(f"Raíz: {raiz}")
+print(f"Pi: {pi}")
+print(f"Potencia: {potencia}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Raíz: 4.0\\
+Pi: 3.141592653589793\\
+Potencia: 8.0}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Importar todo con * \faAsterisk}
+\begin{columns}[T]
+\column{0.58\textwidth}
+\begin{lstlisting}
+from math import *
+
+# Todo disponible sin prefijo
+resultado = sqrt(9) + pi
+print(f"Resultado: {resultado}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Resultado: 6.141592653589793}
+\end{tcolorbox}
+
+\column{0.38\textwidth}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Advertencia},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\tiny\textbf{No recomendado:}
+\begin{itemize}
+    \item Contamina el namespace
+    \item Dificulta saber origen
+    \item Puede causar conflictos
+\end{itemize}
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+\section{Librería estándar de Python}
+
+\begin{frame}{Librería estándar \faBook}
+\begin{conceptbox}{¿Qué es?}
+Colección de módulos que vienen incluidos con Python
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Módulos comunes:}
+\small
+\begin{itemize}
+    \item[\faDice] \texttt{random} - Aleatoriedad
+    \item[\faChartBar] \texttt{statistics} - Estadística
+    \item[\faTerminal] \texttt{sys} - Sistema
+    \item[\faFolder] \texttt{os} - Sistema operativo
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{Otros útiles:}
+\small
+\begin{itemize}
+    \item[\faClock] \texttt{datetime} - Fechas
+    \item[\faFile] \texttt{json} - Formato JSON
+    \item[\faExchangeAlt] \texttt{re} - Expresiones regulares
+    \item[\faGlobe] \texttt{urllib} - URLs
+\end{itemize}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{center}
+\textcolor{brown}{\faInfoCircle\ ¡No necesitas instalar nada!}
+\end{center}
+\end{frame}
+
+\section{Módulo random}
+
+\begin{frame}[fragile]{random: Números aleatorios \faDice}
+\begin{lstlisting}
+import random
+
+# Número aleatorio entre 0 y 1
+aleatorio = random.random()
+
+# Entero aleatorio en rango
+dado = random.randint(1, 6)
+
+# Elegir elemento de lista
+frutas = ["manzana", "banana", "cereza"]
+fruta = random.choice(frutas)
+
+print(f"Aleatorio: {aleatorio:.2f}")
+print(f"Dado: {dado}")
+print(f"Fruta: {fruta}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (ejemplo)},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Aleatorio: 0.73\\
+Dado: 4\\
+Fruta: banana}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{random: Más funciones \faShuffle}
+\begin{lstlisting}
+import random
+
+# Mezclar lista
+numeros = [1, 2, 3, 4, 5]
+random.shuffle(numeros)
+print(f"Mezclados: {numeros}")
+
+# Seleccionar múltiples elementos
+colores = ["rojo", "azul", "verde", "amarillo"]
+seleccion = random.sample(colores, 2)
+print(f"Selección: {seleccion}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (ejemplo)},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Mezclados: [3, 1, 5, 2, 4]\\
+Selección: ['verde', 'rojo']}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ \texttt{shuffle()} modifica la lista original
+\end{notebox}
+\end{frame}
+
+\section{Módulo statistics}
+
+\begin{frame}[fragile]{statistics: Estadística básica \faChartBar}
+\begin{lstlisting}
+import statistics as stats
+
+datos = [10, 20, 30, 40, 50]
+
+media = stats.mean(datos)
+mediana = stats.median(datos)
+desv_std = stats.stdev(datos)
+
+print(f"Media: {media}")
+print(f"Mediana: {mediana}")
+print(f"Desviación estándar: {desv_std:.2f}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Media: 30.0\\
+Mediana: 30\\
+Desviación estándar: 15.81}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Ideal para análisis rápidos de datos
+\end{notebox}
+\end{frame}
+
+\section{Módulos sys y os}
+
+\begin{frame}[fragile]{sys: Información del sistema \faTerminal}
+\begin{lstlisting}
+import sys
+
+# Versión de Python
+print(f"Versión: {sys.version}")
+
+# Argumentos de línea de comandos
+print(f"Argumentos: {sys.argv}")
+
+# Plataforma
+print(f"Plataforma: {sys.platform}")
+
+# Salir del programa
+# sys.exit()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (ejemplo)},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Versión: 3.11.0\\
+Argumentos: ['programa.py']\\
+Plataforma: win32}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{os: Sistema operativo \faFolder}
+\begin{lstlisting}
+import os
+
+# Directorio actual
+directorio = os.getcwd()
+print(f"Directorio: {directorio}")
+
+# Listar archivos
+archivos = os.listdir(".")
+print(f"Archivos: {archivos[:3]}")  # Primeros 3
+
+# Crear directorio
+# os.mkdir("nueva_carpeta")
+
+# Verificar si existe
+existe = os.path.exists("archivo.txt")
+print(f"Existe: {existe}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (ejemplo)},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Directorio: /home/usuario\\
+Archivos: ['programa.py', 'datos.txt', ...]\\
+Existe: False}
+\end{tcolorbox}
+\end{frame}
+
+\section{Uso de pip}
+
+\begin{frame}[fragile]{pip: Gestor de paquetes \faDownload}
+\begin{conceptbox}{¿Qué es pip?}
+Herramienta para instalar paquetes externos de PyPI (Python Package Index)
+\end{conceptbox}
+
+\vspace{0.2cm}
+\textbf{Comandos básicos en terminal:}
+\begin{lstlisting}[language=bash, numbers=none]
+# Instalar paquete
+pip install requests
+# Instalar versión específica
+pip install numpy==1.24.0
+# Desinstalar
+pip uninstall requests
+# Listar instalados
+pip list
+# Actualizar paquete
+pip install --upgrade requests
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo: Usar paquete instalado \faRocket}
+\begin{lstlisting}
+# Primero instalar: pip install requests
+import requests
+
+# Hacer petición HTTP
+respuesta = requests.get("https://api.github.com")
+
+print(f"Código: {respuesta.status_code}")
+print(f"Tipo: {respuesta.headers['Content-Type']}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Código: 200\\
+Tipo: application/json; charset=utf-8}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Más de 400,000 paquetes disponibles en PyPI
+\end{notebox}
+\end{frame}
+
+\section{Creación de módulos propios}
+
+\begin{frame}[fragile]{Crear tu propio módulo \faWrench}
+\begin{conceptbox}{¿Cómo crear un módulo?}
+Simplemente crea un archivo .py con funciones
+\end{conceptbox}
+
+\textbf{Archivo:} \texttt{matematicas.py}
+\begin{lstlisting}
+def sumar(a, b):
+    """Suma dos números"""
+    return a + b
+
+def multiplicar(a, b):
+    """Multiplica dos números"""
+    return a * b
+
+PI = 3.14159
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ El nombre del archivo es el nombre del módulo
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Usar tu módulo \faPlay}
+\textbf{Archivo:} \texttt{programa.py} (en la misma carpeta)
+\begin{lstlisting}
+import matematicas
+
+resultado = matematicas.sumar(5, 3)
+print(f"Suma: {resultado}")
+
+producto = matematicas.multiplicar(4, 6)
+print(f"Producto: {producto}")
+
+print(f"Pi: {matematicas.PI}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Suma: 8\\
+Producto: 24\\
+Pi: 3.14159}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ ¡Así de fácil es crear y usar tus módulos!
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Módulo con if \_\_name\_\_ == "\_\_main\_\_" \faCodeBranch}
+\textbf{Archivo:} \texttt{calculadora.py}
+\begin{lstlisting}
+def sumar(a, b):
+    return a + b
+
+def restar(a, b):
+    return a - b
+
+# Solo se ejecuta si se corre directamente
+if __name__ == "__main__":
+    print("Probando calculadora...")
+    print(f"5 + 3 = {sumar(5, 3)}")
+    print(f"5 - 3 = {restar(5, 3)}")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ El bloque no se ejecuta cuando importas el módulo
+\end{notebox}
+\end{frame}
+
+\section{Documentación y búsqueda}
+
+\begin{frame}{Buscar y documentarse \faSearch}
+\begin{conceptbox}{¿Dónde buscar librerías?}
+\small
+\begin{itemize}
+    \item[\faGlobe] \textbf{PyPI}: \texttt{pypi.org} - Repositorio oficial
+    \item[\faBook] \textbf{Docs Python}: \texttt{docs.python.org} - Librería estándar
+    \item[\faGithub] \textbf{GitHub}: Código fuente y ejemplos
+    \item[\faStackOverflow] \textbf{Stack Overflow}: Preguntas y respuestas
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+
+\end{frame}
+
+\begin{frame}{Librerías populares \faStar}
+\begin{conceptbox}{Más utilizadas en Python}
+\small
+\begin{itemize}
+    \item[\faChartLine] \textbf{NumPy}: Computación numérica
+    \item[\faTable] \textbf{Pandas}: Análisis de datos
+    \item[\faChartPie] \textbf{Matplotlib}: Visualización de datos
+    \item[\faGlobe] \textbf{Requests}: Peticiones HTTP
+    \item[\faFlask] \textbf{Flask/Django}: Desarrollo web
+    \item[\faRobot] \textbf{Scikit-learn}: Machine Learning
+    \item[\faBrain] \textbf{TensorFlow/PyTorch}: Deep Learning
+    \item[\faFileAlt] \textbf{Beautiful Soup}: Web scraping
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}[fragile]{Proyecto: Analizador de notas \faGraduationCap}
+\textbf{Archivo:} \texttt{notas\_utils.py}
+\begin{lstlisting}
+import statistics
+
+def calcular_promedio(notas):
+    """Calcula el promedio de las notas"""
+    return statistics.mean(notas)
+
+def nota_maxima(notas):
+    """Retorna la nota máxima"""
+    return max(notas)
+
+def nota_minima(notas):
+    """Retorna la nota mínima"""
+    return min(notas)
+
+def estado(promedio):
+    """Determina si aprobó o reprobó"""
+    return "Aprobado" if promedio >= 60 else "Reprobado"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Programa principal \faDesktop}
+\textbf{Archivo:} \texttt{analizar.py}
+\begin{lstlisting}
+import notas_utils as nu
+import random
+# Generar notas aleatorias para demostración
+notas = [random.randint(40, 100) for _ in range(5)]
+print(f"Notas: {notas}")
+print(f"Promedio: {nu.calcular_promedio(notas):.1f}")
+print(f"Máxima: {nu.nota_maxima(notas)}")
+print(f"Mínima: {nu.nota_minima(notas)}")
+promedio = nu.calcular_promedio(notas)
+print(f"Estado: {nu.estado(promedio)}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (ejemplo)},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Notas: [85, 72, 91, 68, 77]\\
+Promedio: 78.6\\
+Máxima: 91\\
+Mínima: 68\\
+Estado: Aprobado}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Módulos y paquetes
+    \item[\faCheck] Importar con \texttt{import} y \texttt{from ... import}
+    \item[\faCheck] Librería estándar de Python
+    \item[\faCheck] Módulos: random, statistics, sys, os
+    \item[\faCheck] Uso de pip para instalar paquetes
+    \item[\faCheck] Creación de módulos propios
+    \item[\faCheck] Documentación y búsqueda de librerías
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faBoxOpen\ ¡Explora el ecosistema Python!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}
