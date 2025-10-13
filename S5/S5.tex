@@ -1,0 +1,707 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 5: Pruebas Unitarias y Testing}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué es el testing?}
+
+\begin{frame}{Testing y Depuración \faVial}
+\begin{conceptbox}{¿Por qué probar el código?}
+\small
+\begin{itemize}
+    \item[\faCheckCircle] Detecta errores antes de producción
+    \item[\faShieldAlt] Garantiza que el código funciona correctamente
+    \item[\faRecycle] Facilita cambios y refactorización
+    \item[\faClock] Ahorra tiempo a largo plazo
+    \item[\faFileAlt] Documenta el comportamiento esperado
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faBug\ "Si no está probado, está roto"}
+\end{center}
+\end{frame}
+
+\section{Importancia del testing}
+
+\begin{frame}{¿Por qué hacer pruebas? \faQuestion}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Sin pruebas:} \faTimesCircle
+\small
+\begin{itemize}
+    \item Errores en producción
+    \item Miedo a cambiar código
+    \item Debugging manual tedioso
+    \item No hay confianza
+    \item Regresiones frecuentes
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{Con pruebas:} \faCheckCircle
+\small
+\begin{itemize}
+    \item Errores detectados temprano
+    \item Refactorización segura
+    \item Feedback automático
+    \item Código confiable
+    \item Regresiones prevenidas
+\end{itemize}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{center}
+\textcolor{brown}{\faLightbulb\ Las pruebas son una inversión}
+\end{center}
+\end{frame}
+
+\section{Framework pytest}
+
+\begin{frame}[fragile]{pytest: Framework de testing \faFlask}
+\begin{conceptbox}{¿Qué es pytest?}
+Framework popular y poderoso para escribir pruebas en Python
+\end{conceptbox}
+
+\textbf{Instalación:}
+\begin{lstlisting}[language=bash, numbers=none]
+pip install pytest
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Ventajas de pytest:}
+\small
+\begin{itemize}
+    \item[\faCheck] Sintaxis simple y clara
+    \item[\faCheck] Descubrimiento automático de pruebas
+    \item[\faCheck] Mensajes de error descriptivos
+    \item[\faCheck] Fixtures y parametrización
+    \item[\faCheck] Gran ecosistema de plugins
+\end{itemize}
+\end{frame}
+
+\section{Función assert}
+
+\begin{frame}[fragile]{assert: Verificar condiciones \faCheckDouble}
+\begin{conceptbox}{¿Qué hace assert?}
+Verifica que una condición sea verdadera; si no, lanza AssertionError
+\end{conceptbox}
+
+\begin{lstlisting}
+def sumar(a, b):
+    return a + b
+
+# Pruebas básicas con assert
+assert sumar(2, 3) == 5
+assert sumar(0, 0) == 0
+assert sumar(-1, 1) == 0
+
+print("Todas las pruebas pasaron!")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Todas las pruebas pasaron!}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Si algún assert falla, el programa se detiene
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{assert: Cuando falla \faExclamationTriangle}
+\begin{lstlisting}
+def multiplicar(a, b):
+    return a + b  # Error intencional
+
+# Esta prueba fallará
+assert multiplicar(3, 4) == 12
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Error},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{AssertionError\\
+\ \\
+Expected: 12\\
+Got: 7}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ El mensaje indica qué esperabas vs qué obtuviste
+\end{notebox}
+\end{frame}
+
+\section{Estructura de pruebas unitarias}
+
+\begin{frame}[fragile]{Estructura básica con pytest \faFileCode}
+\textbf{Archivo:} \texttt{calculadora.py}
+\begin{lstlisting}
+def sumar(a, b):
+    """Suma dos números"""
+    return a + b
+
+def restar(a, b):
+    """Resta dos números"""
+    return a - b
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Archivo:} \texttt{test\_calculadora.py}
+\begin{lstlisting}
+from calculadora import sumar, restar
+
+def test_sumar():
+    assert sumar(2, 3) == 5
+    assert sumar(0, 0) == 0
+
+def test_restar():
+    assert restar(5, 3) == 2
+    assert restar(0, 0) == 0
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Ejecutar pruebas con pytest \faPlay}
+\textbf{En la terminal:}
+\begin{lstlisting}[language=bash, numbers=none]
+pytest test_calculadora.py
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{======================== test session starts ========================\\
+collected 2 items\\
+\ \\
+test\_calculadora.py ..                                        [100\%]\\
+\ \\
+========================= 2 passed in 0.01s =========================}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ Cada punto (.) representa una prueba que pasó
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Convenciones de nombrado \faTag}
+\begin{conceptbox}{Reglas importantes}
+\small
+pytest descubre automáticamente las pruebas siguiendo estas reglas:
+\end{conceptbox}
+
+\vspace{0.2cm}
+\textbf{Archivos de prueba:}
+\begin{itemize}
+    \item[\faFile] Deben empezar con \texttt{test\_} o terminar con \texttt{\_test.py}
+    \item[\faFile] Ejemplo: \texttt{test\_calculadora.py}, \texttt{utils\_test.py}
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Funciones de prueba:}
+\begin{itemize}
+    \item[\faCode] Deben empezar con \texttt{test\_}
+    \item[\faCode] Ejemplo: \texttt{test\_sumar()}, \texttt{test\_validacion()}
+\end{itemize}
+
+\vspace{0.2cm}
+\begin{notebox}
+\small\faLightbulb\ Usa nombres descriptivos: \texttt{test\_sumar\_numeros\_positivos}
+\end{notebox}
+\end{frame}
+
+\section{Casos de prueba}
+
+\begin{frame}[fragile]{Tipos de casos de prueba \faList}
+\begin{conceptbox}{Categorías importantes}
+\small
+\begin{itemize}
+    \item[\faCheck] \textbf{Casos normales}: Comportamiento esperado típico
+    \item[\faExclamation] \textbf{Casos límite}: Valores extremos (0, negativos, vacíos)
+    \item[\faBug] \textbf{Casos excepcionales}: Errores y situaciones anormales
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faLightbulb\ ¡Prueba todos los escenarios!}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Casos normales \faCheckCircle}
+\begin{lstlisting}
+def dividir(a, b):
+    return a / b
+
+def test_dividir_casos_normales():
+    """Pruebas con casos típicos"""
+    assert dividir(10, 2) == 5.0
+    assert dividir(9, 3) == 3.0
+    assert dividir(7, 2) == 3.5
+    assert dividir(100, 4) == 25.0
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Casos que cualquier usuario típico encontraría
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Casos límite \faExclamation}
+\begin{lstlisting}
+def calcular_descuento(precio, porcentaje):
+    """Calcula descuento (0-100%)"""
+    if porcentaje < 0 or porcentaje > 100:
+        raise ValueError("Porcentaje debe estar entre 0 y 100")
+    return precio * (porcentaje / 100)
+
+def test_descuento_casos_limite():
+    """Pruebas con valores extremos"""
+    assert calcular_descuento(100, 0) == 0
+    assert calcular_descuento(100, 100) == 100
+    assert calcular_descuento(0, 50) == 0
+    assert calcular_descuento(200, 50) == 100
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Valores en los bordes: 0, máximo, mínimo, vacío
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Casos excepcionales \faBug}
+\begin{lstlisting}
+import pytest
+
+def test_dividir_por_cero():
+    """Prueba que se lance excepción"""
+    with pytest.raises(ZeroDivisionError):
+        dividir(10, 0)
+
+def test_descuento_invalido():
+    """Prueba validación de porcentaje"""
+    with pytest.raises(ValueError):
+        calcular_descuento(100, -10)
+    
+    with pytest.raises(ValueError):
+        calcular_descuento(100, 150)
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ \texttt{pytest.raises()} verifica que se lance la excepción correcta
+\end{notebox}
+\end{frame}
+
+\section{Test-Driven Development (TDD)}
+
+\begin{frame}{TDD: Desarrollo guiado por pruebas \faRedo}
+\begin{conceptbox}{¿Qué es TDD?}
+Metodología donde escribes las pruebas ANTES del código
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, auto]
+    \node[draw, rectangle, fill=red!20, minimum width=2cm] (red) {\small Rojo};
+    \node[draw, rectangle, fill=green!20, right of=red, minimum width=2cm] (green) {\small Verde};
+    \node[draw, rectangle, fill=blue!20, right of=green, minimum width=2cm] (refactor) {\small Refactor};
+    
+    \draw[->, thick] (red) -- (green);
+    \draw[->, thick] (green) -- (refactor);
+    \draw[->, thick, bend right=45] (refactor) to (red);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+\small
+\begin{itemize}
+    \item[\faCircle[red]] \textbf{Rojo}: Escribe prueba que falla
+    \item[\faCircle[green]] \textbf{Verde}: Escribe código mínimo para pasar
+    \item[\faCircle[blue]] \textbf{Refactor}: Mejora el código
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{TDD en práctica: Paso 1 - Prueba \faCircle[red]}
+\textbf{Escribir la prueba primero:}
+\begin{lstlisting}
+# test_fibonacci.py
+from fibonacci import fibonacci
+
+def test_fibonacci():
+    """Prueba de números Fibonacci"""
+    assert fibonacci(0) == 0
+    assert fibonacci(1) == 1
+    assert fibonacci(2) == 1
+    assert fibonacci(5) == 5
+    assert fibonacci(10) == 55
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Resultado},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{ModuleNotFoundError: No module named 'fibonacci'}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCircle[red] La prueba falla porque no existe el código
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{TDD en práctica: Paso 2 - Código \faCircle[green]}
+\textbf{Escribir código mínimo para pasar:}
+\begin{lstlisting}
+# fibonacci.py
+def fibonacci(n):
+    """Retorna el n-ésimo número Fibonacci"""
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        a, b = 0, 1
+        for _ in range(2, n + 1):
+            a, b = b, a + b
+        return b
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faCheckCircle \ Resultado},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{========================= 1 passed in 0.01s =========================}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{TDD en práctica: Paso 3 - Refactor \faCircle[blue]}
+\textbf{Mejorar el código (opcional):}
+\begin{lstlisting}
+def fibonacci(n):
+    """Retorna el n-ésimo número Fibonacci (optimizado)"""
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    
+    # Uso de tuplas para asignación eficiente
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ Las pruebas siguen pasando, código más limpio
+\end{notebox}
+\end{frame}
+
+\section{Cobertura de código}
+
+\begin{frame}[fragile]{Cobertura de código \faChartPie}
+\begin{conceptbox}{¿Qué es la cobertura?}
+Mide qué porcentaje del código es ejecutado por las pruebas
+\end{conceptbox}
+
+\textbf{Instalar pytest-cov:}
+\begin{lstlisting}[language=bash, numbers=none]
+pip install pytest-cov
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Ejecutar con cobertura:}
+\begin{lstlisting}[language=bash, numbers=none]
+pytest --cov=calculadora test_calculadora.py
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ La cobertura NO garantiza calidad, pero ayuda a identificar código no probado
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Reporte de cobertura \faFileAlt}
+\begin{tcolorbox}[colback=blue!10,colframe=blue,title={\small\faChartBar \ Ejemplo de reporte},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{----------- coverage: platform win32, python 3.11 -----------\\
+Name                  Stmts   Miss  Cover\\
+-----------------------------------------\\
+calculadora.py           10      1    90\%\\
+test\_calculadora.py     15      0   100\%\\
+-----------------------------------------\\
+TOTAL                    25      1    96\%}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\textbf{Reporte HTML detallado:}
+\begin{lstlisting}[language=bash, numbers=none]
+pytest --cov=calculadora --cov-report=html
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Genera carpeta \texttt{htmlcov/} con reporte visual
+\end{notebox}
+\end{frame}
+
+\begin{frame}{Buenas prácticas de testing \faCheckDouble}
+\begin{conceptbox}{Recomendaciones}
+\small
+\begin{itemize}
+    \item[\faCheck] Una prueba = un comportamiento específico
+    \item[\faCheck] Nombres descriptivos de pruebas
+    \item[\faCheck] Pruebas independientes (no dependen entre sí)
+    \item[\faCheck] Pruebas rápidas y determinísticas
+    \item[\faCheck] Probar casos normales, límite y excepciones
+    \item[\faCheck] Mantener pruebas actualizadas
+    \item[\faCheck] Ejecutar pruebas frecuentemente
+    \item[\faCheck] 100\% de cobertura es ideal, 80\%+ es bueno
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}[fragile]{Proyecto: Validador de contraseñas \faLock}
+\textbf{Archivo:} \texttt{validador.py}
+\begin{lstlisting}
+def validar_password(password):
+    """
+    Valida que la contraseña cumpla requisitos:
+    - Al menos 8 caracteres
+    - Contiene mayúsculas y minúsculas
+    - Contiene al menos un número
+    """
+    if len(password) < 8:
+        return False
+    
+    tiene_mayuscula = any(c.isupper() for c in password)
+    tiene_minuscula = any(c.islower() for c in password)
+    tiene_numero = any(c.isdigit() for c in password)
+    
+    return tiene_mayuscula and tiene_minuscula and tiene_numero
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Pruebas del validador \faVial}
+\textbf{Archivo:} \texttt{test\_validador.py}
+\begin{lstlisting}
+from validador import validar_password
+
+def test_password_valido():
+    """Casos normales válidos"""
+    assert validar_password("Password123") == True
+    assert validar_password("MiClave99") == True
+
+def test_password_muy_corto():
+    """Caso límite: menos de 8 caracteres"""
+    assert validar_password("Abc123") == False
+
+def test_password_sin_mayuscula():
+    """Falta mayúscula"""
+    assert validar_password("password123") == False
+
+def test_password_sin_numero():
+    """Falta número"""
+    assert validar_password("Password") == False
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Ejecutar pruebas \faPlayCircle}
+\begin{lstlisting}[language=bash, numbers=none]
+pytest test_validador.py -v
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{======================== test session starts ========================\\
+test\_validador.py::test\_password\_valido PASSED            [ 25\%]\\
+test\_validador.py::test\_password\_muy\_corto PASSED        [ 50\%]\\
+test\_validador.py::test\_password\_sin\_mayuscula PASSED   [ 75\%]\\
+test\_validador.py::test\_password\_sin\_numero PASSED      [100\%]\\
+\ \\
+========================= 4 passed in 0.02s =========================}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ La opción \texttt{-v} muestra detalles de cada prueba
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Comandos útiles de pytest \faTerminal}
+\begin{lstlisting}[language=bash, numbers=none]
+# Ejecutar todas las pruebas
+pytest
+
+# Ejecutar con verbosidad
+pytest -v
+
+# Ejecutar archivo específico
+pytest test_calculadora.py
+
+# Ejecutar prueba específica
+pytest test_calculadora.py::test_sumar
+
+# Detener en primer error
+pytest -x
+
+# Mostrar prints
+pytest -s
+
+# Con cobertura
+pytest --cov=modulo
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Importancia del testing
+    \item[\faCheck] Framework pytest
+    \item[\faCheck] Función assert para verificaciones
+    \item[\faCheck] Estructura de pruebas unitarias
+    \item[\faCheck] Casos de prueba: normales, límite, excepciones
+    \item[\faCheck] Test-Driven Development (TDD)
+    \item[\faCheck] Cobertura de código
+    \item[\faCheck] Buenas prácticas de testing
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faVial\ ¡Prueba tu código siempre!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}
