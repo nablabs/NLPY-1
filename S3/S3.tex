@@ -1,0 +1,491 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 3: Excepciones y Manejo de Errores}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué son las excepciones?}
+
+\begin{frame}{Excepciones: Control de errores \faExclamationTriangle}
+\begin{conceptbox}{¿Qué es una excepción?}
+\small
+\begin{itemize}
+    \item[\faBug] Evento que interrumpe el flujo normal del programa
+    \item[\faShieldAlt] Permite manejar errores sin que el programa se detenga
+    \item[\faCode] Python levanta excepciones cuando encuentra problemas
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faCogs\ \texttt{try}, \texttt{except}, \texttt{finally}}
+\end{center}
+\end{frame}
+
+\section{Tipos de errores comunes}
+
+\begin{frame}[fragile]{SyntaxError \faTimesCircle}
+\begin{conceptbox}{Error de sintaxis}
+Se produce cuando el código no sigue las reglas de Python
+\end{conceptbox}
+
+\begin{lstlisting}
+# Error: falta cerrar el paréntesis
+print("Hola mundo"
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Error},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{SyntaxError: '(' was never closed}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Los SyntaxError deben corregirse antes de ejecutar
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{ValueError \faExclamation}
+\begin{conceptbox}{Error de valor}
+Ocurre cuando una función recibe un argumento del tipo correcto pero valor inapropiado
+\end{conceptbox}
+
+\begin{lstlisting}
+numero = int("abc")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Error},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{ValueError: invalid literal for int() with base 10: 'abc'}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Común al convertir strings a números
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{NameError \faQuestion}
+\begin{conceptbox}{Error de nombre}
+Se produce cuando se intenta usar una variable que no existe
+\end{conceptbox}
+
+\begin{lstlisting}
+print(variable_no_definida)
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Error},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{NameError: name 'variable\_no\_definida' is not defined}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Verifica que hayas definido todas tus variables
+\end{notebox}
+\end{frame}
+
+\section{Bloques try y except}
+
+\begin{frame}[fragile]{Try-Except básico \faShieldAlt}
+\begin{conceptbox}{¿Cómo funciona?}
+El bloque try intenta ejecutar el código, except captura el error
+\end{conceptbox}
+
+\begin{lstlisting}
+try:
+    numero = int(input("Ingresa un número: "))
+    print(f"El número es: {numero}")
+except ValueError:
+    print("Error: debes ingresar un número válido")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (entrada: 'abc')},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Error: debes ingresar un número válido}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ El programa continúa ejecutándose sin fallar
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Múltiples excepciones \faLayerGroup}
+\begin{lstlisting}
+try:
+    lista = [1, 2, 3]
+    indice = int(input("Índice: "))
+    print(lista[indice])
+except ValueError:
+    print("Error: debes ingresar un número")
+except IndexError:
+    print("Error: índice fuera de rango")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=blue!10,colframe=blue,title={\small\faArrowDown \ Entrada: 'abc'},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{Error: debes ingresar un número}
+\end{tcolorbox}
+
+\column{0.48\textwidth}
+\begin{tcolorbox}[colback=blue!10,colframe=blue,title={\small\faArrowDown \ Entrada: 10},coltitle=fg0,left=2pt,right=2pt,top=2pt,bottom=2pt]
+\small\texttt{Error: índice fuera de rango}
+\end{tcolorbox}
+\end{columns}
+\end{frame}
+
+\section{Cláusula else}
+
+\begin{frame}[fragile]{Cláusula else \faCheckCircle}
+\begin{conceptbox}{¿Para qué sirve?}
+Se ejecuta solo si NO ocurre ninguna excepción
+\end{conceptbox}
+
+\begin{lstlisting}
+try:
+    numero = int(input("Ingresa un número: "))
+except ValueError:
+    print("Error: no es un número válido")
+else:
+    print(f"Perfecto! El número es: {numero}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida (entrada: '42')},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Perfecto! El número es: 42}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Útil para separar código que debe ejecutarse solo si no hay errores
+\end{notebox}
+\end{frame}
+
+\section{Cláusula finally}
+
+\begin{frame}[fragile]{Cláusula finally \faLock}
+\begin{conceptbox}{¿Para qué sirve?}
+Se ejecuta SIEMPRE, haya o no haya error
+\end{conceptbox}
+
+\begin{lstlisting}
+try:
+    archivo = open("datos.txt", "r")
+    contenido = archivo.read()
+except FileNotFoundError:
+    print("Error: archivo no encontrado")
+finally:
+    print("Operación terminada")
+    # archivo.close() si se abrió
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Error: archivo no encontrado\\
+Operación terminada}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Ideal para liberar recursos (cerrar archivos, conexiones, etc.)
+\end{notebox}
+\end{frame}
+
+\section{Creación de excepciones con raise}
+
+\begin{frame}[fragile]{Lanzar excepciones con raise \faRocket}
+\begin{conceptbox}{¿Cómo crear excepciones?}
+Puedes lanzar excepciones manualmente con raise
+\end{conceptbox}
+
+\begin{lstlisting}
+def verificar_edad(edad):
+    if edad < 0:
+        raise ValueError("La edad no puede ser negativa")
+    if edad < 18:
+        raise Exception("Debes ser mayor de edad")
+    return "Acceso permitido"
+
+try:
+    print(verificar_edad(-5))
+except ValueError as e:
+    print(f"Error de valor: {e}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Error de valor: La edad no puede ser negativa}
+\end{tcolorbox}
+\end{frame}
+
+\section{Buenas prácticas}
+
+\begin{frame}{Buenas prácticas en manejo de errores \faCheckDouble}
+\begin{conceptbox}{Recomendaciones}
+\small
+\begin{itemize}
+    \item[\faCheck] Captura excepciones específicas, no todas genéricas
+    \item[\faCheck] No dejes bloques except vacíos
+    \item[\faCheck] Usa mensajes de error descriptivos
+    \item[\faCheck] Registra los errores para debugging
+    \item[\faCheck] No uses excepciones para control de flujo normal
+    \item[\faCheck] Limpia recursos en finally o usa context managers
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo: ¿Qué evitar? \faTimesCircle}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textcolor{red}{\faTimesCircle\ Malo:}
+\begin{lstlisting}
+try:
+    # código
+    pass
+except:
+    pass
+\end{lstlisting}
+
+\column{0.48\textwidth}
+\textcolor{green}{\faCheckCircle\ Bueno:}
+\begin{lstlisting}
+try:
+    # código
+    pass
+except ValueError as e:
+    print(f"Error: {e}")
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Capturar todas las excepciones oculta errores importantes
+\end{notebox}
+\end{frame}
+
+\section{Proyecto: Validador robusto}
+
+\begin{frame}[fragile]{Proyecto: Validador de datos de usuario \faUserCog}
+\begin{lstlisting}
+def validar_usuario():
+    while True:
+        try:
+            nombre = input("Nombre: ")
+            if not nombre.strip():
+                raise ValueError("El nombre no puede estar vacío")
+            
+            edad = int(input("Edad: "))
+            if edad < 0 or edad > 120:
+                raise ValueError("Edad debe estar entre 0 y 120")
+            
+            return {"nombre": nombre, "edad": edad}
+        
+        except ValueError as e:
+            print(f"Error: {e}. Intenta de nuevo.")
+        except KeyboardInterrupt:
+            print("\nOperación cancelada")
+            return None
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Validador (continuación) \faUserCog}
+\begin{lstlisting}
+try:
+    datos = validar_usuario()
+    if datos:
+        print(f"\nUsuario registrado:")
+        print(f"  Nombre: {datos['nombre']}")
+        print(f"  Edad: {datos['edad']}")
+except Exception as e:
+    print(f"Error inesperado: {e}")
+finally:
+    print("\nGracias por usar el validador")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Ejemplo de salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Nombre: Juan\\
+Edad: 25\\
+Usuario registrado:\\
+  Nombre: Juan\\
+  Edad: 25\\
+Gracias por usar el validador}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Otros errores comunes \faList}
+\begin{conceptbox}{Más excepciones útiles}
+\small
+\begin{itemize}
+    \item[\faBug] \textbf{TypeError}: Operación en tipo incorrecto
+    \item[\faBug] \textbf{ZeroDivisionError}: División por cero
+    \item[\faBug] \textbf{KeyError}: Clave no existe en diccionario
+    \item[\faBug] \textbf{FileNotFoundError}: Archivo no encontrado
+    \item[\faBug] \textbf{ImportError}: Módulo no puede importarse
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{lstlisting}
+try:
+    resultado = 10 / 0
+except ZeroDivisionError:
+    print("No se puede dividir por cero")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Tipos de errores comunes (SyntaxError, ValueError, NameError)
+    \item[\faCheck] Bloques try y except
+    \item[\faCheck] Cláusula else
+    \item[\faCheck] Cláusula finally
+    \item[\faCheck] Lanzar excepciones con raise
+    \item[\faCheck] Buenas prácticas en manejo de errores
+    \item[\faCheck] Proyecto: Validador robusto de datos
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faShieldAlt\ ¡Escribe código robusto!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}
