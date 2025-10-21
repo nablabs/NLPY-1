@@ -1,0 +1,1263 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=2pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=6pt,
+    xrightmargin=6pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 8: Programación Orientada a Objetos}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué es la POO?}
+
+\begin{frame}{Programación Orientada a Objetos \faCube}
+\begin{conceptbox}{¿Qué es POO?}
+\small
+\begin{itemize}
+    \item[\faBox] Paradigma de programación basado en \textbf{objetos}
+    \item[\faPuzzlePiece] Objetos combinan \textbf{datos} (atributos) y \textbf{comportamiento} (métodos)
+    \item[\faLayerGroup] Organiza código de forma modular y reutilizable
+    \item[\faProjectDiagram] Modela conceptos del mundo real
+    \item[\faShieldAlt] Encapsula datos y funcionalidad
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faLightbulb\ ¡Piensa en objetos, no solo en funciones!}
+\end{center}
+\end{frame}
+
+\begin{frame}{¿Por qué usar POO? \faQuestion}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Sin POO:} \faTimesCircle
+\small
+\begin{itemize}
+    \item Datos dispersos
+    \item Funciones aisladas
+    \item Difícil de mantener
+    \item Código repetitivo
+    \item Menos organización
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{Con POO:} \faCheckCircle
+\small
+\begin{itemize}
+    \item Datos agrupados
+    \item Comportamiento asociado
+    \item Fácil de extender
+    \item Código reutilizable
+    \item Mejor organización
+\end{itemize}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{center}
+\textcolor{brown}{\faInfoCircle\ POO facilita modelar sistemas complejos}
+\end{center}
+\end{frame}
+
+\section{Clases y objetos}
+
+\begin{frame}[fragile]{Clases: El molde \faDrawPolygon}
+\begin{conceptbox}{¿Qué es una clase?}
+Una \textbf{clase} es un molde o plantilla para crear objetos. Define qué atributos y métodos tendrán los objetos.
+\end{conceptbox}
+
+\textbf{Ejemplo conceptual:}
+\small
+\begin{itemize}
+    \item[\faDrawPolygon] \textbf{Clase}: Perro (el concepto general)
+    \item[\faDog] \textbf{Objeto}: Mi perro "Max" (una instancia específica)
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Sintaxis básica:}
+\begin{lstlisting}
+class NombreClase:
+    # Definición de la clase
+    pass
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Por convención, los nombres de clases usan CamelCase
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Primera clase simple \faCode}
+\begin{lstlisting}
+class Perro:
+    # Atributos de clase
+    especie = "Canis familiaris"
+    
+    # Método simple
+    def ladrar(self):
+        return "¡Guau guau!"
+
+# Crear objetos (instancias)
+mi_perro = Perro()
+tu_perro = Perro()
+
+print(mi_perro.especie)
+print(mi_perro.ladrar())
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Canis familiaris\\
+¡Guau guau!}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{El parámetro self \faUser}
+\begin{conceptbox}{¿Qué es self?}
+\textbf{self} es una referencia a la instancia actual del objeto. Permite acceder a sus atributos y métodos.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Persona:
+    def saludar(self):
+        return "Hola, soy una persona"
+    
+    def presentarse(self, nombre):
+        # self permite acceder al mismo objeto
+        return f"{self.saludar()}, me llamo {nombre}"
+
+persona = Persona()
+print(persona.presentarse("Ana"))
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Hola, soy una persona, me llamo Ana}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ self debe ser el primer parámetro de los métodos de instancia
+\end{notebox}
+\end{frame}
+
+\section{Método \_\_init\_\_ (constructor)}
+
+\begin{frame}[fragile]{Constructor: \_\_init\_\_ \faWrench}
+\begin{conceptbox}{¿Qué es \_\_init\_\_?}
+El \textbf{constructor} es un método especial que se ejecuta automáticamente cuando se crea un objeto. Inicializa los atributos.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre  # Atributo de instancia
+        self.edad = edad      # Atributo de instancia
+    
+    def presentarse(self):
+        return f"Hola, soy {self.nombre} y tengo {self.edad} años"
+
+# Crear objetos con valores iniciales
+ana = Persona("Ana", 25)
+luis = Persona("Luis", 30)
+
+print(ana.presentarse())
+print(luis.presentarse())
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Constructor: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Hola, soy Ana y tengo 25 años\\
+Hola, soy Luis y tengo 30 años}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ Cada objeto tiene sus propios valores de atributos
+\end{notebox}
+\end{frame}
+
+\section{Atributos de instancia y de clase}
+
+\begin{frame}[fragile]{Atributos de instancia \faUser}
+\begin{conceptbox}{¿Qué son?}
+Atributos \textbf{únicos} para cada objeto. Se definen en \_\_init\_\_ con self.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Coche:
+    def __init__(self, marca, modelo, año):
+        # Atributos de instancia
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
+        self.kilometraje = 0  # Valor inicial por defecto
+
+coche1 = Coche("Toyota", "Corolla", 2020)
+coche2 = Coche("Honda", "Civic", 2021)
+
+print(f"{coche1.marca} {coche1.modelo}")
+print(f"{coche2.marca} {coche2.modelo}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Toyota Corolla\\
+Honda Civic}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Atributos de clase \faLayerGroup}
+\begin{conceptbox}{¿Qué son?}
+Atributos \textbf{compartidos} por todas las instancias de la clase. Se definen fuera de \_\_init\_\_.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Empleado:
+    # Atributo de clase (compartido)
+    empresa = "TechCorp"
+    total_empleados = 0
+    
+    def __init__(self, nombre, salario):
+        # Atributos de instancia (únicos)
+        self.nombre = nombre
+        self.salario = salario
+        Empleado.total_empleados += 1
+
+emp1 = Empleado("Ana", 50000)
+emp2 = Empleado("Luis", 60000)
+
+print(f"Empresa: {Empleado.empresa}")
+print(f"Total empleados: {Empleado.total_empleados}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Atributos de clase: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Empresa: TechCorp\\
+Total empleados: 2}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Los atributos de clase se acceden con NombreClase.atributo
+\end{notebox}
+\end{frame}
+
+\section{Métodos de instancia}
+
+\begin{frame}[fragile]{Métodos de instancia \faTools}
+\begin{conceptbox}{¿Qué son?}
+Funciones definidas dentro de una clase que operan sobre los atributos de la instancia. Siempre llevan \textbf{self} como primer parámetro.
+\end{conceptbox}
+
+\begin{lstlisting}
+class CuentaBancaria:
+    def __init__(self, titular, saldo=0):
+        self.titular = titular
+        self.saldo = saldo
+    
+    def depositar(self, monto):
+        self.saldo += monto
+        return f"Depósito exitoso. Saldo: ${self.saldo}"
+    
+    def retirar(self, monto):
+        if monto <= self.saldo:
+            self.saldo -= monto
+            return f"Retiro exitoso. Saldo: ${self.saldo}"
+        return "Fondos insuficientes"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Métodos de instancia: Uso \faPlay}
+\begin{lstlisting}
+# Crear cuenta
+cuenta = CuentaBancaria("Ana García", 1000)
+
+print(cuenta.depositar(500))
+print(cuenta.retirar(300))
+print(cuenta.retirar(2000))
+print(f"Saldo final: ${cuenta.saldo}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Depósito exitoso. Saldo: \$1500\\
+Retiro exitoso. Saldo: \$1200\\
+Fondos insuficientes\\
+Saldo final: \$1200}
+\end{tcolorbox}
+\end{frame}
+
+\section{Encapsulación y convenciones}
+
+\begin{frame}[fragile]{Encapsulación \faLock}
+\begin{conceptbox}{¿Qué es encapsulación?}
+Ocultar los detalles internos de un objeto y exponer solo lo necesario. Protege los datos de modificaciones no deseadas.
+\end{conceptbox}
+
+\textbf{Convenciones en Python:}
+\small
+\begin{itemize}
+    \item[\faUnlock] \texttt{nombre}: Público (accesible desde cualquier lugar)
+    \item[\faKey] \texttt{\_nombre}: Protegido (convención, uso interno)
+    \item[\faLock] \texttt{\_\_nombre}: Privado (name mangling)
+\end{itemize}
+
+\vspace{0.2cm}
+\begin{notebox}
+\small\faInfoCircle\ Python no tiene verdadera privacidad, solo convenciones
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Atributos privados \faUserSecret}
+\begin{lstlisting}
+class CuentaSegura:
+    def __init__(self, titular, saldo):
+        self.titular = titular        # Público
+        self._password = "1234"       # Protegido
+        self.__saldo = saldo          # Privado
+    
+    def consultar_saldo(self, password):
+        if password == self._password:
+            return f"Saldo: ${self.__saldo}"
+        return "Contraseña incorrecta"
+    
+    def depositar(self, monto):
+        self.__saldo += monto
+
+cuenta = CuentaSegura("Ana", 1000)
+print(cuenta.consultar_saldo("1234"))
+# print(cuenta.__saldo)  # ¡Error! Atributo privado
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Atributos privados: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Saldo: \$1000}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Los atributos privados usan "name mangling": \_NombreClase\_\_atributo
+\end{notebox}
+\end{frame}
+
+\section{Propiedades con @property}
+
+\begin{frame}[fragile]{Decorador @property \faGem}
+\begin{conceptbox}{¿Qué es @property?}
+Permite crear atributos que se comportan como métodos. Controla el acceso y modificación de atributos.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Temperatura:
+    def __init__(self, celsius):
+        self._celsius = celsius
+    
+    @property
+    def celsius(self):
+        return self._celsius
+    
+    @property
+    def fahrenheit(self):
+        return (self._celsius * 9/5) + 32
+    
+    @celsius.setter
+    def celsius(self, valor):
+        if valor < -273.15:
+            raise ValueError("Temperatura bajo cero absoluto")
+        self._celsius = valor
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{@property: Uso \faThermometer}
+\begin{lstlisting}
+temp = Temperatura(25)
+
+# Acceder como atributo (no método)
+print(f"Celsius: {temp.celsius}°C")
+print(f"Fahrenheit: {temp.fahrenheit}°F")
+
+# Modificar con validación
+temp.celsius = 30
+print(f"Nueva temp: {temp.celsius}°C")
+
+# temp.celsius = -300  # ¡Error! ValueError
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Celsius: 25°C\\
+Fahrenheit: 77.0°F\\
+Nueva temp: 30°C}
+\end{tcolorbox}
+\end{frame}
+
+\section{Métodos especiales}
+
+\begin{frame}[fragile]{Métodos especiales (dunder) \faMagic}
+\begin{conceptbox}{¿Qué son?}
+Métodos con doble guion bajo (\_\_método\_\_) que Python llama automáticamente en situaciones específicas.
+\end{conceptbox}
+
+\textbf{Métodos comunes:}
+\small
+\begin{itemize}
+    \item[\faWrench] \texttt{\_\_init\_\_}: Constructor
+    \item[\faPrint] \texttt{\_\_str\_\_}: Representación legible (para usuarios)
+    \item[\faCode] \texttt{\_\_repr\_\_}: Representación técnica (para desarrolladores)
+    \item[\faEquals] \texttt{\_\_eq\_\_}: Igualdad (==)
+    \item[\faCalculator] \texttt{\_\_add\_\_}: Suma (+)
+    \item[\faListOl] \texttt{\_\_len\_\_}: Longitud (len())
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\_\_str\_\_ y \_\_repr\_\_ \faPrint}
+\begin{lstlisting}
+class Libro:
+    def __init__(self, titulo, autor, año):
+        self.titulo = titulo
+        self.autor = autor
+        self.año = año
+    
+    def __str__(self):
+        # Para usuarios (print)
+        return f'"{self.titulo}" por {self.autor}'
+    
+    def __repr__(self):
+        # Para desarrolladores (consola)
+        return f"Libro('{self.titulo}', '{self.autor}', {self.año})"
+
+libro = Libro("Cien años de soledad", "García Márquez", 1967)
+
+print(libro)        # Llama __str__
+print(repr(libro))  # Llama __repr__
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\_\_str\_\_ y \_\_repr\_\_: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{"Cien años de soledad" por García Márquez\\
+Libro('Cien años de soledad', 'García Márquez', 1967)}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ \_\_str\_\_ para usuarios, \_\_repr\_\_ para debug
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Más métodos especiales \faCalculator}
+\begin{lstlisting}
+class Punto:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+    
+    def __add__(self, otro):
+        return Punto(self.x + otro.x, self.y + otro.y)
+    
+    def __eq__(self, otro):
+        return self.x == otro.x and self.y == otro.y
+
+p1 = Punto(1, 2)
+p2 = Punto(3, 4)
+p3 = p1 + p2  # Llama __add__
+
+print(f"p1 + p2 = {p3}")
+print(f"p1 == p2: {p1 == p2}")  # Llama __eq__
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Métodos especiales: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{p1 + p2 = (4, 6)\\
+p1 == p2: False}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Los métodos especiales hacen que tus objetos se comporten como tipos nativos
+\end{notebox}
+\end{frame}
+
+\section{Herencia}
+
+\begin{frame}[fragile]{Herencia \faProjectDiagram}
+\begin{conceptbox}{¿Qué es herencia?}
+Mecanismo que permite crear clases nuevas basadas en clases existentes, heredando sus atributos y métodos.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Animal:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    
+    def hacer_sonido(self):
+        return "Hace un sonido"
+    
+    def dormir(self):
+        return f"{self.nombre} está durmiendo"
+
+# Perro hereda de Animal
+class Perro(Animal):
+    def hacer_sonido(self):
+        return "¡Guau guau!"
+
+# Gato hereda de Animal
+class Gato(Animal):
+    def hacer_sonido(self):
+        return "¡Miau miau!"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Herencia: Uso \faDog}
+\begin{lstlisting}
+perro = Perro("Max")
+gato = Gato("Luna")
+
+print(perro.hacer_sonido())  # Método sobrescrito
+print(gato.hacer_sonido())   # Método sobrescrito
+
+print(perro.dormir())  # Método heredado
+print(gato.dormir())   # Método heredado
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{¡Guau guau!\\
+¡Miau miau!\\
+Max está durmiendo\\
+Luna está durmiendo}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{super(): Llamar a la clase padre \faArrowUp}
+\begin{lstlisting}
+class Vehiculo:
+    def __init__(self, marca, modelo):
+        self.marca = marca
+        self.modelo = modelo
+    
+    def descripcion(self):
+        return f"{self.marca} {self.modelo}"
+
+class Coche(Vehiculo):
+    def __init__(self, marca, modelo, puertas):
+        super().__init__(marca, modelo)  # Llama al padre
+        self.puertas = puertas
+    
+    def descripcion(self):
+        # Reutilizar método del padre y extenderlo
+        return f"{super().descripcion()} - {self.puertas} puertas"
+
+coche = Coche("Toyota", "Corolla", 4)
+print(coche.descripcion())
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{super(): Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Toyota Corolla - 4 puertas}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ super() evita repetir código y facilita el mantenimiento
+\end{notebox}
+\end{frame}
+
+\section{Métodos de clase}
+
+\begin{frame}[fragile]{@classmethod \faLayerGroup}
+\begin{conceptbox}{¿Qué es @classmethod?}
+Método que recibe la clase (cls) como primer argumento, no la instancia. Puede acceder a atributos de clase.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Producto:
+    iva = 0.16  # Atributo de clase
+    
+    def __init__(self, nombre, precio_base):
+        self.nombre = nombre
+        self.precio_base = precio_base
+    
+    @classmethod
+    def cambiar_iva(cls, nuevo_iva):
+        cls.iva = nuevo_iva
+    
+    def precio_final(self):
+        return self.precio_base * (1 + Producto.iva)
+
+# Cambiar IVA para todos los productos
+Producto.cambiar_iva(0.18)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{@classmethod: Uso \faTag}
+\begin{lstlisting}
+# Crear productos después del cambio de IVA
+p1 = Producto("Laptop", 1000)
+p2 = Producto("Mouse", 20)
+
+print(f"{p1.nombre}: ${p1.precio_final():.2f}")
+print(f"{p2.nombre}: ${p2.precio_final():.2f}")
+
+# Cambiar IVA nuevamente
+Producto.cambiar_iva(0.20)
+print(f"\nNuevo precio {p1.nombre}: ${p1.precio_final():.2f}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Laptop: \$1180.00\\
+Mouse: \$23.60\\
+\ \\
+Nuevo precio Laptop: \$1200.00}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{@classmethod como constructor alternativo \faWrench}
+\begin{lstlisting}
+class Fecha:
+    def __init__(self, dia, mes, año):
+        self.dia = dia
+        self.mes = mes
+        self.año = año
+    
+    @classmethod
+    def desde_string(cls, fecha_str):
+        # Constructor alternativo desde string
+        dia, mes, año = map(int, fecha_str.split('/'))
+        return cls(dia, mes, año)
+    
+    def __str__(self):
+        return f"{self.dia:02d}/{self.mes:02d}/{self.año}"
+
+fecha1 = Fecha(15, 10, 2025)
+fecha2 = Fecha.desde_string("25/12/2025")
+
+print(fecha1)
+print(fecha2)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{@classmethod alternativo: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{15/10/2025\\
+25/12/2025}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ @classmethod es útil para constructores alternativos
+\end{notebox}
+\end{frame}
+
+\section{Métodos estáticos}
+
+\begin{frame}[fragile]{@staticmethod \faTools}
+\begin{conceptbox}{¿Qué es @staticmethod?}
+Método que \textbf{no} recibe ni self ni cls. Es una función regular agrupada en la clase por organización.
+\end{conceptbox}
+
+\begin{lstlisting}
+class Matematicas:
+    @staticmethod
+    def es_par(numero):
+        return numero % 2 == 0
+    
+    @staticmethod
+    def factorial(n):
+        if n <= 1:
+            return 1
+        return n * Matematicas.factorial(n - 1)
+    
+    @staticmethod
+    def es_primo(n):
+        if n < 2:
+            return False
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{@staticmethod: Uso \faCalculator}
+\begin{lstlisting}
+# No necesitan instancia de la clase
+print(f"¿4 es par? {Matematicas.es_par(4)}")
+print(f"¿7 es par? {Matematicas.es_par(7)}")
+
+print(f"Factorial de 5: {Matematicas.factorial(5)}")
+
+print(f"¿17 es primo? {Matematicas.es_primo(17)}")
+print(f"¿18 es primo? {Matematicas.es_primo(18)}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{¿4 es par? True\\
+¿7 es par? False\\
+Factorial de 5: 120\\
+¿17 es primo? True\\
+¿18 es primo? False}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Comparación: Métodos \faTable}
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Tipo} & \textbf{Primer arg} & \textbf{Acceso a} & \textbf{Uso} \\
+\hline
+Instancia & \texttt{self} & Instancia & Operaciones del objeto \\
+\hline
+Clase & \texttt{cls} & Clase & Config/Constructores \\
+\hline
+Estático & - & Nada & Utilidades agrupadas \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Usa el tipo de método según lo que necesites acceder
+\end{notebox}
+\end{frame}
+
+\section{Proyecto: Sistema de gestión}
+
+\begin{frame}{Proyecto: Sistema de gestión de biblioteca \faBook}
+\begin{conceptbox}{Objetivo}
+Crear un sistema completo usando POO para gestionar una biblioteca con libros, usuarios y préstamos.
+\end{conceptbox}
+
+\textbf{Funcionalidades:}
+\small
+\begin{itemize}
+    \item[\faBook] Gestión de libros (agregar, buscar, listar)
+    \item[\faUser] Gestión de usuarios
+    \item[\faExchangeAlt] Sistema de préstamos y devoluciones
+    \item[\faHistory] Historial de préstamos
+    \item[\faCheckCircle] Validaciones y restricciones
+\end{itemize}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faLightbulb\ Aplicaremos todos los conceptos de POO}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Clase Libro \faBook}
+\begin{lstlisting}
+class Libro:
+    total_libros = 0  # Atributo de clase
+    
+    def __init__(self, titulo, autor, isbn, copias=1):
+        self.titulo = titulo
+        self.autor = autor
+        self.isbn = isbn
+        self.copias_totales = copias
+        self.copias_disponibles = copias
+        Libro.total_libros += 1
+    
+    def __str__(self):
+        return f'"{self.titulo}" por {self.autor}'
+    
+    def __repr__(self):
+        return f"Libro('{self.titulo}', '{self.autor}', '{self.isbn}')"
+    
+    def esta_disponible(self):
+        return self.copias_disponibles > 0
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Clase Usuario \faUser}
+\begin{lstlisting}
+class Usuario:
+    def __init__(self, nombre, id_usuario):
+        self.nombre = nombre
+        self.id_usuario = id_usuario
+        self._libros_prestados = []  # Protegido
+        self.max_prestamos = 3
+    
+    def __str__(self):
+        return f"{self.nombre} (ID: {self.id_usuario})"
+    
+    def puede_prestar(self):
+        return len(self._libros_prestados) < self.max_prestamos
+    
+    @property
+    def cantidad_prestamos(self):
+        return len(self._libros_prestados)
+    
+    def agregar_prestamo(self, libro):
+        self._libros_prestados.append(libro)
+    
+    def devolver_libro(self, libro):
+        self._libros_prestados.remove(libro)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Clase Prestamo \faExchangeAlt}
+\begin{lstlisting}
+from datetime import datetime, timedelta
+
+class Prestamo:
+    def __init__(self, libro, usuario, dias=14):
+        self.libro = libro
+        self.usuario = usuario
+        self.fecha_prestamo = datetime.now()
+        self.fecha_devolucion = self.fecha_prestamo + timedelta(days=dias)
+        self.devuelto = False
+    
+    def __str__(self):
+        estado = "Devuelto" if self.devuelto else "Activo"
+        return f"{self.libro} - {self.usuario} [{estado}]"
+    
+    def esta_vencido(self):
+        if self.devuelto:
+            return False
+        return datetime.now() > self.fecha_devolucion
+    
+    def marcar_devuelto(self):
+        self.devuelto = True
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Clase Biblioteca \faBuilding}
+\begin{lstlisting}
+class Biblioteca:
+    def __init__(self, nombre):
+        self.nombre = nombre
+        self._catalogo = []      # Libros
+        self._usuarios = []       # Usuarios registrados
+        self._prestamos = []      # Historial de préstamos
+    
+    def agregar_libro(self, libro):
+        self._catalogo.append(libro)
+        print(f"✓ Libro agregado: {libro}")
+    
+    def registrar_usuario(self, usuario):
+        self._usuarios.append(usuario)
+        print(f"✓ Usuario registrado: {usuario}")
+    
+    def buscar_libro(self, titulo):
+        for libro in self._catalogo:
+            if titulo.lower() in libro.titulo.lower():
+                return libro
+        return None
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Biblioteca - Préstamo \faHandHoldingHeart}
+\begin{lstlisting}
+    def prestar_libro(self, titulo, id_usuario):
+        # Buscar libro
+        libro = self.buscar_libro(titulo)
+        if not libro:
+            return "✗ Libro no encontrado"
+        
+        if not libro.esta_disponible():
+            return f"✗ No hay copias de {libro} disponibles"
+        
+        # Buscar usuario
+        usuario = None
+        for u in self._usuarios:
+            if u.id_usuario == id_usuario:
+                usuario = u
+                break
+        
+        if not usuario:
+            return "✗ Usuario no registrado"
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Biblioteca - Préstamo (cont.) \faBook}
+\begin{lstlisting}
+        if not usuario.puede_prestar():
+            return f"✗ {usuario.nombre} alcanzó el límite de préstamos"
+        
+        # Realizar préstamo
+        libro.copias_disponibles -= 1
+        usuario.agregar_prestamo(libro)
+        prestamo = Prestamo(libro, usuario)
+        self._prestamos.append(prestamo)
+        
+        dias = (prestamo.fecha_devolucion - prestamo.fecha_prestamo).days
+        return f"✓ Préstamo exitoso. Devolver antes de: {prestamo.fecha_devolucion.strftime('%d/%m/%Y')} ({dias} días)"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Biblioteca - Devolución \faUndoAlt}
+\begin{lstlisting}
+    def devolver_libro(self, titulo, id_usuario):
+        # Buscar préstamo activo
+        for prestamo in self._prestamos:
+            if (prestamo.libro.titulo == titulo and 
+                prestamo.usuario.id_usuario == id_usuario and 
+                not prestamo.devuelto):
+                
+                # Procesar devolución
+                prestamo.marcar_devuelto()
+                prestamo.libro.copias_disponibles += 1
+                prestamo.usuario.devolver_libro(prestamo.libro)
+                
+                vencido = " (¡VENCIDO!)" if prestamo.esta_vencido() else ""
+                return f"✓ Libro devuelto{vencido}"
+        
+        return "✗ No se encontró préstamo activo"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Biblioteca - Reportes \faChartBar}
+\begin{lstlisting}
+    def listar_disponibles(self):
+        print("\n=== LIBROS DISPONIBLES ===")
+        for libro in self._catalogo:
+            if libro.esta_disponible():
+                print(f"• {libro} - {libro.copias_disponibles} copias")
+    
+    def prestamos_activos(self):
+        print("\n=== PRÉSTAMOS ACTIVOS ===")
+        for prestamo in self._prestamos:
+            if not prestamo.devuelto:
+                vencido = " ⚠ VENCIDO" if prestamo.esta_vencido() else ""
+                print(f"• {prestamo}{vencido}")
+    
+    @staticmethod
+    def validar_isbn(isbn):
+        # Validación simple de ISBN-10
+        return len(isbn) == 10 and isbn.isdigit()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Uso del sistema \faTerminal}
+\begin{lstlisting}
+# Crear biblioteca
+bib = Biblioteca("Biblioteca Central")
+
+# Agregar libros
+libro1 = Libro("Cien años de soledad", "García Márquez", "1234567890", 2)
+libro2 = Libro("Don Quijote", "Cervantes", "0987654321", 1)
+
+bib.agregar_libro(libro1)
+bib.agregar_libro(libro2)
+
+# Registrar usuarios
+user1 = Usuario("Ana García", "U001")
+user2 = Usuario("Luis Pérez", "U002")
+
+bib.registrar_usuario(user1)
+bib.registrar_usuario(user2)
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Uso - Préstamos \faHandshake}
+\begin{lstlisting}
+# Realizar préstamos
+print("\n" + "="*40)
+print(bib.prestar_libro("Cien años", "U001"))
+print(bib.prestar_libro("Don Quijote", "U002"))
+print(bib.prestar_libro("Cien años", "U001"))
+
+# Listar estado
+bib.listar_disponibles()
+bib.prestamos_activos()
+
+# Devolver libro
+print("\n" + "="*40)
+print(bib.devolver_libro("Cien años de soledad", "U001"))
+
+bib.listar_disponibles()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{✓ Libro agregado: "Cien años de soledad" por García Márquez\\
+✓ Libro agregado: "Don Quijote" por Cervantes\\
+✓ Usuario registrado: Ana García (ID: U001)\\
+✓ Usuario registrado: Luis Pérez (ID: U002)\\
+\ \\
+========================================\\
+✓ Préstamo exitoso. Devolver antes de: 04/11/2025 (14 días)\\
+✓ Préstamo exitoso. Devolver antes de: 04/11/2025 (14 días)\\
+✗ No hay copias de "Cien años de soledad" por García Márquez disponibles\\
+\ \\
+=== LIBROS DISPONIBLES ===\\
+• "Cien años de soledad" por García Márquez - 1 copias\\
+\ \\
+=== PRÉSTAMOS ACTIVOS ===\\
+• "Cien años de soledad" por García Márquez - Ana García (ID: U001) [Activo]\\
+• "Don Quijote" por Cervantes - Luis Pérez (ID: U002) [Activo]}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Proyecto alternativo: Sistema de inventario \faBoxes}
+\begin{conceptbox}{Alternativa}
+Sistema para gestionar inventario de productos en una tienda
+\end{conceptbox}
+
+\textbf{Clases sugeridas:}
+\small
+\begin{itemize}
+    \item[\faBox] \textbf{Producto}: Base con nombre, precio, stock
+    \item[\faTshirt] \textbf{ProductoFisico}: Hereda, agrega peso, dimensiones
+    \item[\faLaptop] \textbf{ProductoDigital}: Hereda, agrega tamaño de archivo
+    \item[\faShoppingCart] \textbf{Carrito}: Gestiona lista de compra
+    \item[\faStore] \textbf{Tienda}: Catalogo, ventas, reportes
+    \item[\faUser] \textbf{Cliente}: Datos, historial de compras
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proyecto alternativo: Sistema de estudiantes \faGraduationCap}
+\begin{conceptbox}{Otra alternativa}
+Sistema para gestionar estudiantes, cursos y calificaciones
+\end{conceptbox}
+
+\textbf{Clases sugeridas:}
+\small
+\begin{itemize}
+    \item[\faUser] \textbf{Persona}: Clase base con nombre, ID
+    \item[\faUserGraduate] \textbf{Estudiante}: Hereda, agrega cursos, promedio
+    \item[\faChalkboardTeacher] \textbf{Profesor}: Hereda, agrega cursos que imparte
+    \item[\faBook] \textbf{Curso}: Nombre, código, créditos
+    \item[\faClipboardList] \textbf{Calificacion}: Estudiante, curso, nota
+    \item[\faUniversity] \textbf{Universidad}: Gestión completa
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Buenas prácticas POO \faCheckDouble}
+\begin{conceptbox}{Principios SOLID}
+\small
+\begin{itemize}
+    \item[\faCheck] \textbf{S}ingle Responsibility: Una clase, una responsabilidad
+    \item[\faCheck] \textbf{O}pen/Closed: Abierto a extensión, cerrado a modificación
+    \item[\faCheck] \textbf{L}iskov Substitution: Subclases sustituibles por su base
+    \item[\faCheck] \textbf{I}nterface Segregation: Interfaces específicas
+    \item[\faCheck] \textbf{D}ependency Inversion: Depender de abstracciones
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\textbf{Otras prácticas:}
+\small
+\begin{itemize}
+    \item[\faCheck] Nombres descriptivos para clases y métodos
+    \item[\faCheck] Encapsular datos sensibles
+    \item[\faCheck] Preferir composición sobre herencia cuando sea apropiado
+    \item[\faCheck] Documentar clases con docstrings
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Documentación con docstrings \faFileAlt}
+\begin{lstlisting}
+class CuentaBancaria:
+    """
+    Representa una cuenta bancaria básica.
+    
+    Attributes:
+        titular (str): Nombre del titular de la cuenta
+        saldo (float): Saldo actual de la cuenta
+    
+    Methods:
+        depositar(monto): Deposita dinero en la cuenta
+        retirar(monto): Retira dinero de la cuenta
+    """
+    
+    def __init__(self, titular, saldo=0):
+        """Inicializa una cuenta bancaria."""
+        self.titular = titular
+        self.saldo = saldo
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Documentación: Métodos \faBook}
+\begin{lstlisting}
+    def depositar(self, monto):
+        """
+        Deposita dinero en la cuenta.
+        
+        Args:
+            monto (float): Cantidad a depositar
+        
+        Returns:
+            str: Mensaje de confirmación
+        
+        Raises:
+            ValueError: Si el monto es negativo
+        """
+        if monto < 0:
+            raise ValueError("El monto no puede ser negativo")
+        self.saldo += monto
+        return f"Depósito exitoso. Saldo: ${self.saldo}"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Conceptos de POO: clases y objetos
+    \item[\faCheck] Constructor \_\_init\_\_ y atributos
+    \item[\faCheck] Métodos de instancia, clase y estáticos
+    \item[\faCheck] Encapsulación y convenciones de privacidad
+    \item[\faCheck] Propiedades con @property
+    \item[\faCheck] Métodos especiales: \_\_str\_\_, \_\_repr\_\_
+    \item[\faCheck] Herencia y super()
+    \item[\faCheck] Decoradores: @classmethod, @staticmethod
+    \item[\faCheck] Proyecto: Sistema de gestión de biblioteca
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faCube\ ¡POO organiza y potencia tu código!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}

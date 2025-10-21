@@ -1,0 +1,1106 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=2pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=6pt,
+    xrightmargin=6pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 7: Expresiones Regulares}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Qué son las expresiones regulares?}
+
+\begin{frame}{Expresiones Regulares (Regex) \faSearch}
+\begin{conceptbox}{¿Qué son?}
+\small
+\begin{itemize}
+    \item[\faCode] Patrones de texto para buscar, validar y manipular strings
+    \item[\faMagic] Lenguaje especializado para procesamiento de texto
+    \item[\faCheckCircle] Validar formatos (emails, teléfonos, URLs, etc.)
+    \item[\faExchangeAlt] Extraer información específica de textos
+    \item[\faEdit] Reemplazar patrones complejos
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faLightbulb\ ¡Superpoder para trabajar con texto!}
+\end{center}
+\end{frame}
+
+\begin{frame}{¿Por qué usar regex? \faQuestion}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Sin regex:} \faTimesCircle
+\small
+\begin{itemize}
+    \item Código largo y complejo
+    \item Muchas condiciones
+    \item Difícil de mantener
+    \item Validaciones limitadas
+    \item Procesamiento lento
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{Con regex:} \faCheckCircle
+\small
+\begin{itemize}
+    \item Código conciso
+    \item Patrones expresivos
+    \item Fácil de actualizar
+    \item Validaciones potentes
+    \item Procesamiento eficiente
+\end{itemize}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{center}
+\textcolor{brown}{\faInfoCircle\ Regex es universal: Python, JavaScript, Java, etc.}
+\end{center}
+\end{frame}
+
+\section{Módulo re}
+
+\begin{frame}[fragile]{Módulo re: Expresiones regulares en Python \faPython}
+\begin{conceptbox}{¿Qué es el módulo re?}
+Módulo de la librería estándar para trabajar con expresiones regulares
+\end{conceptbox}
+
+\textbf{Importación:}
+\begin{lstlisting}
+import re
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Funciones principales:}
+\small
+\begin{itemize}
+    \item[\faSearch] \texttt{search()}: Busca patrón en cualquier parte del texto
+    \item[\faAlignLeft] \texttt{match()}: Busca patrón al inicio del texto
+    \item[\faListUl] \texttt{findall()}: Encuentra todas las coincidencias
+    \item[\faExchangeAlt] \texttt{sub()}: Reemplaza coincidencias
+    \item[\faCut] \texttt{split()}: Divide texto por patrón
+\end{itemize}
+\end{frame}
+
+\section{Función search()}
+
+\begin{frame}[fragile]{search(): Buscar patrón \faSearch}
+\begin{conceptbox}{¿Qué hace?}
+Busca la primera coincidencia del patrón en cualquier parte del texto
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Mi teléfono es 555-1234"
+patron = r"\d+"  # Uno o más dígitos
+
+resultado = re.search(patron, texto)
+
+if resultado:
+    print(f"Encontrado: {resultado.group()}")
+    print(f"Posición: {resultado.start()}-{resultado.end()}")
+else:
+    print("No se encontró")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{search(): Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Encontrado: 555\\
+Posición: 16-19}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ La \texttt{r} antes del string indica "raw string" (importante para regex)
+\end{notebox}
+\end{frame}
+
+\section{Función match()}
+
+\begin{frame}[fragile]{match(): Buscar al inicio \faAlignLeft}
+\begin{conceptbox}{¿Qué hace?}
+Busca el patrón solo al inicio del texto
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto1 = "Python es genial"
+texto2 = "Me gusta Python"
+
+patron = r"Python"
+
+match1 = re.match(patron, texto1)
+match2 = re.match(patron, texto2)
+
+print(f"Texto 1: {match1 is not None}")
+print(f"Texto 2: {match2 is not None}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{match(): Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Texto 1: True\\
+Texto 2: False}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faExclamationTriangle\ \texttt{match()} solo busca al inicio, \texttt{search()} busca en cualquier parte
+\end{notebox}
+\end{frame}
+
+\section{Función findall()}
+
+\begin{frame}[fragile]{findall(): Encontrar todas las coincidencias \faListUl}
+\begin{conceptbox}{¿Qué hace?}
+Retorna una lista con todas las coincidencias del patrón
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Precios: $10, $25, $100 y $5"
+patron = r"\$\d+"  # $ seguido de dígitos
+
+precios = re.findall(patron, texto)
+
+print(f"Precios encontrados: {precios}")
+print(f"Total: {len(precios)} precios")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{findall(): Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Precios encontrados: ['\$10', '\$25', '\$100', '\$5']\\
+Total: 4 precios}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{\textbackslash\$} escapa el carácter especial \$
+\end{notebox}
+\end{frame}
+
+\section{Función sub()}
+
+\begin{frame}[fragile]{sub(): Reemplazar texto \faExchangeAlt}
+\begin{conceptbox}{¿Qué hace?}
+Reemplaza todas las coincidencias del patrón por otro texto
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Me gustan los gatos. Los gatos son geniales."
+patron = r"gatos"
+reemplazo = "perros"
+
+nuevo_texto = re.sub(patron, reemplazo, texto)
+
+print("Original:")
+print(texto)
+print("Modificado:")
+print(nuevo_texto)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{sub(): Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Original:\\
+Me gustan los gatos. Los gatos son geniales.\\
+Modificado:\\
+Me gustan los perros. Los perros son geniales.}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faCheckCircle\ \texttt{sub()} reemplaza todas las coincidencias
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{sub(): Limitar reemplazos \faEdit}
+\begin{lstlisting}
+import re
+
+texto = "Ana tiene 3 gatos, Pedro tiene 2 gatos"
+patron = r"\d+"
+reemplazo = "X"
+
+# Reemplazar solo la primera coincidencia
+nuevo_texto = re.sub(patron, reemplazo, texto, count=1)
+
+print(f"Original: {texto}")
+print(f"Modificado: {nuevo_texto}")
+\end{lstlisting}
+
+\vspace{0.3cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Original: Ana tiene 3 gatos, Pedro tiene 2 gatos\\
+Modificado: Ana tiene X gatos, Pedro tiene 2 gatos}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{sub(): Nota sobre count \faLightbulb}
+\begin{notebox}
+\small\faLightbulb\ El parámetro \texttt{count} limita el número de reemplazos a realizar
+\end{notebox}
+\end{frame}
+
+\section{Patrones básicos}
+
+\begin{frame}[fragile]{Patrones literales \faFont}
+\begin{conceptbox}{Caracteres literales}
+Los caracteres normales buscan coincidencias exactas
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Python es Python, y Python es genial"
+
+# Buscar "Python" literalmente
+coincidencias = re.findall(r"Python", texto)
+print(f"Coincidencias: {len(coincidencias)}")
+
+# Buscar "python" (mayúsculas/minúsculas importan)
+coincidencias2 = re.findall(r"python", texto)
+print(f"Con minúscula: {len(coincidencias2)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Patrones literales: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Coincidencias: 3\\
+Con minúscula: 0}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Por defecto, regex distingue mayúsculas/minúsculas
+\end{notebox}
+\end{frame}
+
+\section{Metacaracteres}
+
+\begin{frame}{Metacaracteres especiales \faMagic}
+\begin{conceptbox}{Caracteres con significado especial}
+\small
+\begin{tabular}{ll}
+\texttt{.} & Cualquier carácter (excepto salto de línea) \\
+\texttt{\^} & Inicio del texto \\
+\texttt{\$} & Final del texto \\
+\texttt{|} & O (alternativa) \\
+\texttt{[]} & Conjunto de caracteres \\
+\texttt{()} & Grupo de captura \\
+\texttt{\textbackslash} & Escape de caracteres especiales \\
+\end{tabular}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faInfoCircle\ Estos caracteres tienen funciones especiales}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Metacaracteres en acción \faPlayCircle}
+\begin{lstlisting}
+import re
+
+texto = "gato, pato, plato, rato"
+
+# . = cualquier carácter
+patron1 = r".ato"
+print(f"Patrón '.ato': {re.findall(patron1, texto)}")
+
+# ^ = inicio
+patron2 = r"^gato"
+print(f"Empieza con 'gato': {re.search(patron2, texto) is not None}")
+
+# $ = final
+patron3 = r"rato$"
+print(f"Termina con 'rato': {re.search(patron3, texto) is not None}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Metacaracteres: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Patrón '.ato': ['gato', 'pato', 'lato', 'rato']\\
+Empieza con 'gato': True\\
+Termina con 'rato': True}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Conjuntos de caracteres [] \faSquare}
+\begin{lstlisting}
+import re
+
+texto = "a1 b2 c3 d4 e5"
+
+# [abc] = a, b o c
+patron1 = r"[abc]\d"
+print(f"[abc] + dígito: {re.findall(patron1, texto)}")
+
+# [a-z] = cualquier letra minúscula
+patron2 = r"[a-z]\d"
+print(f"Letra + dígito: {re.findall(patron2, texto)}")
+
+# [^0-9] = cualquier cosa excepto dígitos
+patron3 = r"[^0-9]+"
+print(f"No dígitos: {re.findall(patron3, texto)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Conjuntos: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{[abc] + dígito: ['a1', 'b2', 'c3']\\
+Letra + dígito: ['a1', 'b2', 'c3', 'd4', 'e5']\\
+No dígitos: ['a', ' b', ' c', ' d', ' e']}
+\end{tcolorbox}
+\end{frame}
+
+\section{Clases de caracteres}
+
+\begin{frame}{Clases de caracteres predefinidas \faKeyboard}
+\begin{conceptbox}{Atajos útiles}
+\small
+\begin{tabular}{ll}
+\texttt{\textbackslash d} & Dígito: [0-9] \\
+\texttt{\textbackslash D} & No dígito: [\^{}0-9] \\
+\texttt{\textbackslash w} & Palabra: [a-zA-Z0-9\_] \\
+\texttt{\textbackslash W} & No palabra \\
+\texttt{\textbackslash s} & Espacio en blanco (espacio, tab, salto) \\
+\texttt{\textbackslash S} & No espacio en blanco \\
+\end{tabular}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faLightbulb\ Minúscula incluye, MAYÚSCULA excluye}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Clases de caracteres en acción \faCode}
+\begin{lstlisting}
+import re
+
+texto = "Hola123 mundo_456 ¡Python!"
+
+# \d = dígitos
+digitos = re.findall(r"\d+", texto)
+print(f"Dígitos: {digitos}")
+
+# \w = caracteres de palabra
+palabras = re.findall(r"\w+", texto)
+print(f"Palabras: {palabras}")
+
+# \s = espacios
+espacios = re.findall(r"\s", texto)
+print(f"Espacios: {len(espacios)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Clases: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Dígitos: ['123', '456']\\
+Palabras: ['Hola123', 'mundo\_456', 'Python']\\
+Espacios: 2}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{\textbackslash w} no incluye caracteres especiales como ¡
+\end{notebox}
+\end{frame}
+
+\section{Cuantificadores}
+
+\begin{frame}{Cuantificadores: Repeticiones \faRedoAlt}
+\begin{conceptbox}{Especifican cuántas veces debe aparecer}
+\small
+\begin{tabular}{ll}
+\texttt{*} & 0 o más veces \\
+\texttt{+} & 1 o más veces \\
+\texttt{?} & 0 o 1 vez (opcional) \\
+\texttt{\{n\}} & Exactamente n veces \\
+\texttt{\{n,\}} & n o más veces \\
+\texttt{\{n,m\}} & Entre n y m veces \\
+\end{tabular}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faExclamationTriangle\ Los cuantificadores son "codiciosos" por defecto}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Cuantificadores básicos: *, +, ? \faAsterisk}
+\begin{lstlisting}
+import re
+
+texto = "Color, Colour, Colouur, Colr"
+
+# o* = cero o más 'o'
+patron1 = r"Colo*r"
+print(f"o*: {re.findall(patron1, texto)}")
+
+# o+ = una o más 'o'
+patron2 = r"Colo+r"
+print(f"o+: {re.findall(patron2, texto)}")
+
+# o? = cero o una 'o'
+patron3 = r"Colo?r"
+print(f"o?: {re.findall(patron3, texto)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Cuantificadores: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{o*: ['Color', 'Colour', 'Colouur', 'Colr']\\
+o+: ['Color', 'Colour', 'Colouur']\\
+o?: ['Color', 'Colr']}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Cuantificadores exactos: \{n,m\} \faHashtag}
+\begin{lstlisting}
+import re
+
+texto = "Números: 1, 12, 123, 1234, 12345"
+
+# Exactamente 3 dígitos
+patron1 = r"\d{3}"
+print(f"3 dígitos: {re.findall(patron1, texto)}")
+
+# Entre 2 y 4 dígitos
+patron2 = r"\d{2,4}"
+print(f"2-4 dígitos: {re.findall(patron2, texto)}")
+
+# 2 o más dígitos
+patron3 = r"\d{2,}"
+print(f"2+ dígitos: {re.findall(patron3, texto)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Cuantificadores exactos: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{3 dígitos: ['123', '123', '123']\\
+2-4 dígitos: ['12', '123', '1234', '1234']\\
+2+ dígitos: ['12', '123', '1234', '12345']}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Los cuantificadores coinciden lo máximo posible
+\end{notebox}
+\end{frame}
+
+\section{Grupos de captura}
+
+\begin{frame}[fragile]{Grupos de captura () \faObjectGroup}
+\begin{conceptbox}{¿Para qué sirven?}
+Capturan partes específicas del patrón para extraerlas o referenciarlas
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Fecha: 2024-10-21"
+
+# Capturar año, mes y día por separado
+patron = r"(\d{4})-(\d{2})-(\d{2})"
+
+match = re.search(patron, texto)
+
+if match:
+    print(f"Fecha completa: {match.group(0)}")
+    print(f"Año: {match.group(1)}")
+    print(f"Mes: {match.group(2)}")
+    print(f"Día: {match.group(3)}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Grupos de captura: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Fecha completa: 2024-10-21\\
+Año: 2024\\
+Mes: 10\\
+Día: 21}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Grupos nombrados (?P<nombre>) \faTag}
+\begin{lstlisting}
+import re
+
+texto = "Email: usuario@dominio.com"
+
+# Grupos nombrados para mayor claridad
+patron = r"(?P<user>\w+)@(?P<domain>\w+\.\w+)"
+
+match = re.search(patron, texto)
+
+if match:
+    print(f"Usuario: {match.group('user')}")
+    print(f"Dominio: {match.group('domain')}")
+    print(f"Dict: {match.groupdict()}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Grupos nombrados: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Usuario: usuario\\
+Dominio: dominio.com\\
+Dict: \{'user': 'usuario', 'domain': 'dominio.com'\}}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ Los grupos nombrados son más legibles y mantenibles
+\end{notebox}
+\end{frame}
+
+\section{Validación de formatos}
+
+\begin{frame}[fragile]{Validar emails \faEnvelope}
+\begin{lstlisting}
+import re
+
+def validar_email(email):
+    patron = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return re.match(patron, email) is not None
+
+emails = ["usuario@ejemplo.com", "nombre.apellido@empresa.co",
+          "correo_invalido@", "@sin-usuario.com"]
+
+for email in emails:
+    valido = validar_email(email)
+    simbolo = "OK" if valido else "X"
+    print(f"{email:28} -> {simbolo}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Validar emails: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{usuario@ejemplo.com        -> OK\\
+nombre.apellido@empresa.co -> OK\\
+correo\_invalido@           -> X\\
+@sin-usuario.com           -> X}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Validar teléfonos \faPhone}
+\begin{lstlisting}
+import re
+
+def validar_telefono(telefono):
+    patrones = [
+        r"^\d{3}-\d{3}-\d{4}$",
+        r"^\(\d{3}\)\s\d{3}-\d{4}$",
+        r"^\d{10}$"
+    ]
+    for patron in patrones:
+        if re.match(patron, telefono):
+            return True
+    return False
+
+tels = ["555-123-4567", "(555) 123-4567", "5551234567", "123"]
+for tel in tels:
+    print(f"{tel:18} -> {'OK' if validar_telefono(tel) else 'X'}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Validar teléfonos: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{555-123-4567       -> OK\\
+(555) 123-4567     -> OK\\
+5551234567         -> OK\\
+123                -> X}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Validar URLs \faLink}
+\begin{lstlisting}
+import re
+
+def validar_url(url):
+    patron = r"^https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$"
+    return re.match(patron, url) is not None
+
+urls = ["https://www.ejemplo.com",
+        "http://ejemplo.com/pagina",
+        "https://sub.dominio.com/ruta/archivo.html",
+        "www.sinhttp.com",
+        "ftp://protocolo-invalido.com"]
+
+for url in urls:
+    resultado = "OK" if validar_url(url) else "X"
+    print(f"{resultado:2} {url[:35]}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Validar URLs: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{OK https://www.ejemplo.com\\
+OK http://ejemplo.com/pagina\\
+OK https://sub.dominio.com/ruta/archi\\
+X  www.sinhttp.com\\
+X  ftp://protocolo-invalido.com}
+\end{tcolorbox}
+\end{frame}
+
+\section{Banderas (flags)}
+
+\begin{frame}[fragile]{Banderas: Modificar comportamiento \faFlag}
+\begin{conceptbox}{Flags comunes}
+\small
+\begin{itemize}
+    \item[\faFont] \texttt{re.IGNORECASE} o \texttt{re.I}: Ignora mayúsculas
+    \item[\faAlignJustify] \texttt{re.MULTILINE} o \texttt{re.M}: \^{} y \$ por línea
+    \item[\faEllipsisH] \texttt{re.DOTALL} o \texttt{re.S}: . incluye saltos
+\end{itemize}
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+texto = "Python es PYTHON y python"
+
+# Sin bandera
+sin_flag = re.findall(r"python", texto)
+print(f"Sin flag: {sin_flag}")
+
+# Con IGNORECASE
+con_flag = re.findall(r"python", texto, re.IGNORECASE)
+print(f"Con IGNORECASE: {con_flag}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Banderas: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Sin flag: ['python']\\
+Con IGNORECASE: ['Python', 'PYTHON', 'python']}
+\end{tcolorbox}
+\end{frame}
+
+\section{Compilar patrones}
+
+\begin{frame}[fragile]{Compilar patrones para reutilizar \faSync}
+\begin{conceptbox}{¿Por qué compilar?}
+Mejora el rendimiento cuando usas el mismo patrón varias veces
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+patron_email = re.compile(
+    r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
+
+textos = ["Contacto: juan@ejemplo.com",
+          "Soporte: ayuda@empresa.com",
+          "Sin email aquí"]
+
+for texto in textos:
+    match = patron_email.search(texto)
+    if match:
+        print(f"Email: {match.group()}")
+    else:
+        print("No se encontró email")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Compilar patrones: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Email: juan@ejemplo.com\\
+Email: ayuda@empresa.com\\
+No se encontró email}
+\end{tcolorbox}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}[fragile]{Proyecto: Extractor de información (1/5) \faFileAlt}
+\textbf{Objetivo:} Extraer información de un texto con múltiples formatos
+
+\vspace{0.2cm}
+\textbf{Archivo:} \texttt{extractor.py}
+\begin{lstlisting}
+import re
+
+class ExtractorInfo:
+    """Extrae emails, teléfonos, URLs y fechas de texto"""
+    
+    def __init__(self):
+        # Compilar patrones
+        self.patron_email = re.compile(
+            r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+        )
+        self.patron_telefono = re.compile(
+            r"\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}"
+        )
+        self.patron_url = re.compile(
+            r"https?://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/[^\s]*)?"
+        )
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Extractor de información (2/5) \faCode}
+\begin{lstlisting}
+        self.patron_fecha = re.compile(
+            r"\d{1,2}[-/]\d{1,2}[-/]\d{2,4}"
+        )
+    
+    def extraer_emails(self, texto):
+        """Extrae todos los emails del texto"""
+        return self.patron_email.findall(texto)
+    
+    def extraer_telefonos(self, texto):
+        """Extrae todos los teléfonos del texto"""
+        return self.patron_telefono.findall(texto)
+    
+    def extraer_urls(self, texto):
+        """Extrae todas las URLs del texto"""
+        return self.patron_url.findall(texto)
+    
+    def extraer_fechas(self, texto):
+        """Extrae todas las fechas del texto"""
+        return self.patron_fecha.findall(texto)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Extractor de información (3/5) \faSearch}
+\begin{lstlisting}
+    def extraer_todo(self, texto):
+        """Extrae toda la información del texto"""
+        return {
+            "emails": self.extraer_emails(texto),
+            "telefonos": self.extraer_telefonos(texto),
+            "urls": self.extraer_urls(texto),
+            "fechas": self.extraer_fechas(texto)
+        }
+    
+    def mostrar_resultados(self, resultados):
+        """Muestra los resultados de forma legible"""
+        print("\n=== INFORMACIÓN EXTRAÍDA ===\n")
+        
+        for categoria, items in resultados.items():
+            print(f"{categoria.upper()}:")
+            if items:
+                for item in items:
+                    print(f"  - {item}")
+            else:
+                print("  (ninguno)")
+            print()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Extractor de información (4/5) \faPlayCircle}
+\begin{lstlisting}
+texto_ejemplo = """
+Hola, mi email es contacto@ejemplo.com y también
+puedes escribirme a usuario123@empresa.co
+
+Llámame al (555) 123-4567 o al 555-987-6543
+
+Visita: https://www.ejemplo.com
+Más info: http://docs.ejemplo.com/guia
+
+Reunión: 21-10-2024
+Siguiente cita: 15/11/2024
+"""
+
+extractor = ExtractorInfo()
+resultados = extractor.extraer_todo(texto_ejemplo)
+extractor.mostrar_resultados(resultados)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Extractor de información (5/5) \faTerminal}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{=== INFORMACIÓN EXTRAÍDA ===\\
+\ \\
+EMAILS:\\
+\ \ - contacto@ejemplo.com\\
+\ \ - usuario123@empresa.co\\
+\ \\
+TELEFONOS:\\
+\ \ - (555) 123-4567\\
+\ \ - 555-987-6543\\
+\ \\
+URLS:\\
+\ \ - https://www.ejemplo.com\\
+\ \ - http://docs.ejemplo.com/guia\\
+\ \\
+FECHAS:\\
+\ \ - 21-10-2024\\
+\ \ - 15/11/2024}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faRocket\ ¡Extractor completo y reutilizable!
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Validador de formularios \faCheckSquare}
+\begin{lstlisting}
+import re
+
+class ValidadorFormulario:
+    
+    @staticmethod
+    def validar_nombre(nombre):
+        patron = r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$"
+        return re.match(patron, nombre) is not None
+    
+    @staticmethod
+    def validar_email(email):
+        p = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return re.match(p, email) is not None
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Validador (cont.) \faEdit}
+\begin{lstlisting}
+    @staticmethod
+    def validar_password(password):
+        if len(password) < 8:
+            return False
+        tiene_mayus = re.search(r"[A-Z]", password)
+        tiene_minus = re.search(r"[a-z]", password)
+        tiene_num = re.search(r"\d", password)
+        return all([tiene_mayus, tiene_minus, tiene_num])
+    
+    def validar_formulario(self, datos):
+        res = {}
+        res["nombre"] = self.validar_nombre(datos["nombre"])
+        res["email"] = self.validar_email(datos["email"])
+        res["password"] = self.validar_password(datos["password"])
+        return res
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Uso del validador \faTerminal}
+\begin{lstlisting}
+# Probar validador
+validador = ValidadorFormulario()
+
+formulario = {
+    "nombre": "Juan Pérez",
+    "email": "juan@ejemplo.com",
+    "password": "MiClave123"
+}
+
+resultados = validador.validar_formulario(formulario)
+
+print("=== VALIDACIÓN DE FORMULARIO ===")
+for campo, valido in resultados.items():
+    estado = "✓ Válido" if valido else "✗ Inválido"
+    print(f"{campo:10} -> {estado}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{=== VALIDACIÓN DE FORMULARIO ===\\
+nombre     -> ✓ Válido\\
+email      -> ✓ Válido\\
+password   -> ✓ Válido}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Buenas prácticas con regex \faCheckDouble}
+\begin{conceptbox}{Recomendaciones}
+\small
+\begin{itemize}
+    \item[\faCheck] Usa raw strings (\texttt{r""}) para patrones
+    \item[\faCheck] Compila patrones si los reutilizas
+    \item[\faCheck] Nombra grupos de captura para claridad
+    \item[\faCheck] Comenta patrones complejos
+    \item[\faCheck] Prueba patrones con varios casos
+    \item[\faCheck] No uses regex para parsear HTML/XML
+    \item[\faCheck] Mantén patrones simples cuando sea posible
+    \item[\faCheck] Usa herramientas online para probar (regex101.com)
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\begin{frame}[fragile]{Herramientas útiles \faTools}
+\begin{conceptbox}{Recursos para trabajar con regex}
+\small
+\begin{itemize}
+    \item[\faGlobe] \textbf{regex101.com}: Probador online interactivo
+    \item[\faGlobe] \textbf{regexr.com}: Aprendizaje visual
+    \item[\faBook] \textbf{Python docs}: Documentación oficial
+    \item[\faTerminal] \textbf{re.DEBUG}: Análisis del patrón
+\end{itemize}
+\end{conceptbox}
+
+\begin{lstlisting}
+import re
+
+# Ver análisis interno del patrón
+patron = re.compile(r"\d{3}-\d{4}", re.DEBUG)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Herramientas: Nota \faLightbulb}
+\begin{notebox}
+\small\faLightbulb\ Regex puede ser complejo, ¡practica y usa herramientas!
+\end{notebox}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Introducción a expresiones regulares
+    \item[\faCheck] Módulo \texttt{re}: search, match, findall, sub
+    \item[\faCheck] Patrones básicos y metacaracteres
+    \item[\faCheck] Clases: \textbackslash d, \textbackslash w, \textbackslash s
+    \item[\faCheck] Cuantificadores: *, +, ?, \{n,m\}
+    \item[\faCheck] Grupos de captura y nombrados
+    \item[\faCheck] Validación de formatos
+    \item[\faCheck] Proyecto: Extractor de información
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faSearch\ ¡Domina el texto con regex!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}

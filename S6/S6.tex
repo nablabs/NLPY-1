@@ -1,0 +1,1009 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=3pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=8pt,
+    xrightmargin=8pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 6: Entrada/Salida de Archivos}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{¿Por qué trabajar con archivos?}
+
+\begin{frame}{Archivos: Persistencia de datos \faFileAlt}
+\begin{conceptbox}{¿Por qué son importantes?}
+\small
+\begin{itemize}
+    \item[\faSave] Guardar datos permanentemente
+    \item[\faDatabase] Almacenar configuraciones y logs
+    \item[\faExchangeAlt] Intercambiar información entre programas
+    \item[\faChartLine] Procesar grandes volúmenes de datos
+    \item[\faHistory] Mantener historial de operaciones
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faLightbulb\ Los archivos permiten que tus programas "recuerden"}
+\end{center}
+\end{frame}
+
+\section{Función open()}
+
+\begin{frame}[fragile]{open(): Abrir archivos \faFolderOpen}
+\begin{conceptbox}{¿Qué hace open()?}
+Abre un archivo y retorna un objeto de archivo para manipularlo
+\end{conceptbox}
+
+\textbf{Sintaxis básica:}
+\begin{lstlisting}
+archivo = open("nombre.txt", "modo")
+# ... operaciones con el archivo ...
+archivo.close()  # ¡Siempre cerrar!
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Componentes:}
+\small
+\begin{itemize}
+    \item[\faFile] \textbf{nombre.txt}: Ruta del archivo
+    \item[\faKey] \textbf{modo}: Cómo abrir el archivo (lectura, escritura, etc.)
+    \item[\faTimes] \textbf{close()}: Cierra el archivo liberando recursos
+\end{itemize}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Olvidar cerrar un archivo puede causar problemas
+\end{notebox}
+\end{frame}
+
+\section{Modos de apertura}
+
+\begin{frame}[fragile]{Modos de apertura \faKey}
+\begin{conceptbox}{Modos principales}
+\small
+\begin{itemize}
+    \item[\faBookOpen] \textbf{'r'} (read): Solo lectura. Error si no existe.
+    \item[\faPencilAlt] \textbf{'w'} (write): Escritura. Crea o sobreescribe.
+    \item[\faPlus] \textbf{'a'} (append): Añade al final. Crea si no existe.
+    \item[\faEdit] \textbf{'r+'}: Lectura y escritura. Error si no existe.
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\textbf{Modos adicionales:}
+\small
+\begin{itemize}
+    \item[\faFileCode] \textbf{'b'}: Modo binario (ej: 'rb', 'wb')
+    \item[\faFileAlt] \textbf{'t'}: Modo texto (por defecto)
+\end{itemize}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Por defecto, si no se especifica, usa 'r' (solo lectura)
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Comparación de modos \faTable}
+\begin{center}
+\small
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Modo} & \textbf{Leer} & \textbf{Escribir} & \textbf{Si no existe} \\
+\hline
+\texttt{'r'} & \faCheck & \faTimes & Error \\
+\hline
+\texttt{'w'} & \faTimes & \faCheck & Crea archivo \\
+\hline
+\texttt{'a'} & \faTimes & \faCheck & Crea archivo \\
+\hline
+\texttt{'r+'} & \faCheck & \faCheck & Error \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faExclamationTriangle\ \textbf{'w'} borra todo el contenido previo del archivo
+\end{notebox}
+\end{frame}
+
+\section{Lectura de archivos}
+
+\begin{frame}[fragile]{Leer archivo completo: read() \faBookReader}
+\textbf{Archivo:} \texttt{saludo.txt}
+\begin{tcolorbox}[colback=bg1,colframe=brown,left=3pt,right=3pt,top=2pt,bottom=2pt]
+\small\texttt{Hola mundo\\
+Bienvenido a Python\\
+¡Archivos son útiles!}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\begin{lstlisting}
+# Leer todo el contenido
+archivo = open("saludo.txt", "r")
+contenido = archivo.read()
+print(contenido)
+archivo.close()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Hola mundo\\
+Bienvenido a Python\\
+¡Archivos son útiles!}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Leer línea por línea: readline() \faStream}
+\begin{lstlisting}
+# Leer línea a línea
+archivo = open("saludo.txt", "r")
+
+linea1 = archivo.readline()
+print(f"Línea 1: {linea1.strip()}")
+
+linea2 = archivo.readline()
+print(f"Línea 2: {linea2.strip()}")
+
+archivo.close()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Línea 1: Hola mundo\\
+Línea 2: Bienvenido a Python}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{strip()} elimina espacios y saltos de línea
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Leer todas las líneas: readlines() \faList}
+\begin{lstlisting}
+# Leer todas las líneas como lista
+archivo = open("saludo.txt", "r")
+lineas = archivo.readlines()
+archivo.close()
+
+print(f"Total de líneas: {len(lineas)}")
+for i, linea in enumerate(lineas, 1):
+    print(f"{i}. {linea.strip()}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Total de líneas: 3\\
+1. Hola mundo\\
+2. Bienvenido a Python\\
+3. ¡Archivos son útiles!}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ \texttt{readlines()} retorna una lista de strings
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Iterar directamente sobre el archivo \faRedo}
+\begin{lstlisting}
+# Forma más eficiente y pythónica
+archivo = open("saludo.txt", "r")
+
+for linea in archivo:
+    print(f">>> {linea.strip()}")
+
+archivo.close()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{>>> Hola mundo\\
+>>> Bienvenido a Python\\
+>>> ¡Archivos son útiles!}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Esta es la forma preferida: eficiente en memoria
+\end{notebox}
+\end{frame}
+
+\section{Escritura en archivos}
+
+\begin{frame}[fragile]{Escribir texto: write() \faPencilAlt}
+\begin{lstlisting}
+# Crear y escribir en un archivo
+archivo = open("nuevo.txt", "w")
+
+archivo.write("Primera línea\n")
+archivo.write("Segunda línea\n")
+archivo.write("Tercera línea\n")
+
+archivo.close()
+
+print("Archivo creado exitosamente")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Archivo creado exitosamente}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Debes añadir \texttt{\textbackslash n} manualmente para saltos de línea
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Escribir múltiples líneas: writelines() \faListAlt}
+\begin{lstlisting}
+# Escribir lista de líneas
+frutas = ["Manzana\n", "Banana\n", "Cereza\n"]
+
+archivo = open("frutas.txt", "w")
+archivo.writelines(frutas)
+archivo.close()
+
+# Verificar contenido
+archivo = open("frutas.txt", "r")
+print(archivo.read())
+archivo.close()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Manzana\\
+Banana\\
+Cereza}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{writelines()} no añade saltos de línea automáticamente
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Modo append: Añadir sin borrar \faPlus}
+\begin{lstlisting}
+# Añadir al final del archivo existente
+archivo = open("frutas.txt", "a")
+archivo.write("Durazno\n")
+archivo.write("Fresa\n")
+archivo.close()
+
+# Leer resultado
+archivo = open("frutas.txt", "r")
+print(archivo.read())
+archivo.close()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Manzana\\
+Banana\\
+Cereza\\
+Durazno\\
+Fresa}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ Modo 'a' preserva el contenido existente
+\end{notebox}
+\end{frame}
+
+\section{Bloque with}
+
+\begin{frame}[fragile]{with: Manejo automático de archivos \faShieldAlt}
+\begin{conceptbox}{¿Por qué usar with?}
+Cierra automáticamente el archivo, incluso si hay errores
+\end{conceptbox}
+
+\begin{lstlisting}
+# Forma tradicional (manual)
+archivo = open("datos.txt", "r")
+contenido = archivo.read()
+archivo.close()  # Fácil olvidar
+
+# Con with (recomendado)
+with open("datos.txt", "r") as archivo:
+    contenido = archivo.read()
+# Archivo cerrado automáticamente aquí
+
+print(contenido)
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ \texttt{with} garantiza que el archivo se cierre correctamente
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{with: Ejemplos prácticos \faCode}
+\textbf{Lectura:}
+\begin{lstlisting}
+with open("entrada.txt", "r") as archivo:
+    for linea in archivo:
+        print(linea.strip())
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Escritura:}
+\begin{lstlisting}
+numeros = [1, 2, 3, 4, 5]
+
+with open("numeros.txt", "w") as archivo:
+    for num in numeros:
+        archivo.write(f"{num}\n")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Usa \texttt{with} siempre que sea posible
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{with: Múltiples archivos \faFolderOpen}
+\begin{lstlisting}
+# Abrir múltiples archivos simultáneamente
+with open("entrada.txt", "r") as entrada, \
+     open("salida.txt", "w") as salida:
+    
+    for linea in entrada:
+        # Convertir a mayúsculas
+        salida.write(linea.upper())
+
+print("Archivo procesado")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Archivo procesado}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ Ambos archivos se cierran automáticamente
+\end{notebox}
+\end{frame}
+
+\section{Archivos CSV}
+
+\begin{frame}[fragile]{CSV: Comma-Separated Values \faTable}
+\begin{conceptbox}{¿Qué es CSV?}
+Formato de texto plano para datos tabulares, separados por comas
+\end{conceptbox}
+
+\textbf{Ejemplo de archivo CSV:} \texttt{estudiantes.csv}
+\begin{tcolorbox}[colback=bg1,colframe=brown,left=3pt,right=3pt,top=2pt,bottom=2pt]
+\small\texttt{nombre,edad,nota\\
+Ana,20,85\\
+Carlos,22,90\\
+María,21,88}
+\end{tcolorbox}
+
+\vspace{0.2cm}
+\textbf{Ventajas:}
+\small
+\begin{itemize}
+    \item[\faCheck] Simple y universal
+    \item[\faCheck] Compatible con Excel, Google Sheets, etc.
+    \item[\faCheck] Fácil de procesar programáticamente
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Leer CSV manualmente \faFileAlt}
+\begin{lstlisting}
+# Leer CSV sin módulo csv
+with open("estudiantes.csv", "r") as archivo:
+    # Leer encabezado
+    encabezado = archivo.readline().strip().split(",")
+    print(f"Columnas: {encabezado}")
+    
+    # Leer datos
+    for linea in archivo:
+        datos = linea.strip().split(",")
+        nombre, edad, nota = datos
+        print(f"{nombre}: {nota} puntos")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Columnas: ['nombre', 'edad', 'nota']\\
+Ana: 85 puntos\\
+Carlos: 90 puntos\\
+María: 88 puntos}
+\end{tcolorbox}
+\end{frame}
+
+\section{Módulo csv}
+
+\begin{frame}[fragile]{Módulo csv: Lectura con reader \faBookOpen}
+\begin{lstlisting}
+import csv
+
+# Leer CSV con el módulo csv
+with open("estudiantes.csv", "r") as archivo:
+    lector = csv.reader(archivo)
+    
+    # Obtener encabezado
+    encabezado = next(lector)
+    print(f"Columnas: {encabezado}")
+    
+    # Leer filas
+    for fila in lector:
+        nombre, edad, nota = fila
+        print(f"{nombre} ({edad} años): {nota}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Columnas: ['nombre', 'edad', 'nota']\\
+Ana (20 años): 85\\
+Carlos (22 años): 90\\
+María (21 años): 88}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Módulo csv: DictReader \faBook}
+\begin{lstlisting}
+import csv
+
+# Leer CSV como diccionarios
+with open("estudiantes.csv", "r") as archivo:
+    lector = csv.DictReader(archivo)
+    
+    for fila in lector:
+        print(f"Nombre: {fila['nombre']}")
+        print(f"Edad: {fila['edad']}")
+        print(f"Nota: {fila['nota']}")
+        print("---")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Nombre: Ana\\
+Edad: 20\\
+Nota: 85\\
+---\\
+...}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ \texttt{DictReader} es más legible y mantenible
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Módulo csv: Escritura con writer \faPencilAlt}
+\begin{lstlisting}
+import csv
+
+# Escribir datos en CSV
+estudiantes = [
+    ["nombre", "edad", "nota"],
+    ["Pedro", 23, 92],
+    ["Laura", 20, 87],
+    ["Juan", 21, 89]
+]
+
+with open("nuevo_estudiantes.csv", "w", newline="") as archivo:
+    escritor = csv.writer(archivo)
+    escritor.writerows(estudiantes)
+
+print("CSV creado exitosamente")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{CSV creado exitosamente}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{newline=""} evita líneas en blanco en Windows
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Módulo csv: DictWriter \faEdit}
+\begin{lstlisting}
+import csv
+
+# Escribir diccionarios como CSV
+estudiantes = [
+    {"nombre": "Sofia", "edad": 22, "nota": 95},
+    {"nombre": "Diego", "edad": 20, "nota": 88},
+]
+
+with open("estudiantes_dict.csv", "w", newline="") as archivo:
+    campos = ["nombre", "edad", "nota"]
+    escritor = csv.DictWriter(archivo, fieldnames=campos)
+    
+    escritor.writeheader()  # Escribir encabezado
+    escritor.writerows(estudiantes)
+
+print("CSV con diccionarios creado")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{CSV con diccionarios creado}
+\end{tcolorbox}
+\end{frame}
+
+\section{Rutas de archivos}
+
+\begin{frame}[fragile]{Trabajo con rutas: Módulo os.path \faRoute}
+\begin{lstlisting}
+import os
+
+# Ruta actual
+directorio = os.getcwd()
+print(f"Directorio actual: {directorio}")
+
+# Verificar existencia
+existe = os.path.exists("datos.txt")
+print(f"¿Existe datos.txt?: {existe}")
+
+# Verificar si es archivo o directorio
+if os.path.exists("datos.txt"):
+    es_archivo = os.path.isfile("datos.txt")
+    es_dir = os.path.isdir("datos.txt")
+    print(f"¿Es archivo?: {es_archivo}")
+    print(f"¿Es directorio?: {es_dir}")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faCheckCircle\ Siempre verifica la existencia antes de abrir
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Construir rutas multiplataforma \faFolderTree}
+\begin{lstlisting}
+import os
+
+# Construir ruta correctamente
+carpeta = "datos"
+archivo = "estudiantes.csv"
+
+# Forma incorrecta (solo funciona en algunos SO)
+# ruta = "datos/estudiantes.csv"
+
+# Forma correcta (funciona en todos los SO)
+ruta = os.path.join(carpeta, archivo)
+print(f"Ruta: {ruta}")
+
+# Obtener información
+nombre = os.path.basename(ruta)
+directorio = os.path.dirname(ruta)
+
+print(f"Nombre: {nombre}")
+print(f"Directorio: {directorio}")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ \texttt{os.path.join()} usa el separador correcto del SO
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Módulo pathlib (moderno) \faFileCode}
+\begin{lstlisting}
+from pathlib import Path
+
+# Crear objeto Path
+ruta = Path("datos") / "estudiantes.csv"
+print(f"Ruta: {ruta}")
+
+# Verificar existencia
+if ruta.exists():
+    print("El archivo existe")
+    
+    # Leer contenido
+    contenido = ruta.read_text()
+    print(contenido[:50])  # Primeros 50 caracteres
+
+# Obtener partes
+print(f"Nombre: {ruta.name}")
+print(f"Sufijo: {ruta.suffix}")
+print(f"Padre: {ruta.parent}")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faInfoCircle\ \texttt{pathlib} es más moderno y orientado a objetos
+\end{notebox}
+\end{frame}
+
+\section{Manejo de errores}
+
+\begin{frame}[fragile]{Manejo de errores con archivos \faExclamationTriangle}
+\begin{lstlisting}
+# Manejo robusto de archivos
+try:
+    with open("archivo_inexistente.txt", "r") as archivo:
+        contenido = archivo.read()
+        print(contenido)
+except FileNotFoundError:
+    print("Error: El archivo no existe")
+except PermissionError:
+    print("Error: No tienes permiso para leer el archivo")
+except Exception as e:
+    print(f"Error inesperado: {e}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=red!10,colframe=red,title={\small\faExclamationTriangle \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Error: El archivo no existe}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faShieldAlt\ Siempre maneja posibles errores con archivos
+\end{notebox}
+\end{frame}
+
+\section{Ejemplo integrador}
+
+\begin{frame}[fragile]{Proyecto: Agenda de contactos (1/5) \faAddressBook}
+\textbf{Estructura del programa:}
+\small
+\begin{itemize}
+    \item[\faFile] Archivo CSV con contactos
+    \item[\faPlus] Agregar nuevos contactos
+    \item[\faList] Listar todos los contactos
+    \item[\faSearch] Buscar contacto por nombre
+    \item[\faTrash] Eliminar contacto
+\end{itemize}
+
+\vspace{0.2cm}
+\textbf{Archivo:} \texttt{agenda.py}
+\begin{lstlisting}
+import csv
+import os
+
+ARCHIVO_CONTACTOS = "contactos.csv"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Agenda de contactos (2/5) \faCode}
+\begin{lstlisting}
+def inicializar_archivo():
+    """Crea el archivo si no existe"""
+    if not os.path.exists(ARCHIVO_CONTACTOS):
+        with open(ARCHIVO_CONTACTOS, "w", newline="") as archivo:
+            escritor = csv.writer(archivo)
+            escritor.writerow(["nombre", "telefono", "email"])
+
+def agregar_contacto(nombre, telefono, email):
+    """Agrega un nuevo contacto"""
+    with open(ARCHIVO_CONTACTOS, "a", newline="") as archivo:
+        escritor = csv.writer(archivo)
+        escritor.writerow([nombre, telefono, email])
+    print(f"Contacto {nombre} agregado exitosamente")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Agenda de contactos (3/5) \faList}
+\begin{lstlisting}
+def listar_contactos():
+    """Muestra todos los contactos"""
+    with open(ARCHIVO_CONTACTOS, "r") as archivo:
+        lector = csv.DictReader(archivo)
+        print("\n--- CONTACTOS ---")
+        for i, contacto in enumerate(lector, 1):
+            print(f"{i}. {contacto['nombre']}")
+            print(f"   Tel: {contacto['telefono']}")
+            print(f"   Email: {contacto['email']}")
+            print()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Agenda de contactos (4/5) \faSearch}
+\begin{lstlisting}
+def buscar_contacto(nombre_buscar):
+    """Busca un contacto por nombre"""
+    with open(ARCHIVO_CONTACTOS, "r") as archivo:
+        lector = csv.DictReader(archivo)
+        encontrado = False
+        
+        for contacto in lector:
+            if nombre_buscar.lower() in contacto['nombre'].lower():
+                print(f"\nNombre: {contacto['nombre']}")
+                print(f"Teléfono: {contacto['telefono']}")
+                print(f"Email: {contacto['email']}")
+                encontrado = True
+        
+        if not encontrado:
+            print(f"No se encontró: {nombre_buscar}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Agenda de contactos (5/5) \faPlayCircle}
+\begin{lstlisting}
+def menu():
+    """Menú principal"""
+    inicializar_archivo()
+    
+    while True:
+        print("\n=== AGENDA DE CONTACTOS ===")
+        print("1. Agregar contacto")
+        print("2. Listar contactos")
+        print("3. Buscar contacto")
+        print("4. Salir")
+        
+        opcion = input("\nElige opción: ")
+        
+        if opcion == "1":
+            nombre = input("Nombre: ")
+            telefono = input("Teléfono: ")
+            email = input("Email: ")
+            agregar_contacto(nombre, telefono, email)
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Agenda - Ejecución \faTerminal}
+\begin{lstlisting}
+        elif opcion == "2":
+            listar_contactos()
+        elif opcion == "3":
+            nombre = input("Buscar por nombre: ")
+            buscar_contacto(nombre)
+        elif opcion == "4":
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción inválida")
+
+# Ejecutar programa
+if __name__ == "__main__":
+    menu()
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faRocket\ ¡Programa completo y funcional con CSV!
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Analizador CSV \faChartBar}
+\begin{lstlisting}
+import csv
+
+def analizar_ventas(archivo_csv):
+    """Analiza datos de ventas desde CSV"""
+    total = 0
+    productos = []
+    
+    with open(archivo_csv, "r") as archivo:
+        lector = csv.DictReader(archivo)
+        
+        for fila in lector:
+            producto = fila['producto']
+            precio = float(fila['precio'])
+            cantidad = int(fila['cantidad'])
+            
+            subtotal = precio * cantidad
+            total += subtotal
+            productos.append((producto, subtotal))
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto alternativo: Analizador (cont.) \faFileAlt}
+\begin{lstlisting}
+    # Mostrar resultados
+    print("\n=== ANÁLISIS DE VENTAS ===")
+    print(f"Total vendido: ${total:.2f}\n")
+    
+    # Top productos
+    productos.sort(key=lambda x: x[1], reverse=True)
+    print("Top 3 productos:")
+    for i, (producto, monto) in enumerate(productos[:3], 1):
+        print(f"{i}. {producto}: ${monto:.2f}")
+
+# Usar
+analizar_ventas("ventas.csv")
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faChartLine\ Procesar y analizar datos es muy común en Python
+\end{notebox}
+\end{frame}
+
+\begin{frame}{Buenas prácticas con archivos \faCheckDouble}
+\begin{conceptbox}{Recomendaciones}
+\small
+\begin{itemize}
+    \item[\faCheck] Usa siempre \texttt{with} para abrir archivos
+    \item[\faCheck] Verifica la existencia con \texttt{os.path.exists()}
+    \item[\faCheck] Maneja errores con \texttt{try-except}
+    \item[\faCheck] Usa \texttt{os.path.join()} para rutas multiplataforma
+    \item[\faCheck] Cierra archivos explícitamente si no usas \texttt{with}
+    \item[\faCheck] Para CSV, usa el módulo \texttt{csv}
+    \item[\faCheck] Valida datos antes de escribir
+    \item[\faCheck] Usa codificación UTF-8 si trabajas con acentos
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\begin{frame}[fragile]{Codificación de caracteres \faLanguage}
+\begin{conceptbox}{UTF-8 para caracteres especiales}
+Importante cuando trabajas con acentos, ñ, etc.
+\end{conceptbox}
+
+\begin{lstlisting}
+# Especificar codificación UTF-8
+with open("texto.txt", "w", encoding="utf-8") as archivo:
+    archivo.write("Año: 2024\n")
+    archivo.write("Niño español\n")
+    archivo.write("Caña, piñata\n")
+
+# Leer con UTF-8
+with open("texto.txt", "r", encoding="utf-8") as archivo:
+    print(archivo.read())
+\end{lstlisting}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ Usa \texttt{encoding="utf-8"} para evitar problemas
+\end{notebox}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Función \texttt{open()} y sus modos
+    \item[\faCheck] Lectura: \texttt{read()}, \texttt{readline()}, \texttt{readlines()}
+    \item[\faCheck] Escritura: \texttt{write()}, \texttt{writelines()}
+    \item[\faCheck] Bloque \texttt{with} para manejo automático
+    \item[\faCheck] Archivos CSV con módulo \texttt{csv}
+    \item[\faCheck] Rutas con \texttt{os.path} y \texttt{pathlib}
+    \item[\faCheck] Manejo de errores
+    \item[\faCheck] Proyecto: Agenda de contactos
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faFileAlt\ ¡Los archivos dan persistencia a tus programas!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}

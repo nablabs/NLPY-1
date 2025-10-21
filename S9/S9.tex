@@ -1,0 +1,1365 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Configuración de colores - Gruvbox Light con marrón principal
+\definecolor{bg0}{HTML}{fbf1c7}
+\definecolor{bg1}{HTML}{ebdbb2}
+\definecolor{bg2}{HTML}{d5c4a1}
+\definecolor{bg3}{HTML}{bdae93}
+\definecolor{fg0}{HTML}{282828}
+\definecolor{fg1}{HTML}{3c3836}
+\definecolor{fg2}{HTML}{504945}
+\definecolor{aqua}{HTML}{689d6a}
+\definecolor{aquabright}{HTML}{427b58}
+\definecolor{blue}{HTML}{458588}
+\definecolor{red}{HTML}{cc241d}
+\definecolor{orange}{HTML}{d65d0e}
+\definecolor{yellow}{HTML}{d79921}
+\definecolor{green}{HTML}{98971a}
+\definecolor{purple}{HTML}{b16286}
+\definecolor{brown}{HTML}{AB886D}
+\definecolor{brownbright}{HTML}{8B6849}
+
+% Colores para código
+\definecolor{codegreen}{HTML}{98971a}
+\definecolor{codegray}{HTML}{7c6f64}
+\definecolor{codepurple}{HTML}{b16286}
+\definecolor{backcolour}{HTML}{f9f5d7}
+
+% Configuración de código
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{brownbright}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize\color{fg0},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=2pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    rulecolor=\color{brown},
+    xleftmargin=6pt,
+    xrightmargin=6pt,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+        {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstset{style=pythonstyle}
+
+% Tema personalizado con marrón principal
+\usetheme{Madrid}
+\setbeamercolor{structure}{fg=brown}
+\setbeamercolor{palette primary}{bg=brown,fg=bg0}
+\setbeamercolor{palette secondary}{bg=brownbright,fg=bg0}
+\setbeamercolor{palette tertiary}{bg=fg1,fg=bg0}
+\setbeamercolor{palette quaternary}{bg=brown,fg=bg0}
+\setbeamercolor{block title}{bg=brown,fg=bg0}
+\setbeamercolor{block body}{bg=bg1,fg=fg0}
+\setbeamercolor{frametitle}{bg=brown,fg=bg0}
+\setbeamercolor{title}{fg=fg0}
+\setbeamercolor{subtitle}{fg=fg1}
+\setbeamercolor{normal text}{fg=fg0,bg=bg0}
+\setbeamercolor{item}{fg=brown}
+\setbeamercolor{section in toc}{fg=brown}
+
+% Cajas personalizadas con marrón
+\newtcolorbox{conceptbox}[1]{
+    colback=bg1,
+    colframe=brown,
+    fonttitle=\bfseries\small,
+    title=#1,
+    coltitle=fg0,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt,
+    boxsep=2pt
+}
+
+\newtcolorbox{notebox}{
+    colback=yellow!15,
+    colframe=orange,
+    leftrule=2mm,
+    rightrule=0mm,
+    toprule=0mm,
+    bottomrule=0mm,
+    arc=0mm,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt
+}
+
+\title{\textbf{Introducción a la Programación con Python}}
+\subtitle{Semana 9: Conceptos Avanzados}
+\author{$\nabla$Nablabs}
+\date{}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Contenido}
+\tableofcontents
+\end{frame}
+
+\section{Conjuntos (sets)}
+
+\begin{frame}{Conjuntos: Sets \faObjectGroup}
+\begin{conceptbox}{¿Qué son los sets?}
+\small
+\begin{itemize}
+    \item[\faCircle] Colección \textbf{desordenada} de elementos únicos
+    \item[\faCheckDouble] No permite duplicados (los elimina automáticamente)
+    \item[\faRandom] Sin índice ni orden garantizado
+    \item[\faRocket] Operaciones muy rápidas (membership, unión, intersección)
+    \item[\faEdit] Mutable (se puede modificar)
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\large\textcolor{brown}{\faLightbulb\ ¡Perfecto para eliminar duplicados!}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Crear sets \faPlus}
+\begin{lstlisting}
+# Formas de crear sets
+numeros = {1, 2, 3, 4, 5}
+letras = set(['a', 'b', 'c', 'a'])  # Elimina 'a' duplicada
+
+# Set vacío (¡OJO! {} crea dict, no set)
+vacio = set()
+
+# Desde string (elimina duplicados)
+caracteres = set("hola")
+
+print(numeros)
+print(letras)
+print(caracteres)
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{\{1, 2, 3, 4, 5\}\\
+\{'a', 'b', 'c'\}\\
+\{'h', 'o', 'l', 'a'\}}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faExclamationTriangle\ El orden de los elementos puede variar
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Operaciones con sets \faTools}
+\begin{lstlisting}
+frutas = {'manzana', 'pera', 'uva'}
+
+# Agregar
+frutas.add('kiwi')
+print(f"Agregar: {frutas}")
+
+# Eliminar (error si no existe)
+frutas.remove('pera')
+print(f"Remove: {frutas}")
+
+# Eliminar (sin error si no existe)
+frutas.discard('banana')
+
+# Limpiar
+frutas_copia = frutas.copy()
+frutas_copia.clear()
+print(f"Clear: {frutas_copia}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Agregar: \{'manzana', 'pera', 'uva', 'kiwi'\}\\
+Remove: \{'manzana', 'uva', 'kiwi'\}\\
+Clear: set()}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Operaciones matemáticas de sets \faCalculator}
+\begin{lstlisting}
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Unión (todos los elementos)
+print(f"Unión: {a | b}")
+print(f"Union: {a.union(b)}")
+
+# Intersección (elementos comunes)
+print(f"Intersección: {a & b}")
+print(f"Intersection: {a.intersection(b)}")
+
+# Diferencia (en a pero no en b)
+print(f"Diferencia: {a - b}")
+
+# Diferencia simétrica (no comunes)
+print(f"Dif. simétrica: {a ^ b}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Operaciones matemáticas: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Unión: \{1, 2, 3, 4, 5, 6\}\\
+Union: \{1, 2, 3, 4, 5, 6\}\\
+Intersección: \{3, 4\}\\
+Intersection: \{3, 4\}\\
+Diferencia: \{1, 2\}\\
+Dif. simétrica: \{1, 2, 5, 6\}}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faLightbulb\ Los operadores | \& - \^{} son más legibles que los métodos
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Sets: Caso de uso práctico \faCheckCircle}
+\begin{lstlisting}
+# Eliminar duplicados de una lista
+numeros = [1, 2, 2, 3, 4, 4, 4, 5, 1, 2]
+unicos = list(set(numeros))
+print(f"Original: {numeros}")
+print(f"Sin duplicados: {unicos}")
+
+# Encontrar elementos únicos en dos listas
+lista1 = ['python', 'java', 'c++', 'python']
+lista2 = ['javascript', 'python', 'ruby']
+
+comunes = set(lista1) & set(lista2)
+solo_lista1 = set(lista1) - set(lista2)
+
+print(f"Comunes: {comunes}")
+print(f"Solo en lista1: {solo_lista1}")
+\end{lstlisting}
+\end{frame}
+
+\section{Diccionarios avanzados}
+
+\begin{frame}[fragile]{Diccionarios avanzados \faBook}
+\begin{conceptbox}{Métodos útiles}
+Más allá de lo básico: métodos avanzados para trabajar con diccionarios
+\end{conceptbox}
+
+\begin{lstlisting}
+persona = {'nombre': 'Ana', 'edad': 25, 'ciudad': 'Madrid'}
+
+# get() con valor por defecto
+print(persona.get('pais', 'No especificado'))
+
+# setdefault() - obtiene o crea con valor default
+persona.setdefault('profesion', 'Estudiante')
+print(persona)
+
+# update() - actualizar múltiples valores
+persona.update({'edad': 26, 'email': 'ana@ejemplo.com'})
+print(persona)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Diccionarios: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{No especificado\\
+\{'nombre': 'Ana', 'edad': 25, 'ciudad': 'Madrid', 'profesion': 'Estudiante'\}\\
+\{'nombre': 'Ana', 'edad': 26, 'ciudad': 'Madrid', 'profesion': 'Estudiante', 'email': 'ana@ejemplo.com'\}}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Diccionarios anidados \faLayerGroup}
+\begin{lstlisting}
+# Diccionarios dentro de diccionarios
+empresa = {
+    'empleados': {
+        'E001': {'nombre': 'Ana', 'salario': 50000},
+        'E002': {'nombre': 'Luis', 'salario': 60000}
+    },
+    'departamentos': {
+        'IT': ['E001'],
+        'Ventas': ['E002']
+    }
+}
+
+# Acceder a datos anidados
+print(empresa['empleados']['E001']['nombre'])
+print(empresa['departamentos']['IT'])
+
+# Iterar sobre diccionario anidado
+for id_emp, datos in empresa['empleados'].items():
+    print(f"{id_emp}: {datos['nombre']} - ${datos['salario']}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Diccionarios anidados: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Ana\\
+['E001']\\
+E001: Ana - \$50000\\
+E002: Luis - \$60000}
+\end{tcolorbox}
+\end{frame}
+
+\section{Funciones lambda}
+
+\begin{frame}[fragile]{Funciones lambda \faLightbulb}
+\begin{conceptbox}{¿Qué son?}
+Funciones \textbf{anónimas} de una sola expresión. Sintaxis compacta para funciones simples.
+\end{conceptbox}
+
+\textbf{Sintaxis:}
+\begin{lstlisting}
+lambda argumentos: expresion
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Comparación:}
+\begin{lstlisting}
+# Función tradicional
+def sumar(a, b):
+    return a + b
+
+# Función lambda equivalente
+sumar_lambda = lambda a, b: a + b
+
+print(sumar(3, 5))
+print(sumar_lambda(3, 5))
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{8\\
+8}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Lambda con map(), filter(), sorted() \faFilter}
+\begin{lstlisting}
+numeros = [1, 2, 3, 4, 5]
+
+# map() - aplicar función a cada elemento
+cuadrados = list(map(lambda x: x**2, numeros))
+print(f"Cuadrados: {cuadrados}")
+
+# filter() - filtrar elementos
+pares = list(filter(lambda x: x % 2 == 0, numeros))
+print(f"Pares: {pares}")
+
+# sorted() con key personalizada
+palabras = ['python', 'es', 'genial', 'y', 'poderoso']
+ordenadas = sorted(palabras, key=lambda x: len(x))
+print(f"Por longitud: {ordenadas}")
+
+personas = [{'nombre': 'Ana', 'edad': 25}, {'nombre': 'Luis', 'edad': 20}]
+por_edad = sorted(personas, key=lambda p: p['edad'])
+print(f"Por edad: {por_edad}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Lambda: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{Cuadrados: [1, 4, 9, 16, 25]\\
+Pares: [2, 4]\\
+Por longitud: ['y', 'es', 'genial', 'python', 'poderoso']\\
+Por edad: [\{'nombre': 'Luis', 'edad': 20\}, \{'nombre': 'Ana', 'edad': 25\}]}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Lambda es útil para funciones simples y temporales
+\end{notebox}
+\end{frame}
+
+\section{List comprehensions}
+
+\begin{frame}[fragile]{List comprehensions \faListUl}
+\begin{conceptbox}{¿Qué son?}
+Forma concisa y elegante de crear listas a partir de iterables. Más rápidas y legibles que bucles tradicionales.
+\end{conceptbox}
+
+\textbf{Sintaxis:}
+\begin{lstlisting}
+[expresion for elemento in iterable if condicion]
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Comparación:}
+\begin{lstlisting}
+# Forma tradicional
+cuadrados = []
+for x in range(5):
+    cuadrados.append(x**2)
+
+# List comprehension
+cuadrados = [x**2 for x in range(5)]
+
+print(cuadrados)
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{[0, 1, 4, 9, 16]}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{List comprehensions con condiciones \faFilter}
+\begin{lstlisting}
+# Números pares
+pares = [x for x in range(10) if x % 2 == 0]
+print(f"Pares: {pares}")
+
+# Con transformación y condición
+cuadrados_impares = [x**2 for x in range(10) if x % 2 != 0]
+print(f"Cuadrados impares: {cuadrados_impares}")
+
+# Múltiples condiciones
+divisibles = [x for x in range(20) if x % 2 == 0 if x % 3 == 0]
+print(f"Divisibles por 2 y 3: {divisibles}")
+
+# If-else (diferente sintaxis)
+resultado = ['par' if x % 2 == 0 else 'impar' for x in range(5)]
+print(f"Par/Impar: {resultado}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{List comprehensions: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Pares: [0, 2, 4, 6, 8]\\
+Cuadrados impares: [1, 9, 25, 49, 81]\\
+Divisibles por 2 y 3: [0, 6, 12, 18]\\
+Par/Impar: ['par', 'impar', 'par', 'impar', 'par']}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{List comprehensions anidadas \faLayerGroup}
+\begin{lstlisting}
+# Matriz (lista de listas)
+matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+# Aplanar matriz
+plana = [num for fila in matriz for num in fila]
+print(f"Aplanada: {plana}")
+
+# Crear matriz con comprehension
+matriz_nueva = [[i*j for j in range(3)] for i in range(3)]
+print(f"Matriz nueva: {matriz_nueva}")
+
+# Combinar dos listas
+colores = ['rojo', 'verde', 'azul']
+objetos = ['coche', 'casa']
+combinaciones = [f"{color} {objeto}" 
+                 for color in colores 
+                 for objeto in objetos]
+print(f"Combinaciones: {combinaciones}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{List comprehensions anidadas: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{Aplanada: [1, 2, 3, 4, 5, 6, 7, 8, 9]\\
+Matriz nueva: [[0, 0, 0], [0, 1, 2], [0, 2, 4]]\\
+Combinaciones: ['rojo coche', 'rojo casa', 'verde coche', 'verde casa', 'azul coche', 'azul casa']}
+\end{tcolorbox}
+\end{frame}
+
+\section{Dictionary comprehensions}
+
+\begin{frame}[fragile]{Dictionary comprehensions \faBook}
+\begin{conceptbox}{¿Qué son?}
+Similar a list comprehensions pero para crear diccionarios de forma concisa.
+\end{conceptbox}
+
+\textbf{Sintaxis:}
+\begin{lstlisting}
+{clave: valor for elemento in iterable if condicion}
+\end{lstlisting}
+
+\vspace{0.2cm}
+\begin{lstlisting}
+# Crear diccionario de cuadrados
+cuadrados = {x: x**2 for x in range(5)}
+print(cuadrados)
+
+# Desde dos listas
+claves = ['nombre', 'edad', 'ciudad']
+valores = ['Ana', 25, 'Madrid']
+persona = {k: v for k, v in zip(claves, valores)}
+print(persona)
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{\{0: 0, 1: 1, 2: 4, 3: 9, 4: 16\}\\
+\{'nombre': 'Ana', 'edad': 25, 'ciudad': 'Madrid'\}}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Dict comprehensions con condiciones \faFilter}
+\begin{lstlisting}
+# Filtrar diccionario
+notas = {'Ana': 85, 'Luis': 92, 'María': 78, 'Pedro': 95}
+
+# Solo aprobados (>= 80)
+aprobados = {nombre: nota for nombre, nota in notas.items() 
+             if nota >= 80}
+print(f"Aprobados: {aprobados}")
+
+# Transformar valores
+incrementadas = {nombre: nota + 5 for nombre, nota in notas.items()}
+print(f"Incrementadas: {incrementadas}")
+
+# Invertir diccionario
+invertido = {v: k for k, v in notas.items()}
+print(f"Invertido: {invertido}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Dict comprehensions: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Aprobados: \{'Ana': 85, 'Luis': 92, 'Pedro': 95\}\\
+Incrementadas: \{'Ana': 90, 'Luis': 97, 'María': 83, 'Pedro': 100\}\\
+Invertido: \{85: 'Ana', 92: 'Luis', 78: 'María', 95: 'Pedro'\}}
+\end{tcolorbox}
+\end{frame}
+
+\section{*args y **kwargs}
+
+\begin{frame}[fragile]{Argumentos variables: *args \faEllipsisH}
+\begin{conceptbox}{¿Qué es *args?}
+Permite pasar un número \textbf{variable} de argumentos posicionales a una función. Se reciben como tupla.
+\end{conceptbox}
+
+\begin{lstlisting}
+def sumar(*args):
+    """Suma cualquier cantidad de números"""
+    total = sum(args)
+    print(f"Argumentos: {args}")
+    return total
+
+print(sumar(1, 2, 3))
+print(sumar(10, 20, 30, 40, 50))
+
+def info(nombre, *otros_datos):
+    print(f"Nombre: {nombre}")
+    print(f"Otros datos: {otros_datos}")
+
+info("Ana", 25, "Madrid", "Ingeniera")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{*args: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Argumentos: (1, 2, 3)\\
+6\\
+Argumentos: (10, 20, 30, 40, 50)\\
+150\\
+Nombre: Ana\\
+Otros datos: (25, 'Madrid', 'Ingeniera')}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ El nombre 'args' es convención, puedes usar cualquier nombre
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Argumentos variables: **kwargs \faKey}
+\begin{conceptbox}{¿Qué es **kwargs?}
+Permite pasar un número \textbf{variable} de argumentos con nombre (keyword). Se reciben como diccionario.
+\end{conceptbox}
+
+\begin{lstlisting}
+def crear_perfil(**kwargs):
+    """Crea perfil con datos variables"""
+    print("Perfil creado:")
+    for clave, valor in kwargs.items():
+        print(f"  {clave}: {valor}")
+    return kwargs
+
+crear_perfil(nombre="Ana", edad=25, ciudad="Madrid")
+print()
+crear_perfil(nombre="Luis", profesion="Ingeniero", email="luis@ejemplo.com")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{**kwargs: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Perfil creado:\\
+\ \ nombre: Ana\\
+\ \ edad: 25\\
+\ \ ciudad: Madrid\\
+\ \\
+Perfil creado:\\
+\ \ nombre: Luis\\
+\ \ profesion: Ingeniero\\
+\ \ email: luis@ejemplo.com}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Combinando *args y **kwargs \faPuzzlePiece}
+\begin{lstlisting}
+def funcion_completa(arg1, arg2, *args, kwarg1="default", **kwargs):
+    print(f"arg1: {arg1}")
+    print(f"arg2: {arg2}")
+    print(f"args: {args}")
+    print(f"kwarg1: {kwarg1}")
+    print(f"kwargs: {kwargs}")
+
+funcion_completa(1, 2, 3, 4, kwarg1="personalizado", 
+                 extra1="valor1", extra2="valor2")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{arg1: 1\\
+arg2: 2\\
+args: (3, 4)\\
+kwarg1: personalizado\\
+kwargs: \{'extra1': 'valor1', 'extra2': 'valor2'\}}
+\end{tcolorbox}
+\end{frame}
+
+\section{Generadores e iteradores}
+
+\begin{frame}[fragile]{Generadores \faRecycle}
+\begin{conceptbox}{¿Qué son?}
+Funciones que generan valores \textbf{uno a la vez} usando \texttt{yield}. Más eficientes en memoria que listas.
+\end{conceptbox}
+
+\begin{lstlisting}
+# Función generadora
+def contador(maximo):
+    n = 0
+    while n < maximo:
+        yield n  # Retorna valor y pausa
+        n += 1
+
+# Usar generador
+gen = contador(5)
+print(type(gen))
+
+for numero in gen:
+    print(numero, end=' ')
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{<class 'generator'>\\
+0 1 2 3 4}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Generadores vs Listas \faBalanceScale}
+\begin{lstlisting}
+import sys
+
+# Lista (toda en memoria)
+lista = [x**2 for x in range(1000)]
+print(f"Tamaño lista: {sys.getsizeof(lista)} bytes")
+
+# Generador (valores bajo demanda)
+generador = (x**2 for x in range(1000))
+print(f"Tamaño generador: {sys.getsizeof(generador)} bytes")
+
+# Usar generador
+primeros_5 = [next(generador) for _ in range(5)]
+print(f"Primeros 5: {primeros_5}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Tamaño lista: 8856 bytes\\
+Tamaño generador: 104 bytes\\
+Primeros 5: [0, 1, 4, 9, 16]}
+\end{tcolorbox}
+
+\vspace{-0.1cm}
+\begin{notebox}
+\small\faLightbulb\ Generadores son ideales para grandes volúmenes de datos
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Generador: Fibonacci \faInfinity}
+\begin{lstlisting}
+def fibonacci(limite):
+    """Genera números de Fibonacci hasta un límite"""
+    a, b = 0, 1
+    while a < limite:
+        yield a
+        a, b = b, a + b
+
+# Generar Fibonacci hasta 100
+for num in fibonacci(100):
+    print(num, end=' ')
+print()
+
+# Convertir a lista
+fib_lista = list(fibonacci(50))
+print(f"\nFibonacci < 50: {fib_lista}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{0 1 1 2 3 5 8 13 21 34 55 89\\
+\ \\
+Fibonacci < 50: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]}
+\end{tcolorbox}
+\end{frame}
+
+\section{Decoradores básicos}
+
+\begin{frame}[fragile]{Decoradores \faMagic}
+\begin{conceptbox}{¿Qué son?}
+Funciones que modifican o extienden el comportamiento de otras funciones sin cambiar su código.
+\end{conceptbox}
+
+\begin{lstlisting}
+def mi_decorador(funcion):
+    def wrapper():
+        print("Antes de la función")
+        funcion()
+        print("Después de la función")
+    return wrapper
+
+@mi_decorador
+def saludar():
+    print("¡Hola!")
+
+saludar()
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\small\texttt{Antes de la función\\
+¡Hola!\\
+Después de la función}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Decorador con argumentos \faWrench}
+\begin{lstlisting}
+def decorador_con_args(funcion):
+    def wrapper(*args, **kwargs):
+        print(f"Llamando a {funcion.__name__}")
+        resultado = funcion(*args, **kwargs)
+        print(f"Resultado: {resultado}")
+        return resultado
+    return wrapper
+
+@decorador_con_args
+def multiplicar(a, b):
+    return a * b
+
+@decorador_con_args
+def sumar(a, b, c):
+    return a + b + c
+
+multiplicar(3, 4)
+print()
+sumar(1, 2, 3)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Decorador con argumentos: Salida \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=3pt,bottom=3pt,boxsep=2pt]
+\small\texttt{Llamando a multiplicar\\
+Resultado: 12\\
+\ \\
+Llamando a sumar\\
+Resultado: 6}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{Decorador práctico: Medir tiempo \faStopwatch}
+\begin{lstlisting}
+import time
+
+def medir_tiempo(funcion):
+    def wrapper(*args, **kwargs):
+        inicio = time.time()
+        resultado = funcion(*args, **kwargs)
+        fin = time.time()
+        print(f"{funcion.__name__} tardó {fin - inicio:.4f} segundos")
+        return resultado
+    return wrapper
+
+@medir_tiempo
+def calcular_suma(n):
+    return sum(range(n))
+
+@medir_tiempo
+def calcular_cuadrados(n):
+    return [i**2 for i in range(n)]
+
+calcular_suma(1000000)
+calcular_cuadrados(10000)
+\end{lstlisting}
+\end{frame}
+
+\section{Manejo de APIs simples}
+
+\begin{frame}[fragile]{Consumir APIs con requests \faCloud}
+\begin{conceptbox}{¿Qué es una API?}
+Interfaz que permite comunicación entre aplicaciones. REST API usa HTTP para intercambiar datos (generalmente JSON).
+\end{conceptbox}
+
+\textbf{Instalar requests:}
+\begin{lstlisting}[language=bash, numbers=none]
+pip install requests
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Ejemplo básico:}
+\begin{lstlisting}
+import requests
+
+# GET request a una API pública
+url = "https://jsonplaceholder.typicode.com/posts/1"
+respuesta = requests.get(url)
+
+print(f"Status: {respuesta.status_code}")
+print(f"Tipo: {type(respuesta.json())}")
+print(f"Datos: {respuesta.json()}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{API: Salida ejemplo \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{Status: 200\\
+Tipo: <class 'dict'>\\
+Datos: \{'userId': 1, 'id': 1, 'title': 'sunt aut...', 'body': 'quia et...'\}}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\begin{notebox}
+\small\faInfoCircle\ Status 200 significa éxito, 404 no encontrado, 500 error del servidor
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{API: Obtener múltiples recursos \faList}
+\begin{lstlisting}
+import requests
+
+# Obtener lista de posts
+url = "https://jsonplaceholder.typicode.com/posts"
+respuesta = requests.get(url)
+
+if respuesta.status_code == 200:
+    posts = respuesta.json()
+    print(f"Total de posts: {len(posts)}")
+    
+    # Mostrar primeros 3
+    for post in posts[:3]:
+        print(f"\nID: {post['id']}")
+        print(f"Título: {post['title']}")
+        print(f"Usuario: {post['userId']}")
+else:
+    print(f"Error: {respuesta.status_code}")
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{API: POST request \faUpload}
+\begin{lstlisting}
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts"
+
+# Datos a enviar
+nuevo_post = {
+    "title": "Mi nuevo post",
+    "body": "Este es el contenido del post",
+    "userId": 1
+}
+
+# Enviar POST
+respuesta = requests.post(url, json=nuevo_post)
+
+print(f"Status: {respuesta.status_code}")
+print(f"Respuesta: {respuesta.json()}")
+\end{lstlisting}
+
+\vspace{-0.2cm}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{Status: 201\\
+Respuesta: \{'title': 'Mi nuevo post', 'body': '...', 'userId': 1, 'id': 101\}}
+\end{tcolorbox}
+\end{frame}
+
+\section{Entornos virtuales}
+
+\begin{frame}[fragile]{Entornos virtuales \faBox}
+\begin{conceptbox}{¿Qué son?}
+Espacios aislados para cada proyecto con sus propias dependencias y versiones de paquetes.
+\end{conceptbox}
+
+\textbf{¿Por qué usarlos?}
+\small
+\begin{itemize}
+    \item[\faCheckCircle] Evitar conflictos entre proyectos
+    \item[\faCheckCircle] Mantener dependencias específicas por proyecto
+    \item[\faCheckCircle] Facilitar colaboración y despliegue
+    \item[\faCheckCircle] No contaminar instalación global de Python
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Crear y usar entornos virtuales \faTerminal}
+\textbf{Crear entorno virtual:}
+\begin{lstlisting}[language=bash, numbers=none]
+# Python 3
+python -m venv mi_entorno
+
+# O con virtualenv
+virtualenv mi_entorno
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Activar entorno:}
+\begin{lstlisting}[language=bash, numbers=none]
+# Linux/Mac
+source mi_entorno/bin/activate
+
+# Windows
+mi_entorno\Scripts\activate
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Desactivar:}
+\begin{lstlisting}[language=bash, numbers=none]
+deactivate
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Gestión de dependencias \faListAlt}
+\textbf{Instalar paquetes:}
+\begin{lstlisting}[language=bash, numbers=none]
+# Con entorno activado
+pip install requests pandas numpy
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Guardar dependencias:}
+\begin{lstlisting}[language=bash, numbers=none]
+pip freeze > requirements.txt
+\end{lstlisting}
+
+\vspace{0.2cm}
+\textbf{Instalar desde requirements.txt:}
+\begin{lstlisting}[language=bash, numbers=none]
+pip install -r requirements.txt
+\end{lstlisting}
+
+\vspace{0.2cm}
+\begin{notebox}
+\small\faLightbulb\ requirements.txt facilita compartir y replicar entornos
+\end{notebox}
+\end{frame}
+
+\begin{frame}[fragile]{Ejemplo de requirements.txt \faFileAlt}
+\begin{tcolorbox}[colback=bg1,colframe=brown,left=3pt,right=3pt,top=2pt,bottom=2pt]
+\small\texttt{requests==2.31.0\\
+pandas==2.0.3\\
+numpy==1.24.3\\
+matplotlib==3.7.2\\
+pytest==7.4.0}
+\end{tcolorbox}
+
+\vspace{0.3cm}
+\textbf{Buenas prácticas:}
+\small
+\begin{itemize}
+    \item[\faCheck] Un entorno virtual por proyecto
+    \item[\faCheck] Incluir requirements.txt en control de versiones
+    \item[\faCheck] Documentar versión de Python requerida
+    \item[\faCheck] Actualizar requirements.txt regularmente
+    \item[\faCheck] No incluir carpeta del entorno en git (usar .gitignore)
+\end{itemize}
+\end{frame}
+
+\section{Proyecto integrador}
+
+\begin{frame}{Proyecto: Analizador de datos desde API \faChartLine}
+\begin{conceptbox}{Objetivo}
+Crear una aplicación que consuma una API, procese datos y genere estadísticas usando conceptos avanzados.
+\end{conceptbox}
+
+\textbf{Funcionalidades:}
+\small
+\begin{itemize}
+    \item[\faCloud] Consumir API REST pública
+    \item[\faFilter] Filtrar y transformar datos con comprehensions
+    \item[\faChartBar] Calcular estadísticas usando lambda y funciones
+    \item[\faSave] Guardar resultados en archivo
+    \item[\faStopwatch] Medir tiempos de ejecución con decoradores
+    \item[\faRecycle] Usar generadores para eficiencia
+\end{itemize}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faLightbulb\ Integra todos los conceptos de la semana}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Decoradores y utilidades \faTools}
+\begin{lstlisting}
+import time
+import json
+
+def medir_tiempo(func):
+    """Decorador para medir tiempo de ejecución"""
+    def wrapper(*args, **kwargs):
+        inicio = time.time()
+        resultado = func(*args, **kwargs)
+        fin = time.time()
+        print(f"⏱ {func.__name__} tardó {fin - inicio:.2f}s")
+        return resultado
+    return wrapper
+
+def guardar_json(func):
+    """Decorador para guardar resultados en JSON"""
+    def wrapper(*args, **kwargs):
+        resultado = func(*args, **kwargs)
+        nombre_archivo = f"{func.__name__}_resultado.json"
+        with open(nombre_archivo, 'w') as f:
+            json.dump(resultado, f, indent=2)
+        print(f"💾 Guardado en {nombre_archivo}")
+        return resultado
+    return wrapper
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Clase principal \faCode}
+\begin{lstlisting}
+import requests
+
+class AnalizadorAPI:
+    def __init__(self, base_url):
+        self.base_url = base_url
+        self.datos = []
+    
+    @medir_tiempo
+    def obtener_datos(self, endpoint):
+        """Obtiene datos de la API"""
+        url = f"{self.base_url}/{endpoint}"
+        respuesta = requests.get(url)
+        
+        if respuesta.status_code == 200:
+            self.datos = respuesta.json()
+            print(f"✓ Obtenidos {len(self.datos)} registros")
+            return self.datos
+        else:
+            print(f"✗ Error: {respuesta.status_code}")
+            return []
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Filtros y análisis \faFilter}
+\begin{lstlisting}
+    def filtrar_por_usuario(self, user_id):
+        """Filtra datos por ID de usuario"""
+        return [item for item in self.datos 
+                if item.get('userId') == user_id]
+    
+    def generar_estadisticas(self):
+        """Genera estadísticas de los datos"""
+        if not self.datos:
+            return {}
+        
+        # Usar set para usuarios únicos
+        usuarios = {item['userId'] for item in self.datos}
+        
+        # Dict comprehension para contar por usuario
+        posts_por_usuario = {
+            user_id: len([p for p in self.datos if p['userId'] == user_id])
+            for user_id in usuarios
+        }
+        
+        return {
+            'total_registros': len(self.datos),
+            'usuarios_unicos': len(usuarios),
+            'posts_por_usuario': posts_por_usuario
+        }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Generador de títulos \faRecycle}
+\begin{lstlisting}
+    def generar_titulos(self, limite=None):
+        """Generador que produce títulos uno a uno"""
+        contador = 0
+        for item in self.datos:
+            if limite and contador >= limite:
+                break
+            yield item.get('title', 'Sin título')
+            contador += 1
+    
+    def buscar_palabra_en_titulos(self, palabra):
+        """Busca palabra en títulos usando lambda"""
+        # Filter con lambda
+        coincidencias = list(filter(
+            lambda item: palabra.lower() in item.get('title', '').lower(),
+            self.datos
+        ))
+        return coincidencias
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Métodos de ordenamiento \faSort}
+\begin{lstlisting}
+    def top_usuarios(self, n=5):
+        """Top N usuarios con más posts"""
+        stats = self.generar_estadisticas()
+        posts = stats['posts_por_usuario']
+        
+        # Sorted con lambda para ordenar por valor
+        top = sorted(posts.items(), 
+                    key=lambda x: x[1], 
+                    reverse=True)[:n]
+        
+        return dict(top)
+    
+    @guardar_json
+    def generar_reporte(self):
+        """Genera reporte completo"""
+        return {
+            'estadisticas': self.generar_estadisticas(),
+            'top_usuarios': self.top_usuarios(3),
+            'total_posts': len(self.datos)
+        }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Uso del analizador \faTerminal}
+\begin{lstlisting}
+# Crear analizador
+analizador = AnalizadorAPI("https://jsonplaceholder.typicode.com")
+
+# Obtener datos
+analizador.obtener_datos("posts")
+
+# Estadísticas generales
+stats = analizador.generar_estadisticas()
+print(f"\n📊 Estadísticas:")
+print(f"  Total registros: {stats['total_registros']}")
+print(f"  Usuarios únicos: {stats['usuarios_unicos']}")
+
+# Top usuarios
+print(f"\n🏆 Top 3 usuarios:")
+top = analizador.top_usuarios(3)
+for user_id, count in top.items():
+    print(f"  Usuario {user_id}: {count} posts")
+\end{lstlisting}
+
+\small(Continuación en siguiente slide...)
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Uso - Generadores y filtros \faPlay}
+\begin{lstlisting}
+# Usar generador de títulos
+print(f"\n📝 Primeros 5 títulos:")
+for i, titulo in enumerate(analizador.generar_titulos(5), 1):
+    print(f"  {i}. {titulo[:50]}...")
+
+# Buscar palabra
+print(f"\n🔍 Posts sobre 'qui':")
+resultados = analizador.buscar_palabra_en_titulos("qui")
+print(f"  Encontrados: {len(resultados)}")
+for post in resultados[:3]:
+    print(f"  - {post['title'][:40]}...")
+
+# Generar reporte (usa decorador @guardar_json)
+print(f"\n📄 Generando reporte...")
+analizador.generar_reporte()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Proyecto: Salida esperada \faArrowCircleRight}
+\begin{tcolorbox}[colback=green!10,colframe=green,title={\small\faArrowCircleRight \ Salida},coltitle=fg0,left=3pt,right=3pt,top=2pt,bottom=2pt,boxsep=1pt]
+\tiny\texttt{⏱ obtener\_datos tardó 0.45s\\
+✓ Obtenidos 100 registros\\
+\ \\
+📊 Estadísticas:\\
+\ \ Total registros: 100\\
+\ \ Usuarios únicos: 10\\
+\ \\
+🏆 Top 3 usuarios:\\
+\ \ Usuario 1: 10 posts\\
+\ \ Usuario 2: 10 posts\\
+\ \ Usuario 3: 10 posts\\
+\ \\
+📝 Primeros 5 títulos:\\
+\ \ 1. sunt aut facere repellat provident occaecati...\\
+\ \ 2. qui est esse...\\
+\ \\
+🔍 Posts sobre 'qui':\\
+\ \ Encontrados: 15\\
+\ \\
+📄 Generando reporte...\\
+💾 Guardado en generar\_reporte\_resultado.json}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{Proyecto alternativo: Gestor de tareas avanzado \faClipboardList}
+\begin{conceptbox}{Alternativa}
+Sistema de gestión de tareas con características avanzadas
+\end{conceptbox}
+
+\textbf{Características:}
+\small
+\begin{itemize}
+    \item[\faListUl] CRUD de tareas con comprehensions
+    \item[\faFilter] Filtros múltiples con lambda
+    \item[\faTag] Sistema de etiquetas con sets
+    \item[\faChartBar] Estadísticas y reportes
+    \item[\faSave] Persistencia en JSON
+    \item[\faStopwatch] Tracking de tiempo con decoradores
+    \item[\faRecycle] Generador de tareas pendientes
+    \item[\faBell] Recordatorios y notificaciones
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Proyecto alternativo: Web scraper \faSpider}
+\begin{conceptbox}{Otra alternativa}
+Extractor de datos de sitios web con análisis
+\end{conceptbox}
+
+\textbf{Características:}
+\small
+\begin{itemize}
+    \item[\faGlobe] Scraping con requests y BeautifulSoup
+    \item[\faFilter] Limpieza de datos con comprehensions
+    \item[\faDatabase] Almacenamiento en estructuras eficientes
+    \item[\faChartLine] Análisis estadístico
+    \item[\faFileExport] Exportación a múltiples formatos
+    \item[\faStopwatch] Monitoreo de rendimiento
+    \item[\faRecycle] Procesamiento lazy con generadores
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Buenas prácticas avanzadas \faCheckDouble}
+\begin{conceptbox}{Recomendaciones}
+\small
+\begin{itemize}
+    \item[\faCheck] Usa comprehensions para código más pythonic
+    \item[\faCheck] Prefiere generadores para grandes datasets
+    \item[\faCheck] Lambda solo para funciones muy simples
+    \item[\faCheck] Decoradores para separar concerns (logging, timing, etc.)
+    \item[\faCheck] Sets para operaciones de conjunto y eliminar duplicados
+    \item[\faCheck] Entornos virtuales siempre, uno por proyecto
+    \item[\faCheck] Maneja errores en requests (try-except, status codes)
+    \item[\faCheck] Documenta código complejo
+    \item[\faCheck] Type hints para código más claro
+    \item[\faCheck] No abuses de las características avanzadas
+\end{itemize}
+\end{conceptbox}
+\end{frame}
+
+\begin{frame}[fragile]{Type hints (bonus) \faTag}
+\begin{lstlisting}
+from typing import List, Dict, Optional, Set
+
+def procesar_numeros(
+    numeros: List[int], 
+    operacion: str = "suma"
+) -> int:
+    """Procesa lista de números con operación especificada"""
+    if operacion == "suma":
+        return sum(numeros)
+    elif operacion == "max":
+        return max(numeros)
+    return 0
+
+def crear_perfil(
+    nombre: str, 
+    edad: int, 
+    hobbies: Optional[Set[str]] = None
+) -> Dict[str, any]:
+    """Crea diccionario de perfil"""
+    return {
+        "nombre": nombre,
+        "edad": edad,
+        "hobbies": hobbies or set()
+    }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Recursos adicionales \faBook}
+\begin{conceptbox}{Para profundizar}
+\small
+\begin{itemize}
+    \item[\faGlobe] \textbf{Python Docs}: docs.python.org
+    \item[\faGlobe] \textbf{Real Python}: realpython.com
+    \item[\faGlobe] \textbf{PEP 8}: Guía de estilo oficial
+    \item[\faBook] \textbf{Fluent Python}: Libro avanzado
+    \item[\faGithub] \textbf{Awesome Python}: Lista de recursos
+    \item[\faPlayCircle] \textbf{Corey Schafer}: YouTube tutorials
+    \item[\faCode] \textbf{LeetCode/HackerRank}: Práctica
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.2cm}
+\begin{center}
+\textcolor{brown}{\faRocket\ ¡La práctica hace al maestro!}
+\end{center}
+\end{frame}
+
+\begin{frame}{Resumen \faListUl}
+\begin{conceptbox}{¿Qué aprendimos hoy?}
+\small
+\begin{itemize}
+    \item[\faCheck] Sets: colecciones únicas y operaciones matemáticas
+    \item[\faCheck] Diccionarios avanzados y anidados
+    \item[\faCheck] Funciones lambda para código conciso
+    \item[\faCheck] List y dict comprehensions
+    \item[\faCheck] *args y **kwargs para argumentos variables
+    \item[\faCheck] Generadores para eficiencia de memoria
+    \item[\faCheck] Decoradores para extender funcionalidad
+    \item[\faCheck] Consumo de APIs con requests
+    \item[\faCheck] Entornos virtuales para aislar proyectos
+    \item[\faCheck] Proyecto: Analizador de datos desde API
+\end{itemize}
+\end{conceptbox}
+
+\vspace{0.3cm}
+\begin{center}
+\large\textcolor{brown}{\faRocket\ ¡Python avanzado desbloqueado!}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\Huge\textcolor{brown}{\faQuestionCircle}\\
+\vspace{0.5cm}
+\Huge ¡Preguntas!\\
+\vspace{1cm}
+\Large\textcolor{brownbright}{Gracias por su atención}
+\end{center}
+\end{frame}
+
+\end{document}
