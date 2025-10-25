@@ -1,0 +1,761 @@
+\documentclass[11pt,letterpaper]{article}
+
+% Paquetes necesarios
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+% Configuración del header y footer
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{NLPY-1: Fundamentos de Python}
+\rhead{Semana 6: Archivos y Persistencia}
+\rfoot{Página \thepage}
+
+% Configuración de listings para Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    tabsize=4,
+    captionpos=b
+}
+
+% Configuración de hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\begin{document}
+
+% Título
+\begin{center}
+    {\LARGE \textbf{Tarea 6: Agenda de Contactos}}\\[0.3cm]
+    {\Large Semana 6: Archivos y Persistencia de Datos}\\[0.2cm]
+    {\large NLPY-1: Fundamentos de Python}\\[0.2cm]
+\end{center}
+
+\section{Introducción}
+
+En esta sexta semana del curso, exploraremos uno de los aspectos más importantes de la programación: \textbf{la persistencia de datos}. Hasta ahora, todos los programas que hemos desarrollado pierden su información cuando finalizan su ejecución. En la vida real, las aplicaciones necesitan almacenar y recuperar información de manera permanente.
+
+El manejo de archivos es fundamental en cualquier aplicación profesional, desde sistemas de gestión empresarial hasta aplicaciones científicas que procesan grandes volúmenes de datos. Python ofrece herramientas poderosas y elegantes para trabajar con archivos de texto, archivos CSV, JSON y otros formatos.
+
+En esta tarea desarrollarás una \textbf{Agenda de Contactos} completa que permite almacenar, buscar, modificar y eliminar información de contactos, manteniendo todos los datos guardados en archivos que persisten entre ejecuciones del programa.
+
+\subsection{Objetivos de Aprendizaje}
+
+Al completar esta tarea, el estudiante será capaz de:
+
+\begin{itemize}
+    \item Comprender los conceptos de persistencia de datos y operaciones de archivo
+    \item Utilizar las funciones \texttt{open()}, \texttt{read()}, \texttt{write()}, y \texttt{close()} correctamente
+    \item Aplicar el gestor de contexto \texttt{with} para manejo seguro de archivos
+    \item Trabajar con diferentes modos de apertura de archivos (r, w, a, r+, etc.)
+    \item Procesar archivos CSV utilizando el módulo \texttt{csv}
+    \item Implementar operaciones CRUD (Create, Read, Update, Delete) con archivos
+    \item Manejar excepciones específicas de operaciones de archivo
+    \item Validar y limpiar datos antes de guardarlos
+    \item Organizar código en funciones especializadas para operaciones de archivo
+\end{itemize}
+
+\section{Descripción del Proyecto}
+
+Desarrollarás un sistema de \textbf{Agenda de Contactos} que permite gestionar información personal y profesional de contactos. El sistema debe almacenar los datos en archivos CSV y proporcionar una interfaz de menú para realizar todas las operaciones.
+
+\subsection{Funcionalidades Requeridas}
+
+\subsubsection{1. Gestión de Contactos (40 puntos - Funcionalidad)}
+
+Tu programa debe implementar las siguientes funcionalidades:
+
+\textbf{A) Agregar Nuevo Contacto (10 puntos)}
+\begin{itemize}
+    \item Solicitar: nombre completo, teléfono(s), email, dirección, categoría (familia/amigo/trabajo/otro)
+    \item Validar formato de email (debe contener @ y dominio)
+    \item Validar que el nombre no esté vacío
+    \item Permitir múltiples teléfonos separados por comas
+    \item Guardar en archivo CSV automáticamente
+    \item Confirmar la adición exitosa
+\end{itemize}
+
+\textbf{B) Listar Todos los Contactos (5 puntos)}
+\begin{itemize}
+    \item Mostrar todos los contactos en formato tabular
+    \item Incluir numeración para cada contacto
+    \item Mostrar mensaje apropiado si no hay contactos
+    \item Formato limpio y legible
+\end{itemize}
+
+\textbf{C) Buscar Contactos (8 puntos)}
+\begin{itemize}
+    \item Búsqueda por nombre (coincidencia parcial, case-insensitive)
+    \item Búsqueda por categoría
+    \item Búsqueda por teléfono
+    \item Mostrar todos los resultados encontrados
+    \item Indicar si no se encontraron coincidencias
+\end{itemize}
+
+\textbf{D) Actualizar Contacto (8 puntos)}
+\begin{itemize}
+    \item Buscar contacto a actualizar
+    \item Mostrar datos actuales
+    \item Permitir modificar cada campo (dejar vacío para no cambiar)
+    \item Validar nuevos datos
+    \item Actualizar el archivo CSV
+    \item Confirmar la actualización
+\end{itemize}
+
+\textbf{E) Eliminar Contacto (5 puntos)}
+\begin{itemize}
+    \item Buscar y mostrar contacto a eliminar
+    \item Solicitar confirmación antes de eliminar
+    \item Eliminar del archivo CSV
+    \item Confirmar la eliminación
+\end{itemize}
+
+\textbf{F) Exportar/Importar (4 puntos)}
+\begin{itemize}
+    \item Exportar contactos a archivo de texto legible
+    \item Crear respaldo (backup) del archivo CSV
+    \item Mostrar estadísticas (total de contactos por categoría)
+\end{itemize}
+
+\subsubsection{2. Requisitos Técnicos}
+
+\textbf{Manejo de Archivos:}
+\begin{itemize}
+    \item Usar gestor de contexto \texttt{with} en TODAS las operaciones de archivo
+    \item Archivo principal: \texttt{contactos.csv}
+    \item Manejar correctamente el encoding UTF-8
+    \item Implementar manejo de excepciones para operaciones de archivo
+\end{itemize}
+
+\textbf{Formato CSV:}
+\begin{itemize}
+    \item Usar módulo \texttt{csv} de Python
+    \item Incluir encabezados en el archivo
+    \item Campos: nombre, telefonos, email, direccion, categoria, fecha\_creacion
+\end{itemize}
+
+\textbf{Validaciones:}
+\begin{itemize}
+    \item Nombre: no vacío, mínimo 3 caracteres
+    \item Email: formato válido (contiene @ y punto)
+    \item Teléfono: solo números, guiones y espacios
+    \item Categoría: debe ser una de las opciones válidas
+\end{itemize}
+
+\textbf{Organización del Código:}
+\begin{itemize}
+    \item Función para cargar contactos desde CSV
+    \item Función para guardar contactos en CSV
+    \item Función para cada operación CRUD
+    \item Función de menú principal
+    \item Funciones de validación separadas
+\end{itemize}
+
+\section{Ejemplo de Implementación}
+
+A continuación se muestra un ejemplo completo del funcionamiento esperado:
+
+\subsection{Estructura de Datos}
+
+\begin{lstlisting}[caption={Ejemplo de archivo contactos.csv}]
+nombre,telefonos,email,direccion,categoria,fecha_creacion
+Juan Perez,8888-8888|7777-7777,juan@email.com,San Jose Centro,trabajo,2024-10-24
+Maria Rodriguez,6666-6666,maria@email.com,Cartago,familia,2024-10-24
+Carlos Mora,5555-5555,carlos@email.com,Heredia,amigo,2024-10-24
+\end{lstlisting}
+
+\subsection{Plantilla de Código}
+
+A continuación se muestra la estructura básica que debes seguir para implementar tu solución:
+
+\begin{lstlisting}[caption={Plantilla básica del sistema}]
+import csv
+import os
+from datetime import datetime
+
+# Constantes
+ARCHIVO_CONTACTOS = 'contactos.csv'
+CATEGORIAS_VALIDAS = ['familia', 'amigo', 'trabajo', 'otro']
+ENCABEZADOS = ['nombre', 'telefonos', 'email', 'direccion', 
+               'categoria', 'fecha_creacion']
+
+def crear_archivo_si_no_existe():
+    """Crea el archivo CSV con encabezados si no existe."""
+    # TODO: Implementar creacion de archivo con DictWriter
+    pass
+
+def cargar_contactos():
+    """Carga todos los contactos desde el archivo CSV."""
+    # TODO: Usar DictReader para leer el archivo
+    # TODO: Manejar FileNotFoundError
+    # TODO: Retornar lista de diccionarios
+    pass
+
+def guardar_contactos(contactos):
+    """Guarda todos los contactos en el archivo CSV."""
+    # TODO: Usar DictWriter para escribir todos los contactos
+    # TODO: Incluir encabezados
+    # TODO: Manejar excepciones
+    pass
+
+def validar_email(email):
+    """Valida el formato basico de un email."""
+    # TODO: Verificar que contiene @ y punto en el dominio
+    pass
+
+def validar_nombre(nombre):
+    """Valida que el nombre sea valido."""
+    # TODO: Verificar longitud minima
+    # TODO: Verificar que contiene letras
+    pass
+
+def validar_telefono(telefono):
+    """Valida que el telefono solo contenga caracteres permitidos."""
+    # TODO: Verificar caracteres numericos y separadores
+    pass
+
+def agregar_contacto():
+    """Agrega un nuevo contacto a la agenda."""
+    # TODO: Solicitar datos del contacto
+    # TODO: Validar cada campo
+    # TODO: Crear diccionario con los datos
+    # TODO: Agregar a la lista y guardar
+    pass
+
+def listar_contactos():
+    """Lista todos los contactos de la agenda."""
+    # TODO: Cargar contactos
+    # TODO: Mostrar en formato tabular
+    # TODO: Manejar agenda vacia
+    pass
+
+def buscar_contactos():
+    """Busca contactos por diferentes criterios."""
+    # TODO: Mostrar menu de busqueda
+    # TODO: Implementar busqueda por nombre
+    # TODO: Implementar busqueda por categoria
+    # TODO: Implementar busqueda por telefono
+    # TODO: Mostrar resultados
+    pass
+
+def actualizar_contacto():
+    """Actualiza la informacion de un contacto existente."""
+    # TODO: Buscar contacto a actualizar
+    # TODO: Mostrar datos actuales
+    # TODO: Solicitar nuevos valores
+    # TODO: Validar y actualizar
+    pass
+
+def eliminar_contacto():
+    """Elimina un contacto de la agenda."""
+    # TODO: Buscar contacto
+    # TODO: Mostrar informacion
+    # TODO: Solicitar confirmacion
+    # TODO: Eliminar y guardar
+    pass
+
+def exportar_a_texto():
+    """Exporta todos los contactos a un archivo de texto legible."""
+    # TODO: Cargar contactos
+    # TODO: Crear archivo de texto
+    # TODO: Escribir con formato legible
+    pass
+
+def crear_respaldo():
+    """Crea una copia de respaldo del archivo de contactos."""
+    # TODO: Leer archivo original
+    # TODO: Crear copia con timestamp
+    pass
+
+def mostrar_estadisticas():
+    """Muestra estadisticas sobre los contactos."""
+    # TODO: Contar contactos por categoria
+    # TODO: Calcular porcentajes
+    # TODO: Mostrar informacion resumida
+    pass
+
+def menu_principal():
+    """Muestra el menu principal y maneja la navegacion."""
+    crear_archivo_si_no_existe()
+    
+    while True:
+        # TODO: Mostrar menu de opciones
+        # TODO: Leer opcion del usuario
+        # TODO: Llamar a la funcion correspondiente
+        # TODO: Manejar opcion de salir
+        pass
+
+# Ejecutar el programa
+if __name__ == "__main__":
+    menu_principal()
+\end{lstlisting}
+
+\subsubsection{Ejemplo de Implementación: Función cargar\_contactos()}
+
+Como guía, aquí hay UN EJEMPLO de cómo implementar la función de carga:
+
+\begin{lstlisting}[caption={Ejemplo: Implementación de cargar\_contactos}]
+def cargar_contactos():
+    """Carga todos los contactos desde el archivo CSV."""
+    contactos = []
+    try:
+        with open(ARCHIVO_CONTACTOS, 'r', newline='', 
+                  encoding='utf-8') as archivo:
+            lector = csv.DictReader(archivo)
+            for fila in lector:
+                contactos.append(fila)
+        return contactos
+    except FileNotFoundError:
+        print("Archivo no encontrado. Se creara uno nuevo.")
+        crear_archivo_si_no_existe()
+        return []
+    except Exception as e:
+        print(f"Error al cargar: {e}")
+        return []
+\end{lstlisting}
+
+\textbf{Nota importante}: Este es SOLO un ejemplo de referencia para una función. El resto del código debe ser implementado por el estudiante siguiendo la plantilla.
+
+\subsection{Ejemplo de Ejecución}
+
+\begin{lstlisting}[caption={Ejemplo de ejecución del programa}]
+Bienvenido a la Agenda de Contactos
+Desarrollado para NLPY-1 - Semana 6
+
+==================================================
+AGENDA DE CONTACTOS
+==================================================
+1. Agregar nuevo contacto
+2. Listar todos los contactos
+3. Buscar contactos
+4. Actualizar contacto
+5. Eliminar contacto
+6. Exportar a archivo de texto
+7. Crear respaldo
+8. Mostrar estadisticas
+9. Salir
+==================================================
+
+Seleccione una opcion: 1
+
+==================================================
+AGREGAR NUEVO CONTACTO
+==================================================
+
+Nombre completo: Maria Fernandez Lopez
+Telefono(s) (separados por comas): 8888-8888, 2222-2222
+Email: maria.fernandez@email.com
+Direccion: Cartago, Dulce Nombre
+Categorias disponibles: familia, amigo, trabajo, otro
+Categoria: familia
+
+¡Contacto agregado exitosamente!
+Total de contactos: 4
+
+==================================================
+AGENDA DE CONTACTOS
+==================================================
+...
+Seleccione una opcion: 3
+
+==================================================
+BUSCAR CONTACTOS
+==================================================
+1. Buscar por nombre
+2. Buscar por categoria
+3. Buscar por telefono
+
+Seleccione tipo de busqueda: 2
+Categorias: familia, amigo, trabajo, otro
+Ingrese categoria: familia
+
+2 contacto(s) encontrado(s):
+--------------------------------------------------------------------------------
+
+Nombre: Maria Rodriguez
+Telefonos: 6666-6666
+Email: maria@email.com
+Categoria: familia
+
+Nombre: Maria Fernandez Lopez
+Telefonos: 8888-8888, 2222-2222
+Email: maria.fernandez@email.com
+Categoria: familia
+
+==================================================
+AGENDA DE CONTACTOS
+==================================================
+...
+Seleccione una opcion: 8
+
+==================================================
+ESTADISTICAS DE LA AGENDA
+==================================================
+
+Total de contactos: 4
+
+Contactos por categoria:
+  Familia: 2 (50.0%)
+  Amigo: 1 (25.0%)
+  Trabajo: 1 (25.0%)
+  Otro: 0 (0.0%)
+
+Contacto mas antiguo: Juan Perez (2024-10-24)
+\end{lstlisting}
+
+\section{Defensa del Código (60\% de la Nota)}
+
+La defensa oral es un componente crucial de la evaluación. Debes demostrar comprensión profunda de:
+
+\subsection{Aspectos Técnicos a Dominar}
+
+\textbf{1. Manejo de Archivos (15 puntos)}
+\begin{itemize}
+    \item ¿Qué es el gestor de contexto \texttt{with}? ¿Por qué es importante?
+    \item Diferencias entre modos de apertura: 'r', 'w', 'a', 'r+', 'w+'
+    \item ¿Qué pasa si no se cierra un archivo correctamente?
+    \item Explicar el concepto de \textit{file handle} o descriptor de archivo
+    \item ¿Cómo se maneja el encoding en archivos de texto?
+\end{itemize}
+
+\textbf{2. Módulo CSV (10 puntos)}
+\begin{itemize}
+    \item ¿Por qué usar el módulo \texttt{csv} en lugar de procesar texto manualmente?
+    \item Diferencia entre \texttt{csv.reader} y \texttt{csv.DictReader}
+    \item ¿Qué es el parámetro \texttt{newline=''} y por qué se usa?
+    \item Explicar \texttt{DictWriter} y el uso de \texttt{fieldnames}
+    \item ¿Cómo se manejan caracteres especiales (comas, saltos de línea) en CSV?
+\end{itemize}
+
+\textbf{3. Operaciones de Archivo (10 puntos)}
+\begin{itemize}
+    \item Explicar el flujo completo de agregar un contacto (desde input hasta disco)
+    \item ¿Cómo funciona la actualización de archivos CSV? ¿Se puede editar "en el lugar"?
+    \item Estrategias para búsqueda eficiente en archivos
+    \item ¿Qué es el módulo \texttt{os} y para qué lo usamos?
+    \item Diferencia entre rutas absolutas y relativas
+\end{itemize}
+
+\textbf{4. Validación y Manejo de Errores (10 puntos)}
+\begin{itemize}
+    \item Excepciones específicas de archivos: \texttt{FileNotFoundError}, \texttt{PermissionError}, \texttt{IOError}
+    \item ¿Por qué validar datos ANTES de guardarlos?
+    \item Estrategias de validación de email, teléfono, etc.
+    \item ¿Qué es la sanitización de datos?
+    \item Recuperación ante errores durante escritura de archivos
+\end{itemize}
+
+\textbf{5. Organización y Buenas Prácticas (15 puntos)}
+\begin{itemize}
+    \item Justificar la estructura del código en funciones
+    \item ¿Por qué usar constantes para nombres de archivo y categorías?
+    \item Explicar el patrón "cargar-modificar-guardar"
+    \item Importancia de los respaldos automáticos
+    \item Comentarios y documentación del código
+    \item Nombres descriptivos de variables y funciones
+\end{itemize}
+
+\subsection{Preguntas de Defensa Típicas}
+
+Prepárate para responder preguntas como:
+
+\begin{itemize}
+    \item "Muéstrame en tu código dónde usas el gestor de contexto \texttt{with}. ¿Qué pasaría si no lo usaras?"
+    \item "¿Cómo maneja tu programa el caso donde el archivo de contactos no existe?"
+    \item "Si el programa se interrumpe mientras se está guardando, ¿qué pasa con los datos?"
+    \item "Explica línea por línea tu función de búsqueda. ¿Por qué usaste ese enfoque?"
+    \item "¿Qué mejoras implementarías para manejar miles de contactos?"
+    \item "Muéstrame cómo validaste el formato del email. ¿Es suficiente tu validación?"
+    \item "¿Por qué elegiste CSV en lugar de otro formato como JSON o texto plano?"
+    \item "Explica cómo almacenas múltiples teléfonos en un solo campo CSV"
+\end{itemize}
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Funcionalidad del Código (40 puntos)}
+
+\textbf{Agregar Contacto (10 puntos):}
+\begin{itemize}
+    \item 3 puntos: Solicita y almacena todos los campos requeridos
+    \item 3 puntos: Validaciones funcionan correctamente (email, nombre, teléfono)
+    \item 2 puntos: Guarda correctamente en CSV con encoding UTF-8
+    \item 2 puntos: Confirmación y manejo de errores
+\end{itemize}
+
+\textbf{Listar Contactos (5 puntos):}
+\begin{itemize}
+    \item 2 puntos: Carga y muestra todos los contactos correctamente
+    \item 2 puntos: Formato tabular claro y legible
+    \item 1 punto: Maneja caso de agenda vacía
+\end{itemize}
+
+\textbf{Buscar Contactos (8 puntos):}
+\begin{itemize}
+    \item 3 puntos: Búsqueda por nombre funciona (parcial, case-insensitive)
+    \item 2 puntos: Búsqueda por categoría funciona
+    \item 2 puntos: Búsqueda por teléfono funciona
+    \item 1 punto: Mensajes apropiados cuando no hay resultados
+\end{itemize}
+
+\textbf{Actualizar Contacto (8 puntos):}
+\begin{itemize}
+    \item 2 puntos: Encuentra y muestra contacto correctamente
+    \item 3 puntos: Permite modificar campos con validación
+    \item 2 puntos: Guarda cambios correctamente en CSV
+    \item 1 punto: Maneja múltiples contactos con nombre similar
+\end{itemize}
+
+\textbf{Eliminar Contacto (5 puntos):}
+\begin{itemize}
+    \item 2 puntos: Encuentra y muestra contacto a eliminar
+    \item 2 puntos: Solicita confirmación y elimina correctamente
+    \item 1 punto: Actualiza archivo CSV
+\end{itemize}
+
+\textbf{Exportar/Estadísticas (4 puntos):}
+\begin{itemize}
+    \item 2 puntos: Exporta a texto legible correctamente
+    \item 1 punto: Crea respaldos
+    \item 1 punto: Muestra estadísticas por categoría
+\end{itemize}
+
+\subsection{Defensa del Código (60 puntos)}
+
+\textbf{Comprensión de Archivos (15 puntos):}
+\begin{itemize}
+    \item 5 puntos: Explica gestor de contexto y modos de apertura
+    \item 5 puntos: Demuestra comprensión de lectura/escritura
+    \item 5 puntos: Entiende encoding y manejo de caracteres especiales
+\end{itemize}
+
+\textbf{Módulo CSV (10 puntos):}
+\begin{itemize}
+    \item 5 puntos: Explica uso de \texttt{DictReader} y \texttt{DictWriter}
+    \item 3 puntos: Comprende manejo de delimitadores y formato
+    \item 2 puntos: Explica ventajas sobre procesamiento manual
+\end{itemize}
+
+\textbf{Operaciones CRUD (10 puntos):}
+\begin{itemize}
+    \item 3 puntos: Explica flujo de creación de contactos
+    \item 3 puntos: Comprende lectura y búsqueda
+    \item 2 puntos: Explica actualización correctamente
+    \item 2 puntos: Comprende eliminación segura
+\end{itemize}
+
+\textbf{Validación y Errores (10 puntos):}
+\begin{itemize}
+    \item 4 puntos: Identifica y maneja excepciones de archivo
+    \item 3 puntos: Explica validaciones implementadas
+    \item 3 puntos: Demuestra comprensión de sanitización de datos
+\end{itemize}
+
+\textbf{Organización y Calidad (15 puntos):}
+\begin{itemize}
+    \item 5 puntos: Código bien organizado en funciones
+    \item 3 puntos: Uso apropiado de constantes
+    \item 3 puntos: Nombres descriptivos y comentarios útiles
+    \item 2 puntos: Manejo del módulo \texttt{datetime}
+    \item 2 puntos: Implementa buenas prácticas de respaldo
+\end{itemize}
+
+\subsection{Penalizaciones}
+
+\begin{itemize}
+    \item \textbf{-5 puntos}: No usar gestor de contexto \texttt{with} para archivos
+    \item \textbf{-5 puntos}: No manejar encoding UTF-8 correctamente
+    \item \textbf{-3 puntos}: No validar datos antes de guardar
+    \item \textbf{-3 puntos}: Código sin organización en funciones
+    \item \textbf{-3 puntos}: No usar el módulo \texttt{csv} (procesar manualmente)
+    \item \textbf{-2 puntos}: No manejar excepciones de archivo
+    \item \textbf{-2 puntos}: Variables o funciones con nombres no descriptivos
+    \item \textbf{-2 puntos}: No incluir comentarios explicativos
+    \item \textbf{-5 puntos}: Plagio o código copiado sin comprensión
+\end{itemize}
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\subsection{Nivel Intermedio (+10 puntos cada uno)}
+
+\textbf{1. Importar desde CSV externo}
+\begin{itemize}
+    \item Permitir importar contactos desde otro archivo CSV
+    \item Validar formato y detectar duplicados
+    \item Opción de fusionar o reemplazar contactos existentes
+\end{itemize}
+
+\textbf{2. Exportar a formato JSON}
+\begin{itemize}
+    \item Implementar exportación a formato JSON
+    \item Usar módulo \texttt{json}
+    \item Mantener estructura de datos adecuada
+\end{itemize}
+
+\textbf{3. Búsqueda avanzada}
+\begin{itemize}
+    \item Búsqueda con múltiples criterios simultáneos
+    \item Operadores lógicos (AND, OR)
+    \item Ordenar resultados por diferentes campos
+\end{itemize}
+
+\subsection{Nivel Avanzado (+15 puntos cada uno)}
+
+\textbf{4. Sistema de registro de cambios (log)}
+\begin{itemize}
+    \item Crear archivo de log que registre todas las operaciones
+    \item Incluir timestamp, usuario (nombre del equipo), acción realizada
+    \item Usar módulo \texttt{logging}
+\end{itemize}
+
+\textbf{5. Manejo de fotografías}
+\begin{itemize}
+    \item Permitir asociar una foto a cada contacto
+    \item Almacenar ruta de la imagen en el CSV
+    \item Validar que el archivo de imagen exista
+    \item Crear carpeta de imágenes organizada
+\end{itemize}
+
+\textbf{6. Cifrado básico de datos}
+\begin{itemize}
+    \item Implementar cifrado simple de emails o teléfonos sensibles
+    \item Usar módulo \texttt{base64} o similar
+    \item Agregar opción de cifrar/descifrar
+\end{itemize}
+
+\subsection{Nivel Experto (+20 puntos)}
+
+\textbf{7. Sincronización con múltiples archivos}
+\begin{itemize}
+    \item Mantener versiones de respaldo automáticas
+    \item Detectar y resolver conflictos de datos
+    \item Implementar sistema de versionado
+\end{itemize}
+
+\textbf{8. Interfaz gráfica básica}
+\begin{itemize}
+    \item Crear interfaz gráfica simple con \texttt{tkinter}
+    \item Mantener todas las funcionalidades del sistema
+    \item Mejorar experiencia de usuario
+\end{itemize}
+
+\section{Consejos y Recomendaciones}
+
+\subsection{Para el Desarrollo}
+
+\begin{enumerate}
+    \item \textbf{Comienza simple}: Implementa primero agregar y listar, luego añade funcionalidades
+    \item \textbf{Prueba frecuentemente}: Verifica cada función antes de continuar
+    \item \textbf{Usa datos de prueba}: Crea contactos variados para probar todos los casos
+    \item \textbf{Maneja errores}: Anticipa qué puede salir mal y manéjalo
+    \item \textbf{Versiona tu código}: Guarda versiones de respaldo mientras desarrollas
+    \item \textbf{Documenta mientras programas}: No dejes la documentación para el final
+\end{enumerate}
+
+\subsection{Para la Defensa}
+
+\begin{enumerate}
+    \item \textbf{Conoce tu código}: Entiende cada línea que escribiste
+    \item \textbf{Practica explicaciones}: Ensaya cómo explicarías conceptos clave
+    \item \textbf{Prepara el ambiente}: Ten tu código listo para ejecutar y mostrar
+    \item \textbf{Anticipa preguntas}: Piensa qué preguntarías tú sobre tu código
+    \item \textbf{Sé honesto}: Si no sabes algo, reconócelo y muestra disposición a aprender
+    \item \textbf{Muestra ejemplos}: Ten casos de prueba preparados para demostrar funcionalidad
+\end{enumerate}
+
+\subsection{Recursos de Apoyo}
+
+\begin{itemize}
+    \item Documentación oficial de Python: \url{https://docs.python.org/3/}
+    \item Tutorial de archivos: \url{https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files}
+    \item Módulo CSV: \url{https://docs.python.org/3/library/csv.html}
+    \item Módulo OS: \url{https://docs.python.org/3/library/os.html}
+    \item Módulo datetime: \url{https://docs.python.org/3/library/datetime.html}
+\end{itemize}
+
+\section{Criterios de Entrega}
+
+\subsection{Archivos a Entregar}
+
+\begin{enumerate}
+    \item \textbf{agenda\_contactos.py}: Código principal del programa
+    \item \textbf{README.txt}: Instrucciones de uso y descripción
+    \item \textbf{contactos.csv}: Archivo de ejemplo con al menos 5 contactos de prueba
+    \item \textbf{requirements.txt}: Dependencias (si usas librerías adicionales)
+\end{enumerate}
+
+\subsection{Formato del README.txt}
+
+Tu archivo README debe incluir:
+
+\begin{itemize}
+    \item Nombre del estudiante
+    \item Descripción breve del proyecto
+    \item Instrucciones de ejecución
+    \item Funcionalidades implementadas
+    \item Desafíos opcionales completados (si aplica)
+    \item Problemas conocidos o limitaciones
+    \item Recursos utilizados para el desarrollo
+\end{itemize}
+
+\subsection{Evaluación de la Defensa}
+
+La defensa será individual y consistirá en:
+
+\begin{enumerate}
+    \item \textbf{Demostración (5 minutos)}: Ejecutar el programa y mostrar funcionalidades
+    \item \textbf{Explicación de código (10 minutos)}: Explicar secciones específicas del código
+    \item \textbf{Preguntas conceptuales (5 minutos)}: Responder preguntas sobre conceptos teóricos
+    \item \textbf{Resolución de problemas (5 minutos)}: Modificar el código para agregar una pequeña funcionalidad
+\end{enumerate}
+
+\section{Notas Finales}
+
+\begin{itemize}
+    \item \textbf{Fecha de entrega}: Según calendario del curso
+    \item \textbf{Peso de la tarea}: 10\% de la nota final del curso
+    \item \textbf{Nota mínima}: 60/100 para aprobar esta tarea
+    \item \textbf{Consultas}: Usar los canales oficiales del curso
+    \item \textbf{Integridad académica}: El código debe ser 100\% propio. Plagios serán penalizados con 0.
+\end{itemize}
+
+\vspace{1cm}
+
+\begin{center}
+\textit{"Los datos son el nuevo petróleo, pero a diferencia del petróleo,}\\
+\textit{los datos no se agotan cuando se usan... si sabes cómo almacenarlos correctamente."}\\
+\vspace{0.3cm}
+--- Adaptación libre sobre la importancia de la persistencia de datos
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{¡Éxito en tu desarrollo!}\\
+\textit{Recuerda: Un buen sistema de archivos es la base de cualquier aplicación seria.}
+\end{center}
+
+\end{document}

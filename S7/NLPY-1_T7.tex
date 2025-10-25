@@ -1,0 +1,908 @@
+\documentclass[11pt,letterpaper]{article}
+
+% Paquetes necesarios
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+% Configuración del header y footer
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{NLPY-1: Fundamentos de Python}
+\rhead{Semana 7: Expresiones Regulares}
+\rfoot{Página \thepage}
+
+% Configuración de listings para Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    tabsize=4,
+    captionpos=b
+}
+
+% Configuración de hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\begin{document}
+
+% Título
+\begin{center}
+    {\LARGE \textbf{Tarea 7: Validador y Extractor de Datos}}\\[0.3cm]
+    {\Large Semana 7: Expresiones Regulares (RegEx)}\\[0.2cm]
+    {\large NLPY-1: Fundamentos de Python}\\[0.2cm]
+\end{center}
+
+\section{Introducción}
+
+Las \textbf{expresiones regulares} (regular expressions o regex) son una de las herramientas más poderosas en la programación moderna. Permiten buscar, validar y extraer patrones de texto de manera eficiente y elegante. Son ampliamente utilizadas en validación de formularios, procesamiento de logs, web scraping, análisis de datos y mucho más.
+
+En esta semana aprenderás a dominar las expresiones regulares en Python utilizando el módulo \texttt{re}. Desarrollarás un sistema completo de validación y extracción de datos que podrá procesar información de diferentes formatos y fuentes.
+
+\subsection{¿Por qué son importantes las Expresiones Regulares?}
+
+\begin{itemize}
+    \item \textbf{Validación de datos}: Verificar que emails, teléfonos, cédulas, etc. tengan el formato correcto
+    \item \textbf{Extracción de información}: Obtener datos específicos de textos grandes o documentos
+    \item \textbf{Búsqueda avanzada}: Encontrar patrones complejos que serían difíciles con métodos tradicionales
+    \item \textbf{Transformación de texto}: Reemplazar o reformatear información de manera masiva
+    \item \textbf{Parsing de logs}: Analizar archivos de registro de sistemas y aplicaciones
+\end{itemize}
+
+\subsection{Objetivos de Aprendizaje}
+
+Al completar esta tarea, el estudiante será capaz de:
+
+\begin{itemize}
+    \item Comprender la sintaxis y estructura de las expresiones regulares
+    \item Utilizar metacaracteres, cuantificadores y clases de caracteres
+    \item Aplicar las funciones del módulo \texttt{re}: \texttt{match()}, \texttt{search()}, \texttt{findall()}, \texttt{sub()}
+    \item Crear patrones para validar formatos costarricenses (cédulas, teléfonos, placas)
+    \item Usar grupos de captura y grupos con nombre
+    \item Implementar flags para modificar el comportamiento de búsqueda
+    \item Extraer información estructurada de texto no estructurado
+    \item Aplicar expresiones regulares para limpieza y sanitización de datos
+\end{itemize}
+
+\section{Descripción del Proyecto}
+
+Desarrollarás un \textbf{Sistema de Validación y Extracción de Datos} que procese diferentes tipos de información usando expresiones regulares. El sistema debe validar formatos costarricenses, extraer datos de textos, y generar reportes estructurados.
+
+\subsection{Funcionalidades Requeridas}
+
+\subsubsection{1. Validadores (20 puntos - Funcionalidad)}
+
+Implementar validadores para formatos costarricenses usando regex:
+
+\textbf{A) Validador de Cédulas (5 puntos)}
+\begin{itemize}
+    \item Cédula física: 1-2345-6789 (formato: D-DDDD-DDDD)
+    \item Cédula jurídica: 3-101-123456 (formato: D-DDD-DDDDDD)
+    \item DIMEX: 123456789012 (12 dígitos)
+    \item NITE: 1234567890 (10 dígitos)
+    \item Validar formato y estructura correcta
+\end{itemize}
+
+\textbf{B) Validador de Teléfonos (4 puntos)}
+\begin{itemize}
+    \item Formato nacional: 8888-8888, 2222-2222
+    \item Con código de país: +506 8888-8888, +506-8888-8888
+    \item Sin guiones: 88888888
+    \item Validar que inicie con 2, 4, 5, 6, 7 u 8
+\end{itemize}
+
+\textbf{C) Validador de Emails (3 puntos)}
+\begin{itemize}
+    \item Formato estándar: usuario@dominio.com
+    \item Permitir puntos, guiones y guiones bajos en usuario
+    \item Validar dominio y extensión
+    \item Soportar subdominios: usuario@mail.empresa.co.cr
+\end{itemize}
+
+\textbf{D) Validador de Placas de Vehículos (4 puntos)}
+\begin{itemize}
+    \item Placas particulares: ABC-123, ABC-1234
+    \item Placas comerciales: C-12345
+    \item Placas públicas: PA-1234, TP-12345
+    \item Placas de motos: A-12345
+    \item Case-insensitive
+\end{itemize}
+
+\textbf{E) Validador de URLs (4 puntos)}
+\begin{itemize}
+    \item HTTP/HTTPS: https://www.ejemplo.com
+    \item Con rutas: https://ejemplo.com/ruta/archivo.html
+    \item Con parámetros: https://ejemplo.com?param=valor\&otro=123
+    \item Con puertos: https://ejemplo.com:8080
+\end{itemize}
+
+\subsubsection{2. Extractores (20 puntos - Funcionalidad)}
+
+Implementar extractores que obtengan información de textos:
+
+\textbf{A) Extractor de Información Personal (8 puntos)}
+\begin{itemize}
+    \item Extraer todos los emails de un texto
+    \item Extraer todos los teléfonos
+    \item Extraer todas las cédulas
+    \item Extraer fechas (formatos: DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD)
+    \item Retornar listas con los datos encontrados
+\end{itemize}
+
+\textbf{B) Extractor de Precios y Montos (4 puntos)}
+\begin{itemize}
+    \item Identificar montos en colones: ₡12,345.50, ₡1.500
+    \item Identificar montos en dólares: \$1,234.56
+    \item Extraer números con separadores de miles
+    \item Capturar valor numérico y moneda
+\end{itemize}
+
+\textbf{C) Procesador de Logs (8 puntos)}
+\begin{itemize}
+    \item Procesar líneas de log de formato estándar
+    \item Extraer: timestamp, nivel (INFO/ERROR/WARNING), mensaje
+    \item Ejemplo: \texttt{[2024-10-24 14:30:15] ERROR: Connection failed}
+    \item Generar diccionario estructurado por cada entrada
+    \item Contar ocurrencias por nivel de severidad
+\end{itemize}
+
+\subsubsection{3. Requisitos Técnicos}
+
+\textbf{Uso del Módulo re:}
+\begin{itemize}
+    \item Usar \texttt{re.compile()} para patrones reutilizables
+    \item Aplicar \texttt{re.match()} para validación de inicio
+    \item Usar \texttt{re.search()} para encontrar patrones en texto
+    \item Aplicar \texttt{re.findall()} para extraer múltiples coincidencias
+    \item Usar \texttt{re.sub()} para reemplazos y limpieza
+\end{itemize}
+
+\textbf{Características Avanzadas:}
+\begin{itemize}
+    \item Implementar grupos de captura con paréntesis
+    \item Usar grupos con nombre: \texttt{(?P<nombre>...)}
+    \item Aplicar flags: \texttt{re.IGNORECASE}, \texttt{re.MULTILINE}, \texttt{re.DOTALL}
+    \item Implementar lookahead y lookbehind (opcional)
+\end{itemize}
+
+\textbf{Organización del Código:}
+\begin{itemize}
+    \item Función validadora por cada tipo de dato
+    \item Función extractora que retorne listas o diccionarios
+    \item Diccionario global con patrones regex compilados
+    \item Menú interactivo para probar validadores
+    \item Función de reporte que muestre estadísticas
+\end{itemize}
+
+\section{Conceptos de Expresiones Regulares}
+
+\subsection{Metacaracteres Básicos}
+
+\begin{itemize}
+    \item \texttt{.} - Cualquier carácter (excepto salto de línea)
+    \item \texttt{\^{}} - Inicio de cadena o línea
+    \item \texttt{\$} - Fin de cadena o línea
+    \item \texttt{*} - 0 o más repeticiones
+    \item \texttt{+} - 1 o más repeticiones
+    \item \texttt{?} - 0 o 1 repetición (opcional)
+    \item \texttt{\{n\}} - Exactamente n repeticiones
+    \item \texttt{\{n,m\}} - Entre n y m repeticiones
+    \item \texttt{|} - OR lógico
+    \item \texttt{[]} - Clase de caracteres
+    \item \texttt{()} - Grupo de captura
+\end{itemize}
+
+\subsection{Clases de Caracteres}
+
+\begin{itemize}
+    \item \texttt{[abc]} - a, b, o c
+    \item \texttt{[a-z]} - Cualquier letra minúscula
+    \item \texttt{[A-Z]} - Cualquier letra mayúscula
+    \item \texttt{[0-9]} - Cualquier dígito
+    \item \texttt{[\^{}abc]} - Cualquier cosa EXCEPTO a, b, c
+    \item \texttt{\textbackslash d} - Dígito [0-9]
+    \item \texttt{\textbackslash D} - No dígito
+    \item \texttt{\textbackslash w} - Alfanumérico [a-zA-Z0-9\_]
+    \item \texttt{\textbackslash W} - No alfanumérico
+    \item \texttt{\textbackslash s} - Espacio en blanco
+    \item \texttt{\textbackslash S} - No espacio
+\end{itemize}
+
+\subsection{Ejemplos de Patrones}
+
+\begin{lstlisting}[caption={Ejemplos de patrones regex comunes}]
+# Cedula fisica costarricense: 1-2345-6789
+patron_cedula = r'^\d-\d{4}-\d{4}$'
+
+# Telefono: 8888-8888 o 88888888
+patron_telefono = r'^[2-8]\d{3}-?\d{4}$'
+
+# Email basico
+patron_email = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+# Placa particular: ABC-123 o ABC-1234
+patron_placa = r'^[A-Z]{3}-\d{3,4}$'
+
+# Fecha DD/MM/YYYY
+patron_fecha = r'\d{2}/\d{2}/\d{4}'
+
+# Monto en colones: ₡12,345.50
+patron_colones = r'₡[\d,]+\.?\d{0,2}'
+
+# Log entry
+patron_log = r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (\w+): (.+)'
+\end{lstlisting}
+
+\section{Plantilla de Código}
+
+\subsection{Estructura Base del Sistema}
+
+\begin{lstlisting}[caption={Plantilla del validador y extractor}]
+import re
+from typing import List, Dict, Optional
+
+# ==================================================================
+# PATRONES REGEX COMPILADOS
+# ==================================================================
+
+PATRONES = {
+    # Cedulas
+    'cedula_fisica': re.compile(r''),  # TODO: patron para 1-2345-6789
+    'cedula_juridica': re.compile(r''),  # TODO: patron para 3-101-123456
+    'dimex': re.compile(r''),  # TODO: 12 digitos
+    'nite': re.compile(r''),  # TODO: 10 digitos
+    
+    # Telefonos
+    'telefono': re.compile(r''),  # TODO: patrones variados de telefono
+    
+    # Email
+    'email': re.compile(r''),  # TODO: patron de email
+    
+    # Placas
+    'placa_particular': re.compile(r'', re.IGNORECASE),  # TODO: ABC-123
+    'placa_comercial': re.compile(r'', re.IGNORECASE),  # TODO: C-12345
+    'placa_moto': re.compile(r'', re.IGNORECASE),  # TODO: A-12345
+    
+    # URLs
+    'url': re.compile(r''),  # TODO: http(s)://...
+    
+    # Fechas
+    'fecha_slash': re.compile(r''),  # TODO: DD/MM/YYYY
+    'fecha_guion': re.compile(r''),  # TODO: DD-MM-YYYY
+    'fecha_iso': re.compile(r''),  # TODO: YYYY-MM-DD
+    
+    # Montos
+    'colones': re.compile(r''),  # TODO: ₡12,345.50
+    'dolares': re.compile(r''),  # TODO: $1,234.56
+    
+    # Logs
+    'log_entry': re.compile(r'')  # TODO: [timestamp] NIVEL: mensaje
+}
+
+# ==================================================================
+# VALIDADORES
+# ==================================================================
+
+def validar_cedula(cedula: str) -> Dict[str, any]:
+    """
+    Valida una cedula costarricense (fisica, juridica, DIMEX, NITE).
+    
+    Returns:
+        dict: {'valida': bool, 'tipo': str, 'mensaje': str}
+    """
+    # TODO: Probar contra cada patron de cedula
+    # TODO: Retornar tipo identificado
+    pass
+
+def validar_telefono(telefono: str) -> Dict[str, any]:
+    """
+    Valida un numero de telefono costarricense.
+    
+    Returns:
+        dict: {'valido': bool, 'formato': str, 'mensaje': str}
+    """
+    # TODO: Validar patron de telefono
+    # TODO: Verificar que inicie con digito valido
+    pass
+
+def validar_email(email: str) -> Dict[str, any]:
+    """
+    Valida un email.
+    
+    Returns:
+        dict: {'valido': bool, 'usuario': str, 'dominio': str}
+    """
+    # TODO: Validar patron de email
+    # TODO: Extraer usuario y dominio usando grupos
+    pass
+
+def validar_placa(placa: str) -> Dict[str, any]:
+    """
+    Valida una placa vehicular costarricense.
+    
+    Returns:
+        dict: {'valida': bool, 'tipo': str, 'mensaje': str}
+    """
+    # TODO: Validar contra patrones de placas
+    # TODO: Identificar tipo de placa
+    pass
+
+def validar_url(url: str) -> Dict[str, any]:
+    """
+    Valida una URL.
+    
+    Returns:
+        dict: {'valida': bool, 'protocolo': str, 'dominio': str}
+    """
+    # TODO: Validar patron de URL
+    # TODO: Extraer componentes con grupos
+    pass
+
+# ==================================================================
+# EXTRACTORES
+# ==================================================================
+
+def extraer_emails(texto: str) -> List[str]:
+    """Extrae todos los emails de un texto."""
+    # TODO: Usar findall para encontrar todos los emails
+    pass
+
+def extraer_telefonos(texto: str) -> List[str]:
+    """Extrae todos los telefonos de un texto."""
+    # TODO: Usar findall para encontrar todos los telefonos
+    pass
+
+def extraer_cedulas(texto: str) -> List[Dict[str, str]]:
+    """Extrae todas las cedulas de un texto."""
+    # TODO: Buscar todos los tipos de cedula
+    # TODO: Retornar lista con tipo y valor
+    pass
+
+def extraer_fechas(texto: str) -> List[str]:
+    """Extrae todas las fechas de un texto."""
+    # TODO: Buscar todos los formatos de fecha
+    pass
+
+def extraer_montos(texto: str) -> List[Dict[str, any]]:
+    """
+    Extrae montos con moneda de un texto.
+    
+    Returns:
+        list: [{'monto': str, 'moneda': str, 'valor': float}, ...]
+    """
+    # TODO: Extraer montos en colones y dolares
+    # TODO: Convertir a valores numericos
+    pass
+
+def extraer_datos_personales(texto: str) -> Dict[str, List]:
+    """
+    Extrae toda la informacion personal de un texto.
+    
+    Returns:
+        dict: {
+            'emails': [...],
+            'telefonos': [...],
+            'cedulas': [...],
+            'fechas': [...]
+        }
+    """
+    # TODO: Usar todas las funciones extractoras
+    # TODO: Retornar diccionario organizado
+    pass
+
+# ==================================================================
+# PROCESADOR DE LOGS
+# ==================================================================
+
+def procesar_log(texto_log: str) -> Dict[str, any]:
+    """
+    Procesa un archivo de log y extrae informacion estructurada.
+    
+    Returns:
+        dict: {
+            'entradas': [...],
+            'estadisticas': {'INFO': n, 'ERROR': n, ...}
+        }
+    """
+    # TODO: Extraer cada linea de log
+    # TODO: Parsear timestamp, nivel, mensaje
+    # TODO: Contar por nivel de severidad
+    pass
+
+# ==================================================================
+# UTILIDADES
+# ==================================================================
+
+def limpiar_telefono(telefono: str) -> str:
+    """Limpia un telefono dejando solo digitos."""
+    # TODO: Usar re.sub para eliminar no-digitos
+    pass
+
+def formatear_cedula(cedula: str) -> str:
+    """Formatea una cedula al formato estandar."""
+    # TODO: Extraer digitos y reformatear
+    pass
+
+def enmascarar_email(email: str) -> str:
+    """Enmascara un email: usuario@dominio.com -> u***o@dominio.com"""
+    # TODO: Usar grupos para capturar y reemplazar
+    pass
+
+# ==================================================================
+# MENU INTERACTIVO
+# ==================================================================
+
+def menu_validadores():
+    """Menu para probar los validadores."""
+    while True:
+        print("\n" + "="*50)
+        print("VALIDADORES")
+        print("="*50)
+        print("1. Validar cedula")
+        print("2. Validar telefono")
+        print("3. Validar email")
+        print("4. Validar placa")
+        print("5. Validar URL")
+        print("6. Volver")
+        
+        # TODO: Implementar logica del menu
+        pass
+
+def menu_extractores():
+    """Menu para probar los extractores."""
+    # TODO: Implementar menu de extractores
+    pass
+
+def menu_principal():
+    """Menu principal del sistema."""
+    while True:
+        print("\n" + "="*60)
+        print("SISTEMA DE VALIDACION Y EXTRACCION DE DATOS")
+        print("="*60)
+        print("1. Validadores")
+        print("2. Extractores de texto")
+        print("3. Procesador de logs")
+        print("4. Utilidades")
+        print("5. Ejecutar pruebas")
+        print("6. Salir")
+        
+        # TODO: Implementar navegacion del menu
+        pass
+
+# ==================================================================
+# PRUEBAS
+# ==================================================================
+
+def ejecutar_pruebas():
+    """Ejecuta casos de prueba para validar el sistema."""
+    print("\n" + "="*60)
+    print("EJECUTANDO PRUEBAS...")
+    print("="*60)
+    
+    # Pruebas de cedulas
+    cedulas_prueba = [
+        "1-2345-6789",      # Fisica valida
+        "3-101-123456",     # Juridica valida
+        "123456789012",     # DIMEX valido
+        "1-234-5678",       # Fisica invalida
+    ]
+    
+    # TODO: Ejecutar validaciones y mostrar resultados
+    # TODO: Probar extractores con textos de ejemplo
+    # TODO: Mostrar estadisticas de exito/fallo
+    pass
+
+# ==================================================================
+# MAIN
+# ==================================================================
+
+if __name__ == "__main__":
+    print("Sistema de Validacion y Extraccion de Datos")
+    print("NLPY-1 - Semana 7: Expresiones Regulares")
+    menu_principal()
+\end{lstlisting}
+
+\subsection{Ejemplo: Implementación de un Validador}
+
+Como referencia, aquí hay un ejemplo de cómo implementar el validador de email:
+
+\begin{lstlisting}[caption={Ejemplo: Validador de email completo}]
+def validar_email(email: str) -> Dict[str, any]:
+    """
+    Valida un email y extrae sus componentes.
+    
+    Args:
+        email: String con el email a validar
+        
+    Returns:
+        dict: {
+            'valido': bool,
+            'usuario': str,
+            'dominio': str,
+            'mensaje': str
+        }
+    """
+    # Patron con grupos de captura
+    patron = re.compile(
+        r'^(?P<usuario>[a-zA-Z0-9._-]+)@(?P<dominio>[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$'
+    )
+    
+    match = patron.match(email.strip())
+    
+    if match:
+        return {
+            'valido': True,
+            'usuario': match.group('usuario'),
+            'dominio': match.group('dominio'),
+            'mensaje': 'Email valido'
+        }
+    else:
+        return {
+            'valido': False,
+            'usuario': None,
+            'dominio': None,
+            'mensaje': 'Formato de email invalido'
+        }
+
+# Ejemplos de uso:
+print(validar_email("juan.perez@tec.ac.cr"))
+# {'valido': True, 'usuario': 'juan.perez', 'dominio': 'tec.ac.cr', ...}
+
+print(validar_email("correo_invalido@"))
+# {'valido': False, 'usuario': None, 'dominio': None, ...}
+\end{lstlisting}
+
+\section{Ejemplos de Ejecución}
+
+\subsection{Validación de Cédula}
+
+\begin{lstlisting}[caption={Ejemplo de validación de cédulas}]
+>>> validar_cedula("1-2345-6789")
+{
+    'valida': True,
+    'tipo': 'Fisica',
+    'mensaje': 'Cedula fisica valida'
+}
+
+>>> validar_cedula("3-101-654321")
+{
+    'valida': True,
+    'tipo': 'Juridica',
+    'mensaje': 'Cedula juridica valida'
+}
+
+>>> validar_cedula("1-234-567")
+{
+    'valida': False,
+    'tipo': None,
+    'mensaje': 'Formato de cedula invalido'
+}
+\end{lstlisting}
+
+\subsection{Extracción de Datos}
+
+\begin{lstlisting}[caption={Ejemplo de extracción de datos personales}]
+texto = """
+Contactar a Juan Perez al telefono 8888-8888 o al email 
+juan.perez@tec.ac.cr. Cedula: 1-2345-6789.
+Tambien puede llamar a Maria al 2222-2222 o escribir a 
+maria.rodriguez@email.com. Fecha de nacimiento: 15/03/1990.
+"""
+
+>>> extraer_datos_personales(texto)
+{
+    'emails': ['juan.perez@tec.ac.cr', 'maria.rodriguez@email.com'],
+    'telefonos': ['8888-8888', '2222-2222'],
+    'cedulas': [{'tipo': 'fisica', 'valor': '1-2345-6789'}],
+    'fechas': ['15/03/1990']
+}
+\end{lstlisting}
+
+\subsection{Procesamiento de Logs}
+
+\begin{lstlisting}[caption={Ejemplo de procesamiento de logs}]
+log_texto = """
+[2024-10-24 14:30:15] INFO: Sistema iniciado correctamente
+[2024-10-24 14:30:16] INFO: Conectando a base de datos
+[2024-10-24 14:30:20] ERROR: Conexion fallida, reintentando
+[2024-10-24 14:30:25] WARNING: Tiempo de respuesta elevado
+[2024-10-24 14:30:30] INFO: Conexion establecida
+"""
+
+>>> procesar_log(log_texto)
+{
+    'entradas': [
+        {
+            'timestamp': '2024-10-24 14:30:15',
+            'nivel': 'INFO',
+            'mensaje': 'Sistema iniciado correctamente'
+        },
+        ...
+    ],
+    'estadisticas': {
+        'INFO': 3,
+        'ERROR': 1,
+        'WARNING': 1
+    },
+    'total': 5
+}
+\end{lstlisting}
+
+\section{Defensa del Código (60\% de la Nota)}
+
+\subsection{Aspectos Técnicos a Dominar}
+
+\textbf{1. Sintaxis de Expresiones Regulares (15 puntos)}
+\begin{itemize}
+    \item Explicar metacaracteres: \texttt{.}, \texttt{*}, \texttt{+}, \texttt{?}, \texttt{\^{}}, \texttt{\$}
+    \item ¿Cuál es la diferencia entre \texttt{*} y \texttt{+}? ¿Y entre \texttt{?} y \texttt{\{0,1\}}?
+    \item ¿Qué hacen los cuantificadores \texttt{\{n\}}, \texttt{\{n,\}}, \texttt{\{n,m\}}?
+    \item Explicar clases de caracteres: \texttt{[abc]}, \texttt{[a-z]}, \texttt{[\^{}abc]}
+    \item Diferencia entre \texttt{\textbackslash d} y \texttt{[0-9]}
+\end{itemize}
+
+\textbf{2. Módulo re de Python (15 puntos)}
+\begin{itemize}
+    \item Diferencia entre \texttt{re.match()} y \texttt{re.search()}
+    \item ¿Cuándo usar \texttt{re.findall()} vs \texttt{re.finditer()}?
+    \item ¿Para qué sirve \texttt{re.compile()}? ¿Ventajas de compilar patrones?
+    \item Explicar el uso de \texttt{re.sub()} para reemplazos
+    \item ¿Qué retorna cada función? (objeto Match, lista, string, etc.)
+\end{itemize}
+
+\textbf{3. Grupos de Captura (10 puntos)}
+\begin{itemize}
+    \item ¿Qué es un grupo de captura? ¿Cómo se define?
+    \item Diferencia entre grupos normales y grupos con nombre
+    \item ¿Cómo acceder a grupos capturados? (\texttt{.group()}, \texttt{.groups()})
+    \item ¿Qué son los grupos no capturadores \texttt{(?:...)}?
+    \item Explicar backreferences
+\end{itemize}
+
+\textbf{4. Flags y Modificadores (10 puntos)}
+\begin{itemize}
+    \item ¿Para qué sirve \texttt{re.IGNORECASE}?
+    \item Explicar \texttt{re.MULTILINE} y su efecto en \texttt{\^{}} y \texttt{\$}
+    \item ¿Qué hace \texttt{re.DOTALL}?
+    \item ¿Cómo combinar múltiples flags?
+    \item ¿Qué es \texttt{re.VERBOSE} y cuándo usarlo?
+\end{itemize}
+
+\textbf{5. Aplicaciones Prácticas (10 puntos)}
+\begin{itemize}
+    \item ¿Por qué validar con regex en lugar de métodos string?
+    \item Limitaciones de las expresiones regulares
+    \item Casos donde NO se deben usar regex
+    \item Rendimiento: ¿cuándo compilar patrones?
+    \item Mejores prácticas y patrones comunes
+\end{itemize}
+
+\subsection{Preguntas de Defensa Típicas}
+
+\begin{itemize}
+    \item "Explica línea por línea tu patrón regex para validar cédulas físicas"
+    \item "¿Por qué usaste \texttt{re.match()} en lugar de \texttt{re.search()}?"
+    \item "Muestra cómo extraerías el código de área de un teléfono usando grupos"
+    \item "¿Qué pasa si no usas \texttt{r''} (raw string) en tus patrones?"
+    \item "Modifica tu patrón de email para que también acepte signos de suma en el usuario"
+    \item "¿Cómo harías para que tu validador de placas sea case-insensitive?"
+    \item "Explica cómo funciona tu extractor de logs paso a paso"
+\end{itemize}
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Funcionalidad del Código (40 puntos)}
+
+\textbf{Validadores (20 puntos):}
+\begin{itemize}
+    \item 5 puntos: Validador de cédulas (todos los tipos)
+    \item 4 puntos: Validador de teléfonos (formatos variados)
+    \item 3 puntos: Validador de emails
+    \item 4 puntos: Validador de placas (todos los tipos)
+    \item 4 puntos: Validador de URLs
+\end{itemize}
+
+\textbf{Extractores (20 puntos):}
+\begin{itemize}
+    \item 8 puntos: Extractor de datos personales completo
+    \item 4 puntos: Extractor de montos y moneda
+    \item 8 puntos: Procesador de logs con estadísticas
+\end{itemize}
+
+\subsection{Defensa del Código (60 puntos)}
+
+\textbf{Sintaxis de Regex (15 puntos):}
+\begin{itemize}
+    \item 6 puntos: Explica metacaracteres y cuantificadores
+    \item 5 puntos: Comprende clases de caracteres
+    \item 4 puntos: Entiende anclas y límites de palabra
+\end{itemize}
+
+\textbf{Módulo re (15 puntos):}
+\begin{itemize}
+    \item 5 puntos: Diferencia entre funciones principales
+    \item 5 puntos: Uso correcto de re.compile()
+    \item 5 puntos: Comprende objetos Match y sus métodos
+\end{itemize}
+
+\textbf{Grupos y Captura (10 puntos):}
+\begin{itemize}
+    \item 5 puntos: Implementa grupos de captura correctamente
+    \item 3 puntos: Usa grupos con nombre apropiadamente
+    \item 2 puntos: Accede a grupos capturados
+\end{itemize}
+
+\textbf{Flags y Técnicas Avanzadas (10 puntos):}
+\begin{itemize}
+    \item 4 puntos: Aplica flags correctamente
+    \item 3 puntos: Usa raw strings
+    \item 3 puntos: Implementa técnicas avanzadas
+\end{itemize}
+
+\textbf{Calidad y Organización (10 puntos):}
+\begin{itemize}
+    \item 3 puntos: Patrones bien documentados
+    \item 3 puntos: Código organizado y limpio
+    \item 2 puntos: Manejo de errores
+    \item 2 puntos: Pruebas y ejemplos
+\end{itemize}
+
+\subsection{Penalizaciones}
+
+\begin{itemize}
+    \item \textbf{-5 puntos}: No usar raw strings (\texttt{r''}) en patrones regex
+    \item \textbf{-5 puntos}: No usar \texttt{re.compile()} para patrones reutilizables
+    \item \textbf{-3 puntos}: Validadores que no manejan casos límite
+    \item \textbf{-3 puntos}: No usar grupos de captura apropiadamente
+    \item \textbf{-2 puntos}: Patrones regex sin comentarios explicativos
+    \item \textbf{-2 puntos}: No validar entrada antes de procesar
+    \item \textbf{-5 puntos}: Código copiado sin comprensión
+\end{itemize}
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\subsection{Nivel Intermedio (+10 puntos cada uno)}
+
+\textbf{1. Validador de Contraseñas Seguras}
+\begin{itemize}
+    \item Mínimo 8 caracteres
+    \item Al menos una mayúscula, minúscula, número y símbolo
+    \item Usar lookahead assertions: \texttt{(?=.*[A-Z])}
+\end{itemize}
+
+\textbf{2. Extractor de Hashtags y Menciones}
+\begin{itemize}
+    \item Extraer hashtags de estilo Twitter/Instagram
+    \item Extraer menciones (@usuario)
+    \item Validar que no empiecen con números
+\end{itemize}
+
+\textbf{3. Limpiador de Texto HTML}
+\begin{itemize}
+    \item Remover todas las etiquetas HTML
+    \item Preservar el contenido entre etiquetas
+    \item Decodificar entidades HTML básicas
+\end{itemize}
+
+\subsection{Nivel Avanzado (+15 puntos cada uno)}
+
+\textbf{4. Extractor de Información de Facturas}
+\begin{itemize}
+    \item Procesar texto de facturas costarricenses
+    \item Extraer: número de factura, fecha, RUC, total
+    \item Generar JSON estructurado
+\end{itemize}
+
+\textbf{5. Validador de Código de Programación}
+\begin{itemize}
+    \item Detectar y validar sintaxis Python básica
+    \item Extraer nombres de funciones y variables
+    \item Identificar imports
+\end{itemize}
+
+\textbf{6. Analizador de Sentimientos Básico}
+\begin{itemize}
+    \item Identificar palabras positivas/negativas usando regex
+    \item Detectar intensificadores (muy, super, etc.)
+    \item Generar score de sentimiento
+\end{itemize}
+
+\subsection{Nivel Experto (+20 puntos)}
+
+\textbf{7. Parser de Lenguaje Natural Simple}
+\begin{itemize}
+    \item Extraer sujeto, verbo, objeto de oraciones simples
+    \item Usar grupos nombrados extensivamente
+    \item Manejar múltiples estructuras gramaticales
+\end{itemize}
+
+\textbf{8. Validador y Formateador de Direcciones CR}
+\begin{itemize}
+    \item Parsear direcciones costarricenses con regex
+    \item Extraer provincia, cantón, distrito, señas
+    \item Normalizar y formatear según estándar
+\end{itemize}
+
+\section{Recursos y Referencias}
+
+\subsection{Documentación}
+
+\begin{itemize}
+    \item Módulo re de Python: \url{https://docs.python.org/3/library/re.html}
+    \item Tutorial de regex: \url{https://docs.python.org/3/howto/regex.html}
+    \item Regex101 (probador online): \url{https://regex101.com/}
+    \item RegExr (herramienta visual): \url{https://regexr.com/}
+\end{itemize}
+
+\subsection{Consejos para el Desarrollo}
+
+\begin{enumerate}
+    \item \textbf{Prueba tus regex}: Usa herramientas online antes de implementar
+    \item \textbf{Empieza simple}: Construye patrones incrementalmente
+    \item \textbf{Usa raw strings}: Siempre prefiere \texttt{r''} para patrones
+    \item \textbf{Documenta patrones}: Los regex pueden ser crípticos
+    \item \textbf{Casos de prueba}: Ten ejemplos válidos e inválidos
+    \item \textbf{Compila patrones}: Si los usas múltiples veces
+\end{enumerate}
+
+\section{Criterios de Entrega}
+
+\subsection{Archivos Requeridos}
+
+\begin{enumerate}
+    \item \textbf{validador\_extractor.py}: Código principal
+    \item \textbf{pruebas.txt}: Archivo con casos de prueba
+    \item \textbf{logs\_ejemplo.txt}: Archivo de log para procesar
+    \item \textbf{README.txt}: Documentación del proyecto
+\end{enumerate}
+
+\subsection{Contenido del README}
+
+\begin{itemize}
+    \item Nombre del estudiante
+    \item Descripción de patrones regex implementados
+    \item Instrucciones de uso
+    \item Ejemplos de validación
+    \item Desafíos opcionales completados
+    \item Limitaciones conocidas
+\end{itemize}
+
+\vspace{1cm}
+
+\begin{center}
+\textit{"Las expresiones regulares son como el kung-fu:}\\
+\textit{parecen mágicas hasta que comprendes los fundamentos."}\\
+\vspace{0.3cm}
+--- Adaptación de Jeff Atwood
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{¡Éxito con tus expresiones regulares!}\\
+\textit{Recuerda: Un buen patrón regex puede ahorrarte miles de líneas de código.}
+\end{center}
+
+\end{document}

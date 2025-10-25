@@ -1,0 +1,1285 @@
+\documentclass[11pt,letterpaper]{article}
+
+% Paquetes necesarios
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+% Configuración del header y footer
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{NLPY-1: Fundamentos de Python}
+\rhead{Semana 8: Programación Orientada a Objetos}
+\rfoot{Página \thepage}
+
+% Configuración de listings para Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    tabsize=4,
+    captionpos=b
+}
+
+% Configuración de hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\begin{document}
+
+% Título
+\begin{center}
+    {\LARGE \textbf{Tarea 8: Sistema de Gestión de Biblioteca}}\\[0.3cm]
+    {\Large Semana 8: Programación Orientada a Objetos}\\[0.2cm]
+    {\large NLPY-1: Fundamentos de Python}\\[0.2cm]
+    {\large nablabs}\\[0.5cm]
+\end{center}
+
+\section{Introducción}
+
+La \textbf{Programación Orientada a Objetos (POO)} es uno de los paradigmas más importantes y utilizados en el desarrollo de software moderno. Permite modelar el mundo real mediante objetos que contienen datos (atributos) y comportamientos (métodos), facilitando la organización, reutilización y mantenimiento del código.
+
+Python es un lenguaje multiparadigma que soporta POO de manera elegante y poderosa. En esta semana aprenderás a diseñar sistemas complejos usando clases, herencia, encapsulamiento, polimorfismo y otros conceptos fundamentales de la POO.
+
+\subsection{¿Por qué Programación Orientada a Objetos?}
+
+\begin{itemize}
+    \item \textbf{Modelado natural}: Representa entidades del mundo real como objetos
+    \item \textbf{Reutilización de código}: Herencia y composición evitan duplicación
+    \item \textbf{Encapsulamiento}: Protege datos y controla el acceso a ellos
+    \item \textbf{Modularidad}: Código organizado en unidades lógicas independientes
+    \item \textbf{Mantenibilidad}: Cambios localizados, menos propenso a errores
+    \item \textbf{Polimorfismo}: Mismo comportamiento con diferentes implementaciones
+\end{itemize}
+
+\subsection{Objetivos de Aprendizaje}
+
+Al completar esta tarea, el estudiante será capaz de:
+
+\begin{itemize}
+    \item Diseñar e implementar clases con atributos y métodos
+    \item Aplicar el método constructor \texttt{\_\_init\_\_()}
+    \item Implementar métodos especiales (\texttt{\_\_str\_\_}, \texttt{\_\_repr\_\_}, etc.)
+    \item Utilizar propiedades con decoradores \texttt{@property} y setters
+    \item Aplicar herencia para reutilizar y extender funcionalidad
+    \item Implementar polimorfismo mediante herencia
+    \item Usar métodos de clase (\texttt{@classmethod}) y estáticos (\texttt{@staticmethod})
+    \item Aplicar encapsulamiento con atributos privados y protegidos
+    \item Comprender y usar composición de objetos
+    \item Diseñar jerarquías de clases coherentes
+\end{itemize}
+
+\section{Descripción del Proyecto}
+
+Desarrollarás un \textbf{Sistema de Gestión de Biblioteca} completo que permita administrar libros, usuarios, préstamos y multas usando POO. El sistema debe implementar múltiples clases relacionadas con herencia, composición y polimorfismo.
+
+\subsection{Funcionalidades Requeridas}
+
+\subsubsection{1. Sistema de Clases (40 puntos - Funcionalidad)}
+
+Tu sistema debe implementar la siguiente jerarquía de clases:
+
+\textbf{A) Clase Base: Persona (5 puntos)}
+\begin{itemize}
+    \item Atributos: nombre, identificación, email, teléfono
+    \item Métodos: \texttt{\_\_init\_\_}, \texttt{\_\_str\_\_}, \texttt{\_\_repr\_\_}
+    \item Validación de datos en el constructor
+    \item Método para actualizar información de contacto
+\end{itemize}
+
+\textbf{B) Clases Derivadas de Persona (8 puntos)}
+\begin{itemize}
+    \item \textbf{Usuario}: estudiante o miembro regular
+    \begin{itemize}
+        \item Atributos adicionales: tipo\_usuario, libros\_prestados, historial
+        \item Límite de préstamos según tipo (estudiante: 3, regular: 5)
+        \item Método para verificar si puede prestar más libros
+    \end{itemize}
+    \item \textbf{Bibliotecario}: empleado de la biblioteca
+    \begin{itemize}
+        \item Atributos: número\_empleado, turno, especialidad
+        \item Métodos para gestionar préstamos y multas
+    \end{itemize}
+\end{itemize}
+
+\textbf{C) Clase Libro (8 puntos)}
+\begin{itemize}
+    \item Atributos: ISBN, título, autor, editorial, año, categoría
+    \item Atributos de estado: disponible, prestado\_a, fecha\_prestamo
+    \item Métodos: prestar, devolver, obtener\_info
+    \item Propiedades: \texttt{@property} para estado y días\_prestado
+    \item Validación de ISBN
+\end{itemize}
+
+\textbf{D) Clase Prestamo (7 puntos)}
+\begin{itemize}
+    \item Atributos: usuario, libro, fecha\_prestamo, fecha\_devolucion, devuelto
+    \item Calcular días de préstamo y días de retraso
+    \item Método para registrar devolución
+    \item Calcular multa por retraso (₡500 por día)
+    \item Usar composición (tiene Usuario y Libro)
+\end{itemize}
+
+\textbf{E) Clase Biblioteca (12 puntos)}
+\begin{itemize}
+    \item Gestiona colecciones de libros, usuarios y préstamos
+    \item Métodos CRUD para libros y usuarios
+    \item Registrar préstamos y devoluciones
+    \item Buscar libros por título, autor, ISBN o categoría
+    \item Generar reportes y estadísticas
+    \item Listar libros disponibles/prestados
+    \item Calcular total de multas pendientes
+\end{itemize}
+
+\subsubsection{2. Requisitos Técnicos}
+
+\textbf{Uso de POO:}
+\begin{itemize}
+    \item Implementar herencia correctamente
+    \item Usar \texttt{super()} para llamar constructores padre
+    \item Implementar al menos 3 métodos especiales (\texttt{\_\_str\_\_}, \texttt{\_\_repr\_\_}, \texttt{\_\_eq\_\_})
+    \item Usar \texttt{@property} y setters para atributos calculados
+    \item Implementar al menos un \texttt{@classmethod} y un \texttt{@staticmethod}
+\end{itemize}
+
+\textbf{Encapsulamiento:}
+\begin{itemize}
+    \item Atributos privados (\_\_) para datos sensibles
+    \item Atributos protegidos (\_) para datos internos
+    \item Getters y setters con validación
+    \item No acceder directamente a atributos desde fuera
+\end{itemize}
+
+\textbf{Diseño:}
+\begin{itemize}
+    \item Jerarquía de clases coherente y lógica
+    \item Responsabilidad única por clase
+    \item Composición sobre herencia donde sea apropiado
+    \item Métodos bien nombrados y documentados
+\end{itemize}
+
+\section{Conceptos de POO en Python}
+
+\subsection{Elementos Fundamentales}
+
+\textbf{Clases y Objetos:}
+\begin{lstlisting}[caption={Definición básica de clase}]
+class Libro:
+    # Constructor
+    def __init__(self, titulo, autor, isbn):
+        self.titulo = titulo
+        self.autor = autor
+        self.isbn = isbn
+        self.disponible = True
+    
+    # Metodo de instancia
+    def prestar(self):
+        if self.disponible:
+            self.disponible = False
+            return True
+        return False
+    
+    # Metodo especial para representacion
+    def __str__(self):
+        return f"{self.titulo} por {self.autor}"
+
+# Crear objetos (instancias)
+libro1 = Libro("1984", "George Orwell", "978-0451524935")
+print(libro1)  # Usa __str__
+\end{lstlisting}
+
+\textbf{Herencia:}
+\begin{lstlisting}[caption={Herencia de clases}]
+class Persona:
+    def __init__(self, nombre, identificacion):
+        self.nombre = nombre
+        self.identificacion = identificacion
+    
+    def presentarse(self):
+        return f"Hola, soy {self.nombre}"
+
+class Usuario(Persona):  # Usuario hereda de Persona
+    def __init__(self, nombre, identificacion, tipo):
+        super().__init__(nombre, identificacion)  # Llamar constructor padre
+        self.tipo = tipo
+        self.libros_prestados = []
+    
+    def presentarse(self):  # Sobreescritura (override)
+        return f"{super().presentarse()}, usuario {self.tipo}"
+\end{lstlisting}
+
+\textbf{Propiedades:}
+\begin{lstlisting}[caption={Uso de @property}]
+class Libro:
+    def __init__(self, titulo, precio):
+        self.titulo = titulo
+        self._precio = precio  # Atributo protegido
+    
+    @property
+    def precio(self):
+        """Getter para precio"""
+        return self._precio
+    
+    @precio.setter
+    def precio(self, valor):
+        """Setter con validacion"""
+        if valor < 0:
+            raise ValueError("Precio no puede ser negativo")
+        self._precio = valor
+    
+    @property
+    def precio_con_iva(self):
+        """Propiedad calculada (solo lectura)"""
+        return self._precio * 1.13
+
+# Uso
+libro = Libro("Python 101", 15000)
+print(libro.precio)  # Usa getter
+libro.precio = 18000  # Usa setter
+print(libro.precio_con_iva)  # Propiedad calculada
+\end{lstlisting}
+
+\section{Plantilla de Código}
+
+\subsection{Estructura Base del Sistema}
+
+\begin{lstlisting}[caption={Plantilla de clases principales}]
+from datetime import datetime, timedelta
+from typing import List, Optional
+
+# ==================================================================
+# CLASE BASE: PERSONA
+# ==================================================================
+
+class Persona:
+    """Clase base para representar una persona."""
+    
+    def __init__(self, nombre: str, identificacion: str, 
+                 email: str, telefono: str):
+        """
+        Constructor de Persona.
+        
+        Args:
+            nombre: Nombre completo
+            identificacion: Cedula o ID
+            email: Correo electronico
+            telefono: Numero de telefono
+        """
+        # TODO: Validar que los datos no esten vacios
+        # TODO: Asignar atributos
+        pass
+    
+    def __str__(self) -> str:
+        """Representacion en string."""
+        # TODO: Retornar representacion legible
+        pass
+    
+    def __repr__(self) -> str:
+        """Representacion tecnica."""
+        # TODO: Retornar representacion para debugging
+        pass
+    
+    def actualizar_contacto(self, email: str = None, 
+                           telefono: str = None):
+        """Actualiza informacion de contacto."""
+        # TODO: Actualizar email y/o telefono si se proveen
+        pass
+
+# ==================================================================
+# CLASES DERIVADAS DE PERSONA
+# ==================================================================
+
+class Usuario(Persona):
+    """Usuario de la biblioteca."""
+    
+    LIMITE_PRESTAMOS = {
+        'estudiante': 3,
+        'regular': 5
+    }
+    
+    def __init__(self, nombre: str, identificacion: str, 
+                 email: str, telefono: str, tipo_usuario: str):
+        """
+        Constructor de Usuario.
+        
+        Args:
+            tipo_usuario: 'estudiante' o 'regular'
+        """
+        # TODO: Llamar constructor de Persona con super()
+        # TODO: Validar tipo_usuario
+        # TODO: Inicializar libros_prestados como lista vacia
+        # TODO: Inicializar historial como lista vacia
+        pass
+    
+    @property
+    def puede_prestar(self) -> bool:
+        """Verifica si el usuario puede prestar mas libros."""
+        # TODO: Comparar cantidad de libros con el limite
+        pass
+    
+    @property
+    def cantidad_prestamos(self) -> int:
+        """Retorna cantidad de libros actualmente prestados."""
+        # TODO: Retornar longitud de libros_prestados
+        pass
+    
+    def agregar_prestamo(self, libro):
+        """Agrega un libro a los prestados."""
+        # TODO: Agregar a libros_prestados
+        pass
+    
+    def remover_prestamo(self, libro):
+        """Remueve un libro de los prestados."""
+        # TODO: Remover de libros_prestados
+        pass
+
+class Bibliotecario(Persona):
+    """Empleado bibliotecario."""
+    
+    def __init__(self, nombre: str, identificacion: str, 
+                 email: str, telefono: str, 
+                 numero_empleado: str, turno: str):
+        """Constructor de Bibliotecario."""
+        # TODO: Llamar constructor de Persona
+        # TODO: Asignar numero_empleado y turno
+        pass
+    
+    def registrar_prestamo(self, prestamo) -> bool:
+        """Registra un prestamo en el sistema."""
+        # TODO: Validar y registrar prestamo
+        pass
+    
+    def registrar_devolucion(self, prestamo) -> dict:
+        """Registra una devolucion y calcula multa."""
+        # TODO: Procesar devolucion
+        # TODO: Calcular multa si hay retraso
+        pass
+
+# ==================================================================
+# CLASE LIBRO
+# ==================================================================
+
+class Libro:
+    """Representa un libro en la biblioteca."""
+    
+    def __init__(self, isbn: str, titulo: str, autor: str,
+                 editorial: str, año: int, categoria: str):
+        """Constructor de Libro."""
+        # TODO: Validar ISBN (formato basico)
+        # TODO: Asignar todos los atributos
+        # TODO: Inicializar disponible = True
+        # TODO: Inicializar prestado_a = None
+        # TODO: Inicializar fecha_prestamo = None
+        pass
+    
+    @property
+    def disponible(self) -> bool:
+        """Retorna si el libro esta disponible."""
+        # TODO: Retornar estado de disponibilidad
+        pass
+    
+    @property
+    def dias_prestado(self) -> int:
+        """Calcula dias que lleva prestado el libro."""
+        # TODO: Si esta prestado, calcular dias desde fecha_prestamo
+        # TODO: Si no, retornar 0
+        pass
+    
+    def prestar(self, usuario) -> bool:
+        """Presta el libro a un usuario."""
+        # TODO: Verificar que este disponible
+        # TODO: Marcar como no disponible
+        # TODO: Asignar usuario y fecha
+        pass
+    
+    def devolver(self) -> bool:
+        """Marca el libro como devuelto."""
+        # TODO: Marcar como disponible
+        # TODO: Limpiar prestado_a y fecha_prestamo
+        pass
+    
+    def __str__(self) -> str:
+        """Representacion en string."""
+        # TODO: Retornar info del libro
+        pass
+    
+    def __eq__(self, otro) -> bool:
+        """Compara libros por ISBN."""
+        # TODO: Comparar ISBN de ambos libros
+        pass
+    
+    @staticmethod
+    def validar_isbn(isbn: str) -> bool:
+        """Valida formato basico de ISBN."""
+        # TODO: Verificar longitud y formato
+        pass
+
+# ==================================================================
+# CLASE PRESTAMO
+# ==================================================================
+
+class Prestamo:
+    """Representa un prestamo de libro."""
+    
+    DIAS_LIMITE = 14  # 2 semanas
+    MULTA_POR_DIA = 500  # Colones
+    
+    def __init__(self, usuario: Usuario, libro: Libro):
+        """Constructor de Prestamo."""
+        # TODO: Asignar usuario y libro
+        # TODO: Asignar fecha_prestamo (datetime.now())
+        # TODO: Calcular fecha_devolucion (fecha + DIAS_LIMITE)
+        # TODO: Inicializar devuelto = False
+        # TODO: Inicializar fecha_devolucion_real = None
+        pass
+    
+    @property
+    def dias_transcurridos(self) -> int:
+        """Calcula dias desde el prestamo."""
+        # TODO: Calcular diferencia entre hoy y fecha_prestamo
+        pass
+    
+    @property
+    def dias_retraso(self) -> int:
+        """Calcula dias de retraso."""
+        # TODO: Si no esta devuelto, calcular retraso desde fecha limite
+        # TODO: Si esta devuelto, calcular desde fecha real
+        # TODO: Retornar 0 si no hay retraso
+        pass
+    
+    @property
+    def multa(self) -> float:
+        """Calcula la multa por retraso."""
+        # TODO: Multiplicar dias_retraso por MULTA_POR_DIA
+        pass
+    
+    def registrar_devolucion(self) -> dict:
+        """Registra la devolucion del libro."""
+        # TODO: Marcar como devuelto
+        # TODO: Asignar fecha_devolucion_real
+        # TODO: Retornar dict con info de multa
+        pass
+    
+    def __str__(self) -> str:
+        """Representacion en string."""
+        # TODO: Retornar info del prestamo
+        pass
+
+# ==================================================================
+# CLASE BIBLIOTECA
+# ==================================================================
+
+class Biblioteca:
+    """Sistema de gestion de biblioteca."""
+    
+    def __init__(self, nombre: str):
+        """Constructor de Biblioteca."""
+        # TODO: Asignar nombre
+        # TODO: Inicializar listas: libros, usuarios, prestamos
+        pass
+    
+    # --- Gestion de Libros ---
+    
+    def agregar_libro(self, libro: Libro) -> bool:
+        """Agrega un libro al catalogo."""
+        # TODO: Verificar que ISBN no exista
+        # TODO: Agregar a lista de libros
+        pass
+    
+    def buscar_libro_por_isbn(self, isbn: str) -> Optional[Libro]:
+        """Busca un libro por ISBN."""
+        # TODO: Buscar en lista de libros
+        pass
+    
+    def buscar_libros_por_titulo(self, titulo: str) -> List[Libro]:
+        """Busca libros por titulo (coincidencia parcial)."""
+        # TODO: Filtrar libros que contengan el titulo
+        pass
+    
+    def buscar_libros_por_autor(self, autor: str) -> List[Libro]:
+        """Busca libros por autor."""
+        # TODO: Filtrar libros del autor
+        pass
+    
+    def listar_libros_disponibles(self) -> List[Libro]:
+        """Lista todos los libros disponibles."""
+        # TODO: Filtrar libros con disponible=True
+        pass
+    
+    # --- Gestion de Usuarios ---
+    
+    def registrar_usuario(self, usuario: Usuario) -> bool:
+        """Registra un nuevo usuario."""
+        # TODO: Verificar que identificacion no exista
+        # TODO: Agregar a lista de usuarios
+        pass
+    
+    def buscar_usuario(self, identificacion: str) -> Optional[Usuario]:
+        """Busca un usuario por identificacion."""
+        # TODO: Buscar en lista de usuarios
+        pass
+    
+    # --- Gestion de Prestamos ---
+    
+    def realizar_prestamo(self, identificacion_usuario: str, 
+                         isbn: str) -> dict:
+        """Realiza un prestamo de libro."""
+        # TODO: Buscar usuario y libro
+        # TODO: Verificar que usuario puede prestar
+        # TODO: Verificar que libro este disponible
+        # TODO: Crear objeto Prestamo
+        # TODO: Actualizar estado de libro y usuario
+        # TODO: Agregar a lista de prestamos
+        pass
+    
+    def realizar_devolucion(self, isbn: str) -> dict:
+        """Procesa la devolucion de un libro."""
+        # TODO: Buscar prestamo activo del libro
+        # TODO: Registrar devolucion
+        # TODO: Actualizar libro y usuario
+        # TODO: Retornar info con multa
+        pass
+    
+    # --- Reportes y Estadisticas ---
+    
+    def generar_reporte_general(self) -> dict:
+        """Genera reporte general de la biblioteca."""
+        # TODO: Contar total de libros, usuarios, prestamos
+        # TODO: Calcular libros disponibles/prestados
+        # TODO: Calcular total de multas pendientes
+        pass
+    
+    def libros_mas_prestados(self, limite: int = 5) -> List[tuple]:
+        """Retorna los libros mas prestados."""
+        # TODO: Contar prestamos por libro
+        # TODO: Ordenar y retornar top N
+        pass
+    
+    @classmethod
+    def crear_biblioteca_ejemplo(cls):
+        """Crea una biblioteca con datos de ejemplo."""
+        # TODO: Crear instancia de Biblioteca
+        # TODO: Agregar libros y usuarios de ejemplo
+        # TODO: Retornar biblioteca poblada
+        pass
+    
+    def __str__(self) -> str:
+        """Representacion en string."""
+        # TODO: Retornar info basica de la biblioteca
+        pass
+
+# ==================================================================
+# MENU INTERACTIVO
+# ==================================================================
+
+def menu_principal():
+    """Menu principal del sistema."""
+    # TODO: Crear instancia de Biblioteca
+    # TODO: Implementar menu con opciones:
+    #   1. Gestion de libros
+    #   2. Gestion de usuarios
+    #   3. Realizar prestamo
+    #   4. Realizar devolucion
+    #   5. Buscar libros
+    #   6. Reportes
+    #   7. Salir
+    pass
+
+# ==================================================================
+# MAIN
+# ==================================================================
+
+if __name__ == "__main__":
+    print("Sistema de Gestion de Biblioteca")
+    print("NLPY-1 - Semana 8: Programacion Orientada a Objetos")
+    menu_principal()
+\end{lstlisting}
+
+\subsection{Ejemplo: Implementación de la Clase Libro}
+
+Como referencia, aquí está la implementación completa de la clase Libro:
+
+\begin{lstlisting}[caption={Ejemplo: Clase Libro completa}]
+from datetime import datetime
+
+class Libro:
+    """Representa un libro en la biblioteca."""
+    
+    def __init__(self, isbn: str, titulo: str, autor: str,
+                 editorial: str, año: int, categoria: str):
+        """Constructor de Libro."""
+        if not self.validar_isbn(isbn):
+            raise ValueError(f"ISBN invalido: {isbn}")
+        
+        self.isbn = isbn
+        self.titulo = titulo
+        self.autor = autor
+        self.editorial = editorial
+        self.año = año
+        self.categoria = categoria
+        self._disponible = True
+        self._prestado_a = None
+        self._fecha_prestamo = None
+    
+    @property
+    def disponible(self) -> bool:
+        """Retorna si el libro esta disponible."""
+        return self._disponible
+    
+    @property
+    def dias_prestado(self) -> int:
+        """Calcula dias que lleva prestado el libro."""
+        if not self._disponible and self._fecha_prestamo:
+            delta = datetime.now() - self._fecha_prestamo
+            return delta.days
+        return 0
+    
+    def prestar(self, usuario) -> bool:
+        """Presta el libro a un usuario."""
+        if not self._disponible:
+            return False
+        
+        self._disponible = False
+        self._prestado_a = usuario
+        self._fecha_prestamo = datetime.now()
+        return True
+    
+    def devolver(self) -> bool:
+        """Marca el libro como devuelto."""
+        if self._disponible:
+            return False
+        
+        self._disponible = True
+        self._prestado_a = None
+        self._fecha_prestamo = None
+        return True
+    
+    def __str__(self) -> str:
+        """Representacion en string."""
+        estado = "Disponible" if self._disponible else "Prestado"
+        return f"'{self.titulo}' por {self.autor} ({self.año}) - {estado}"
+    
+    def __repr__(self) -> str:
+        """Representacion tecnica."""
+        return f"Libro(isbn='{self.isbn}', titulo='{self.titulo}')"
+    
+    def __eq__(self, otro) -> bool:
+        """Compara libros por ISBN."""
+        if not isinstance(otro, Libro):
+            return False
+        return self.isbn == otro.isbn
+    
+    @staticmethod
+    def validar_isbn(isbn: str) -> bool:
+        """Valida formato basico de ISBN."""
+        # ISBN-10: 10 digitos
+        # ISBN-13: 13 digitos (con guiones opcionales)
+        isbn_limpio = isbn.replace('-', '').replace(' ', '')
+        return len(isbn_limpio) in [10, 13] and isbn_limpio.isdigit()
+
+# Ejemplo de uso:
+libro = Libro(
+    isbn="978-0451524935",
+    titulo="1984",
+    autor="George Orwell",
+    editorial="Signet Classic",
+    año=1950,
+    categoria="Ficcion"
+)
+
+print(libro)  # '1984' por George Orwell (1950) - Disponible
+print(repr(libro))  # Libro(isbn='978-0451524935', titulo='1984')
+\end{lstlisting}
+
+\section{Ejemplos de Ejecución}
+
+\subsection{Creación de Objetos y Herencia}
+
+\begin{lstlisting}[caption={Ejemplo de creación de usuarios y bibliotecarios}]
+# Crear usuario estudiante
+estudiante = Usuario(
+    nombre="Maria Rodriguez",
+    identificacion="1-2345-6789",
+    email="maria.rodriguez@estudiante.cr",
+    telefono="8888-8888",
+    tipo_usuario="estudiante"
+)
+
+print(estudiante)
+# Salida: Maria Rodriguez (1-2345-6789) - Usuario estudiante
+
+# Verificar limite de prestamos
+print(f"Puede prestar: {estudiante.puede_prestar}")  # True
+print(f"Prestamos actuales: {estudiante.cantidad_prestamos}")  # 0
+
+# Crear bibliotecario
+bibliotecario = Bibliotecario(
+    nombre="Carlos Mora",
+    identificacion="3-456-789012",
+    email="cmora@biblioteca.cr",
+    telefono="2222-2222",
+    numero_empleado="BIB-001",
+    turno="matutino"
+)
+
+print(bibliotecario)
+# Salida: Carlos Mora (3-456-789012) - Bibliotecario BIB-001
+\end{lstlisting}
+
+\subsection{Gestión de Libros y Préstamos}
+
+\begin{lstlisting}[caption={Ejemplo de operaciones con libros}]
+# Crear biblioteca
+biblioteca = Biblioteca("Biblioteca Central nablabs")
+
+# Agregar libros
+libro1 = Libro(
+    isbn="978-0451524935",
+    titulo="1984",
+    autor="George Orwell",
+    editorial="Signet Classic",
+    año=1950,
+    categoria="Ficcion"
+)
+
+libro2 = Libro(
+    isbn="978-0062315007",
+    titulo="Sapiens",
+    autor="Yuval Noah Harari",
+    editorial="Harper",
+    año=2015,
+    categoria="Historia"
+)
+
+biblioteca.agregar_libro(libro1)
+biblioteca.agregar_libro(libro2)
+
+# Registrar usuario
+biblioteca.registrar_usuario(estudiante)
+
+# Realizar prestamo
+resultado = biblioteca.realizar_prestamo(
+    identificacion_usuario="1-2345-6789",
+    isbn="978-0451524935"
+)
+
+print(resultado)
+# Salida:
+# {
+#     'exito': True,
+#     'mensaje': 'Prestamo realizado exitosamente',
+#     'libro': '1984',
+#     'usuario': 'Maria Rodriguez',
+#     'fecha_devolucion': '2024-11-07',
+#     'dias_limite': 14
+# }
+
+# Verificar estado
+print(f"Libro disponible: {libro1.disponible}")  # False
+print(f"Dias prestado: {libro1.dias_prestado}")  # 0 (recien prestado)
+print(f"Usuario puede prestar: {estudiante.puede_prestar}")  # True (2/3)
+\end{lstlisting}
+
+\subsection{Devolución y Cálculo de Multas}
+
+\begin{lstlisting}[caption={Ejemplo de devolución con multa}]
+# Simular que pasaron 20 dias (14 dias limite + 6 de retraso)
+# En la practica esto seria automatico por las fechas
+
+resultado = biblioteca.realizar_devolucion(isbn="978-0451524935")
+
+print(resultado)
+# Salida:
+# {
+#     'exito': True,
+#     'mensaje': 'Devolucion registrada',
+#     'libro': '1984',
+#     'dias_prestamo': 20,
+#     'dias_retraso': 6,
+#     'multa': 3000,  # 6 dias * ₡500
+#     'tiene_multa': True
+# }
+
+# Libro vuelve a estar disponible
+print(f"Libro disponible: {libro1.disponible}")  # True
+\end{lstlisting}
+
+\subsection{Búsquedas y Consultas}
+
+\begin{lstlisting}[caption={Ejemplo de búsquedas}]
+# Buscar libros por titulo
+resultados = biblioteca.buscar_libros_por_titulo("sapiens")
+for libro in resultados:
+    print(libro)
+# Salida: 'Sapiens' por Yuval Noah Harari (2015) - Disponible
+
+# Buscar por autor
+resultados = biblioteca.buscar_libros_por_autor("Orwell")
+print(f"Libros de Orwell: {len(resultados)}")
+# Salida: Libros de Orwell: 1
+
+# Listar disponibles
+disponibles = biblioteca.listar_libros_disponibles()
+print(f"\nLibros disponibles: {len(disponibles)}")
+for libro in disponibles:
+    print(f"  - {libro.titulo}")
+# Salida:
+# Libros disponibles: 2
+#   - 1984
+#   - Sapiens
+\end{lstlisting}
+
+\subsection{Reportes y Estadísticas}
+
+\begin{lstlisting}[caption={Ejemplo de generación de reportes}]
+# Generar reporte general
+reporte = biblioteca.generar_reporte_general()
+
+print("\n" + "="*60)
+print(f"REPORTE DE BIBLIOTECA: {biblioteca.nombre}")
+print("="*60)
+print(f"Total de libros: {reporte['total_libros']}")
+print(f"Libros disponibles: {reporte['libros_disponibles']}")
+print(f"Libros prestados: {reporte['libros_prestados']}")
+print(f"Total de usuarios: {reporte['total_usuarios']}")
+print(f"Prestamos activos: {reporte['prestamos_activos']}")
+print(f"Multas pendientes: ₡{reporte['multas_pendientes']:,.2f}")
+print("="*60)
+
+# Salida:
+# ============================================================
+# REPORTE DE BIBLIOTECA: Biblioteca Central nablabs
+# ============================================================
+# Total de libros: 15
+# Libros disponibles: 12
+# Libros prestados: 3
+# Total de usuarios: 8
+# Prestamos activos: 3
+# Multas pendientes: ₡4,500.00
+# ============================================================
+
+# Libros mas prestados
+top_libros = biblioteca.libros_mas_prestados(limite=3)
+print("\nTop 3 Libros Mas Prestados:")
+for i, (libro, cantidad) in enumerate(top_libros, 1):
+    print(f"{i}. {libro.titulo} - {cantidad} prestamos")
+# Salida:
+# Top 3 Libros Mas Prestados:
+# 1. 1984 - 12 prestamos
+# 2. Sapiens - 8 prestamos
+# 3. El Principito - 6 prestamos
+\end{lstlisting}
+
+\subsection{Uso de Propiedades y Validación}
+
+\begin{lstlisting}[caption={Ejemplo de propiedades y validación}]
+# Crear libro con ISBN invalido (manejo de excepcion)
+try:
+    libro_invalido = Libro(
+        isbn="123",  # ISBN muy corto
+        titulo="Libro de Prueba",
+        autor="Autor Desconocido",
+        editorial="Editorial X",
+        año=2024,
+        categoria="Prueba"
+    )
+except ValueError as e:
+    print(f"Error: {e}")
+# Salida: Error: ISBN invalido: 123
+
+# Usar propiedades calculadas
+libro = Libro(
+    isbn="978-0747532699",
+    titulo="Harry Potter y la Piedra Filosofal",
+    autor="J.K. Rowling",
+    editorial="Bloomsbury",
+    año=1997,
+    categoria="Fantasia"
+)
+
+# Prestar el libro
+usuario = Usuario(
+    nombre="Juan Perez",
+    identificacion="2-3456-7890",
+    email="juan@email.com",
+    telefono="7777-7777",
+    tipo_usuario="regular"
+)
+
+libro.prestar(usuario)
+
+# Acceder a propiedades calculadas
+print(f"Libro disponible: {libro.disponible}")  # False (property)
+print(f"Dias prestado: {libro.dias_prestado}")  # Calculado automaticamente
+
+# Intentar prestar de nuevo (ya prestado)
+if not libro.prestar(usuario):
+    print("No se puede prestar: libro ya prestado")
+# Salida: No se puede prestar: libro ya prestado
+\end{lstlisting}
+
+\subsection{Ejecución Completa del Menú}
+
+\begin{lstlisting}[caption={Ejemplo de interacción con el menú}]
+============================================================
+Sistema de Gestion de Biblioteca
+NLPY-1 - Semana 8: Programacion Orientada a Objetos
+============================================================
+
+============================
+MENU PRINCIPAL
+============================
+1. Gestion de libros
+2. Gestion de usuarios
+3. Realizar prestamo
+4. Realizar devolucion
+5. Buscar libros
+6. Reportes y estadisticas
+7. Salir
+
+Seleccione una opcion: 1
+
+============================
+GESTION DE LIBROS
+============================
+1. Agregar libro
+2. Buscar libro por ISBN
+3. Listar todos los libros
+4. Listar libros disponibles
+5. Volver
+
+Seleccione una opcion: 1
+
+--- Agregar Nuevo Libro ---
+ISBN: 978-0451524935
+Titulo: 1984
+Autor: George Orwell
+Editorial: Signet Classic
+Año: 1950
+Categoria: Ficcion
+
+¡Libro agregado exitosamente!
+ISBN: 978-0451524935
+Titulo: '1984' por George Orwell (1950)
+
+Presione Enter para continuar...
+
+============================
+MENU PRINCIPAL
+============================
+...
+
+Seleccione una opcion: 3
+
+--- Realizar Prestamo ---
+Identificacion del usuario: 1-2345-6789
+ISBN del libro: 978-0451524935
+
+¡Prestamo realizado exitosamente!
+Usuario: Maria Rodriguez
+Libro: 1984
+Fecha de prestamo: 2024-10-24
+Fecha limite de devolucion: 2024-11-07
+Dias permitidos: 14
+
+Prestamos actuales del usuario: 1/3
+
+============================
+MENU PRINCIPAL
+============================
+...
+
+Seleccione una opcion: 6
+
+============================
+REPORTES Y ESTADISTICAS
+============================
+
+Biblioteca: Biblioteca Central nablabs
+---------------------------
+Total de libros: 8
+Libros disponibles: 6
+Libros prestados: 2
+Total de usuarios: 5
+Prestamos activos: 2
+Total historico de prestamos: 23
+Multas pendientes: ₡2,500.00
+
+Top 5 Libros Mas Prestados:
+1. 1984 (George Orwell) - 7 prestamos
+2. Cien Años de Soledad (Gabriel Garcia Marquez) - 5 prestamos
+3. El Principito (Antoine de Saint-Exupery) - 4 prestamos
+4. Sapiens (Yuval Noah Harari) - 3 prestamos
+5. Don Quijote (Miguel de Cervantes) - 2 prestamos
+
+Presione Enter para continuar...
+\end{lstlisting}
+
+\section{Defensa del Código (60\% de la Nota)}
+
+\subsection{Aspectos Técnicos a Dominar}
+
+\textbf{1. Fundamentos de POO (15 puntos)}
+\begin{itemize}
+    \item ¿Qué es una clase? ¿Qué es un objeto/instancia?
+    \item Diferencia entre atributos de clase y de instancia
+    \item ¿Para qué sirve \texttt{self}? ¿Por qué es necesario?
+    \item ¿Qué hace el método \texttt{\_\_init\_\_}?
+    \item Explicar el concepto de encapsulamiento
+\end{itemize}
+
+\textbf{2. Herencia y Polimorfismo (15 puntos)}
+\begin{itemize}
+    \item ¿Qué es herencia? ¿Cuándo usarla?
+    \item ¿Para qué sirve \texttt{super()}?
+    \item Diferencia entre sobreescritura (override) y sobrecarga
+    \item ¿Qué es polimorfismo? Ejemplos en tu código
+    \item Herencia simple vs herencia múltiple
+\end{itemize}
+
+\textbf{3. Métodos Especiales (10 puntos)}
+\begin{itemize}
+    \item Diferencia entre \texttt{\_\_str\_\_} y \texttt{\_\_repr\_\_}
+    \item ¿Qué hace \texttt{\_\_eq\_\_}? ¿Cuándo se llama?
+    \item Otros métodos especiales: \texttt{\_\_len\_\_}, \texttt{\_\_getitem\_\_}
+    \item ¿Por qué implementar métodos especiales?
+\end{itemize}
+
+\textbf{4. Propiedades y Decoradores (10 puntos)}
+\begin{itemize}
+    \item ¿Qué es \texttt{@property}? ¿Por qué usarlo?
+    \item Diferencia entre property y atributo normal
+    \item ¿Cómo implementar un setter?
+    \item \texttt{@classmethod} vs \texttt{@staticmethod} vs método de instancia
+    \item Ventajas de usar propiedades para validación
+\end{itemize}
+
+\textbf{5. Diseño y Buenas Prácticas (10 puntos)}
+\begin{itemize}
+    \item Principio de responsabilidad única
+    \item Composición vs herencia: ¿cuándo usar cada una?
+    \item Atributos privados (\_\_) vs protegidos (\_)
+    \item Nomenclatura de clases y métodos
+    \item Documentación de clases con docstrings
+\end{itemize}
+
+\subsection{Preguntas de Defensa Típicas}
+
+\begin{itemize}
+    \item "Explica la jerarquía de herencia en tu sistema"
+    \item "¿Por qué Usuario hereda de Persona? ¿Qué gana con eso?"
+    \item "Muéstrame dónde usas polimorfismo en tu código"
+    \item "¿Qué pasa si llamas \texttt{libro.prestar()} cuando ya está prestado?"
+    \item "Explica cómo funciona tu property \texttt{dias\_retraso}"
+    \item "¿Por qué usaste composición en la clase Prestamo?"
+    \item "Modifica tu código para agregar un método que calcule el préstamo promedio"
+\end{itemize}
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Funcionalidad del Código (40 puntos)}
+
+\textbf{Implementación de Clases (40 puntos):}
+\begin{itemize}
+    \item 5 puntos: Clase Persona con atributos y métodos básicos
+    \item 8 puntos: Clases Usuario y Bibliotecario con herencia correcta
+    \item 8 puntos: Clase Libro con propiedades y validación
+    \item 7 puntos: Clase Prestamo con cálculos de multa
+    \item 12 puntos: Clase Biblioteca con todas las funcionalidades CRUD
+\end{itemize}
+
+\subsection{Defensa del Código (60 puntos)}
+
+\textbf{Fundamentos de POO (15 puntos):}
+\begin{itemize}
+    \item 5 puntos: Explica clases, objetos y self
+    \item 5 puntos: Comprende constructores y atributos
+    \item 5 puntos: Entiende encapsulamiento
+\end{itemize}
+
+\textbf{Herencia y Polimorfismo (15 puntos):}
+\begin{itemize}
+    \item 6 puntos: Implementa herencia correctamente
+    \item 5 puntos: Usa super() apropiadamente
+    \item 4 puntos: Demuestra polimorfismo
+\end{itemize}
+
+\textbf{Métodos Especiales (10 puntos):}
+\begin{itemize}
+    \item 4 puntos: Implementa \_\_str\_\_ y \_\_repr\_\_
+    \item 3 puntos: Implementa \_\_eq\_\_ u otros
+    \item 3 puntos: Comprende cuándo se llaman
+\end{itemize}
+
+\textbf{Propiedades y Decoradores (10 puntos):}
+\begin{itemize}
+    \item 4 puntos: Usa @property correctamente
+    \item 3 puntos: Implementa setters con validación
+    \item 3 puntos: Usa @classmethod o @staticmethod
+\end{itemize}
+
+\textbf{Diseño y Calidad (10 puntos):}
+\begin{itemize}
+    \item 3 puntos: Jerarquía coherente y lógica
+    \item 3 puntos: Nombres descriptivos y convenciones
+    \item 2 puntos: Documentación con docstrings
+    \item 2 puntos: Código organizado y limpio
+\end{itemize}
+
+\subsection{Penalizaciones}
+
+\begin{itemize}
+    \item \textbf{-5 puntos}: No usar herencia cuando es apropiado
+    \item \textbf{-5 puntos}: No implementar métodos especiales básicos
+    \item \textbf{-4 puntos}: No usar \texttt{super()} en constructores de clases derivadas
+    \item \textbf{-3 puntos}: Acceder directamente a atributos privados
+    \item \textbf{-3 puntos}: No validar datos en constructores
+    \item \textbf{-2 puntos}: Clases sin docstrings
+    \item \textbf{-2 puntos}: Nomenclatura incorrecta (clases no en PascalCase)
+\end{itemize}
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\subsection{Nivel Intermedio (+10 puntos cada uno)}
+
+\textbf{1. Sistema de Categorías de Libros}
+\begin{itemize}
+    \item Crear clase Categoria con atributos y métodos
+    \item Implementar jerarquía de categorías (ficción, no-ficción, etc.)
+    \item Búsqueda por categoría jerárquica
+\end{itemize}
+
+\textbf{2. Reservas de Libros}
+\begin{itemize}
+    \item Clase Reserva para cuando libro no está disponible
+    \item Lista de espera por libro
+    \item Notificación automática cuando se devuelve
+\end{itemize}
+
+\textbf{3. Historial Detallado}
+\begin{itemize}
+    \item Registrar todo el historial de préstamos
+    \item Estadísticas por usuario (libros más leídos, categorías favoritas)
+    \item Generar reporte de historial
+\end{itemize}
+
+\subsection{Nivel Avanzado (+15 puntos cada uno)}
+
+\textbf{4. Sistema de Membresías}
+\begin{itemize}
+    \item Clases para diferentes tipos de membresía (básica, premium, VIP)
+    \item Beneficios por nivel (días de préstamo, cantidad de libros)
+    \item Cálculo de cuotas y renovaciones
+\end{itemize}
+
+\textbf{5. Persistencia con JSON}
+\begin{itemize}
+    \item Guardar y cargar biblioteca desde archivos JSON
+    \item Serialización de objetos
+    \item Métodos de clase para crear desde archivo
+\end{itemize}
+
+\textbf{6. Sistema de Recomendaciones}
+\begin{itemize}
+    \item Recomendar libros basados en historial
+    \item Algoritmo simple de similitud
+    \item Top 5 recomendaciones personalizadas
+\end{itemize}
+
+\subsection{Nivel Experto (+20 puntos)}
+
+\textbf{7. Patrón Observer para Notificaciones}
+\begin{itemize}
+    \item Implementar patrón Observer
+    \item Notificar eventos (préstamo, devolución, multa)
+    \item Sistema de suscriptores
+\end{itemize}
+
+\textbf{8. Interfaz Gráfica con tkinter}
+\begin{itemize}
+    \item Crear GUI básica para el sistema
+    \item Mantener toda la lógica POO
+    \item Ventanas para cada operación principal
+\end{itemize}
+
+\section{Recursos y Referencias}
+
+\subsection{Documentación}
+
+\begin{itemize}
+    \item Tutorial POO oficial: \url{https://docs.python.org/3/tutorial/classes.html}
+    \item Métodos especiales: \url{https://docs.python.org/3/reference/datamodel.html}
+    \item Decoradores property: \url{https://docs.python.org/3/library/functions.html#property}
+\end{itemize}
+
+\subsection{Consejos para el Desarrollo}
+
+\begin{enumerate}
+    \item \textbf{Diseña primero}: Dibuja tu jerarquía de clases antes de programar
+    \item \textbf{Empieza simple}: Implementa clases básicas primero, luego agrega complejidad
+    \item \textbf{Prueba cada clase}: Verifica cada clase individualmente antes de integrar
+    \item \textbf{Usa docstrings}: Documenta cada clase y método importante
+    \item \textbf{Piensa en objetos}: Modela entidades del mundo real
+    \item \textbf{Valida siempre}: No asumas que los datos son correctos
+\end{enumerate}
+
+\section{Criterios de Entrega}
+
+\subsection{Archivos Requeridos}
+
+\begin{enumerate}
+    \item \textbf{biblioteca.py}: Código principal con todas las clases
+    \item \textbf{pruebas.py}: Script con casos de prueba
+    \item \textbf{diagrama\_clases.txt}: Diagrama de jerarquía de clases (texto ASCII)
+    \item \textbf{README.txt}: Documentación del proyecto
+\end{enumerate}
+
+\subsection{Contenido del README}
+
+\begin{itemize}
+    \item Nombre del estudiante
+    \item Diagrama de clases (descripción textual)
+    \item Instrucciones de uso
+    \item Ejemplos de operaciones principales
+    \item Desafíos opcionales implementados
+    \item Decisiones de diseño importantes
+\end{itemize}
+
+\vspace{1cm}
+
+\begin{center}
+\textit{"La programación orientada a objetos no es solo sobre sintaxis,}\\
+\textit{es sobre pensar en términos de responsabilidades y relaciones."}\\
+\vspace{0.3cm}
+--- Adaptación de principios de diseño OOP
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{¡Éxito con tu sistema de biblioteca!}\\
+\textit{Recuerda: Un buen diseño orientado a objetos hace el código más mantenible y extensible.}
+\end{center}
+
+\end{document}

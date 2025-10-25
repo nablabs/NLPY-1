@@ -1,0 +1,535 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 0}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 0: Mi Primer Programa en Python}\\
+\large Funciones, Variables y Tipos de Datos}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido al mundo de la programación en Python! Esta es tu primera tarea práctica del curso. El objetivo es que te familiarices con los conceptos más fundamentales de la programación: variables, funciones básicas, tipos de datos y la interacción con el usuario.
+
+No te preocupes si al principio parece complicado. La programación es como aprender un nuevo idioma: con práctica y paciencia, todo cobra sentido. Esta tarea está diseñada para que aprendas haciendo, paso a paso.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Crear y ejecutar programas básicos en Python
+    \item Utilizar las funciones \texttt{print()} e \texttt{input()} para interactuar con el usuario
+    \item Declarar y usar variables con nombres descriptivos
+    \item Trabajar con diferentes tipos de datos (strings, integers, floats)
+    \item Realizar conversiones entre tipos de datos (type casting)
+    \item Aplicar operadores aritméticos básicos
+    \item Usar formateo de strings con f-strings
+    \item Aplicar métodos básicos de strings
+    \item Documentar tu código con comentarios claros
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear un programa interactivo llamado \textbf{``Calculadora de Propinas Personalizada''}. Este programa ayudará a calcular cuánto debe pagar cada persona cuando se divide una cuenta en un restaurante, incluyendo la propina.
+
+El programa debe ser amigable, saludar al usuario por su nombre, y guiarlo paso a paso para obtener la información necesaria y mostrar los resultados de forma clara y profesional.
+
+\subsection{Requisitos Funcionales}
+
+Tu programa debe realizar las siguientes acciones en orden:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Saludo personalizado:}
+    \begin{itemize}
+        \item Solicitar el nombre del usuario
+        \item Dar la bienvenida usando el nombre (debe mostrarse con la primera letra en mayúscula)
+    \end{itemize}
+    
+    \item \textbf{Recopilación de datos:}
+    \begin{itemize}
+        \item Preguntar el monto total de la cuenta del restaurante
+        \item Preguntar el porcentaje de propina que desea dejar (ejemplo: 10, 15, 20)
+        \item Preguntar cuántas personas van a dividir la cuenta
+    \end{itemize}
+    
+    \item \textbf{Cálculos:}
+    \begin{itemize}
+        \item Calcular el monto de la propina
+        \item Calcular el total a pagar (cuenta + propina)
+        \item Calcular cuánto debe pagar cada persona
+    \end{itemize}
+    
+    \item \textbf{Presentación de resultados:}
+    \begin{itemize}
+        \item Mostrar todos los resultados de forma clara y organizada
+        \item Los montos deben mostrarse con exactamente 2 decimales
+        \item Incluir el símbolo de moneda (\$) en los montos
+        \item Usar f-strings para formatear los mensajes
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Ejemplo de Ejecución}
+
+A continuación, se muestra un ejemplo de cómo debería funcionar tu programa:
+
+\begin{lstlisting}[language=Python, caption=Ejemplo de ejecución del programa]
+=== CALCULADORA DE PROPINAS ===
+
+Por favor, ingresa tu nombre: juan carlos
+Hola, Juan Carlos! Bienvenido a la Calculadora de Propinas.
+
+Ingresa el monto total de la cuenta: 150.50
+Que porcentaje de propina deseas dejar? (ejemplo: 10, 15, 20): 15
+Entre cuantas personas se dividira la cuenta? 4
+
+--- RESUMEN DE LA CUENTA ---
+Cuenta original: $150.50
+Propina (15%): $22.57
+Total a pagar: $173.07
+Cada persona debe pagar: $43.27
+
+Gracias por usar la Calculadora de Propinas!
+\end{lstlisting}
+
+\section{Requisitos Técnicos}
+
+\subsection{Estructura del Código}
+
+Tu programa debe incluir:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios:} Al inicio del archivo, incluye:
+    \begin{itemize}
+        \item Tu nombre completo
+        \item Fecha
+        \item Descripción breve del programa
+    \end{itemize}
+    
+    \item \textbf{Variables con nombres descriptivos:} No uses nombres como \texttt{x}, \texttt{y}, \texttt{a}. Usa nombres claros como \texttt{nombre\_usuario}, \texttt{monto\_cuenta}, \texttt{porcentaje\_propina}, etc.
+    
+    \item \textbf{Conversión de tipos:} Los datos ingresados con \texttt{input()} son strings. Debes convertirlos al tipo apropiado:
+    \begin{itemize}
+        \item Usa \texttt{float()} para números decimales (montos, porcentajes)
+        \item Usa \texttt{int()} para números enteros (cantidad de personas)
+    \end{itemize}
+    
+    \item \textbf{Métodos de strings:} Usa al menos:
+    \begin{itemize}
+        \item \texttt{.strip()} para eliminar espacios en blanco al inicio/final
+        \item \texttt{.title()} o \texttt{.capitalize()} para formatear el nombre del usuario
+    \end{itemize}
+    
+    \item \textbf{F-strings:} Todos los mensajes con variables deben usar f-strings. Ejemplo:
+    \begin{lstlisting}
+print(f"Total a pagar: ${total:.2f}")
+    \end{lstlisting}
+    
+    \item \textbf{Formato de números:} Los montos monetarios deben mostrarse con 2 decimales usando \texttt{:.2f}
+\end{itemize}
+
+\subsection{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Planifica antes de programar:} Escribe en papel los pasos que debe seguir tu programa.
+    
+    \item \textbf{Prueba frecuentemente:} Ejecuta tu programa después de escribir cada parte para verificar que funciona.
+    
+    \item \textbf{Atención a los tipos de datos:} Recuerda que \texttt{input()} siempre devuelve un string. Si necesitas hacer matemáticas, debes convertir a número.
+    
+    \item \textbf{Cuidado con la división:} En Python 3, el operador \texttt{/} siempre produce un float. Esto es perfecto para esta tarea.
+    
+    \item \textbf{Formato de salida:} Haz que tu programa se vea profesional con líneas separadoras y mensajes claros.
+    
+    \item \textbf{Comentarios útiles:} Explica las partes complejas de tu código, especialmente los cálculos.
+\end{itemize}
+
+\section{Entregables}
+
+Debes entregar:
+
+\begin{enumerate}[leftmargin=*]
+    \item Un archivo Python llamado \texttt{calculadora\_propinas.py} con tu código completo y funcional.
+    
+    \item El código debe ejecutarse sin errores.
+    
+    \item Incluye comentarios que expliquen las secciones principales de tu código.
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando tu código en el editor.
+    
+    \item \textbf{Ejecutar tu programa} en vivo y demostrar que funciona correctamente.
+    
+    \item \textbf{Explicar tu código línea por línea:}
+    \begin{itemize}
+        \item Por qué elegiste esos nombres de variables
+        \item Cómo funcionan las conversiones de tipo que usaste
+        \item Qué hacen los métodos de strings que aplicaste
+        \item Cómo realizaste los cálculos matemáticos
+        \item Cómo formateaste la salida con f-strings
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas} sobre tu implementación, por ejemplo:
+    \begin{itemize}
+        \item ``¿Qué pasa si cambias este número por otro?''
+        \item ``¿Por qué usaste \texttt{float()} aquí y no \texttt{int()}?''
+        \item ``¿Qué hace el método \texttt{.strip()} en esta línea?''
+        \item ``¿Cómo modificarías tu código para hacer X?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar comprensión:} Debes poder explicar con tus propias palabras qué hace cada parte de tu código.
+\end{enumerate}
+
+\subsection{¿Por qué es necesaria la defensa?}
+
+La defensa nos permite verificar que:
+\begin{itemize}
+    \item Realmente entiendes el código que escribiste
+    \item No copiaste código sin comprender cómo funciona
+    \item Puedes explicar y razonar sobre tus decisiones de programación
+    \item Estás aprendiendo los conceptos, no solo entregando una tarea
+\end{itemize}
+
+\subsection{Consejos para una buena defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Practica tu explicación:} Antes de la defensa, repasa tu código y practica explicarlo en voz alta.
+    
+    \item \textbf{Entiende cada línea:} No dejes ninguna línea sin comprender. Si usaste algo, debes saber por qué.
+    
+    \item \textbf{Prepara tu entorno:} Asegúrate de que tu programa ejecuta correctamente antes de la reunión.
+    
+    \item \textbf{Sé honesto:} Si usaste ayuda (tutoriales, compañeros, etc.), menciónalo. Lo importante es que entiendas el resultado final.
+    
+    \item \textbf{Ten ejemplos listos:} Prepara diferentes valores de entrada para probar tu programa durante la defensa.
+\end{itemize}
+
+\subsection{Distribución de la nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} El programa funciona según los requisitos
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar y defender tu trabajo
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar tu código, la nota máxima de la tarea será el 40\%, sin importar qué tan bien funcione tu programa.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+Si terminas la tarea principal y quieres seguir aprendiendo, intenta estos desafíos:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Validación básica:} Agrega mensajes si el usuario ingresa 0 personas (no se puede dividir entre 0).
+    
+    \item \textbf{Múltiples propinas:} Calcula y muestra cuánto sería con 10\%, 15\% y 20\% de propina al mismo tiempo.
+    
+    \item \textbf{Redondeo inteligente:} Además de mostrar el monto exacto, muestra una versión redondeada al peso/dólar más cercano.
+    
+    \item \textbf{Personalización:} Permite al usuario elegir el símbolo de moneda (\$, €, etc.).
+\end{enumerate}
+
+\textit{Nota: Los desafíos opcionales suman puntos extra, pero primero asegúrate de completar correctamente los requisitos principales.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +15 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Funcionalidad Básica (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución sin errores (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Programa ejecuta perfectamente sin errores
+        \item 6 pts: Ejecuta con 1 error menor que no afecta el resultado final
+        \item 3 pts: Ejecuta con errores que afectan parcialmente los resultados
+        \item 0 pts: No ejecuta o crashea constantemente
+    \end{itemize}
+    
+    \item \textbf{Entrada de datos (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Solicita todos los datos (nombre, cuenta, propina, personas) con mensajes claros
+        \item 4 pts: Solicita todos los datos pero mensajes poco claros
+        \item 2 pts: Falta algún dato requerido
+        \item 0 pts: No solicita datos apropiadamente
+    \end{itemize}
+    
+    \item \textbf{Cálculos correctos (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Todos los cálculos (propina, total, división) son correctos
+        \item 4 pts: Un cálculo incorrecto
+        \item 2 pts: Dos cálculos incorrectos
+        \item 0 pts: Tres o más cálculos incorrectos o no realiza cálculos
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Uso de Conceptos de Python (12 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Variables descriptivas (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Nombres claros y descriptivos en todas las variables
+        \item 2 pts: Mayoría de nombres aceptables, algunos confusos
+        \item 1 pt: Nombres poco claros pero funcionales
+        \item 0 pts: Nombres inapropiados (x, y, a, var1, etc.)
+    \end{itemize}
+    
+    \item \textbf{Conversión de tipos (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa \texttt{float()} e \texttt{int()} correctamente en todos los casos necesarios
+        \item 2 pts: Usa conversiones correctamente pero falta algún caso
+        \item 1 pt: Usa conversiones pero con errores
+        \item 0 pts: No usa conversión de tipos o completamente incorrecto
+    \end{itemize}
+    
+    \item \textbf{F-strings (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa f-strings en todos los mensajes con variables
+        \item 2 pts: Usa f-strings en la mayoría de mensajes
+        \item 1 pt: Usa f-strings solo en algunos casos
+        \item 0 pts: No usa f-strings
+    \end{itemize}
+    
+    \item \textbf{Métodos de strings (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa \texttt{.strip()} y \texttt{.title()} o \texttt{.capitalize()} correctamente
+        \item 2 pts: Usa solo uno de los métodos correctamente
+        \item 1 pt: Intenta usar pero con errores
+        \item 0 pts: No usa métodos de strings
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.3 Formato y Presentación (8 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Formato de montos (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Todos los montos con exactamente 2 decimales y símbolo \$
+        \item 2 pts: Formato correcto pero inconsistente
+        \item 1 pt: Formato parcial o sin símbolo de moneda
+        \item 0 pts: Sin formato apropiado
+    \end{itemize}
+    
+    \item \textbf{Saludo personalizado (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Nombre formateado correctamente con mayúsculas apropiadas
+        \item 1 pt: Muestra nombre pero sin formato
+        \item 0 pts: No personaliza el saludo
+    \end{itemize}
+    
+    \item \textbf{Presentación clara (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Salida bien organizada, profesional y fácil de leer
+        \item 2 pts: Salida aceptable pero mejorable
+        \item 1 pt: Salida desorganizada
+        \item 0 pts: Salida confusa o difícil de entender
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión del Código (30 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Explicación de variables (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica claramente el propósito de cada variable y por qué eligió esos nombres
+        \item 6 pts: Explica la mayoría de variables con claridad
+        \item 3 pts: Explicación superficial o confusa
+        \item 0 pts: No puede explicar sus variables
+    \end{itemize}
+    
+    \item \textbf{Explicación de conversiones de tipo (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica perfectamente por qué usa \texttt{float()}, \texttt{int()} y cuándo usar cada uno
+        \item 6 pts: Explica correctamente pero con alguna duda
+        \item 3 pts: Explicación parcial o incorrecta
+        \item 0 pts: No entiende las conversiones de tipo
+    \end{itemize}
+    
+    \item \textbf{Explicación de cálculos (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica clara y correctamente cada operación aritmética
+        \item 6 pts: Explica correctamente con pequeñas imprecisiones
+        \item 3 pts: Explicación confusa o parcialmente incorrecta
+        \item 0 pts: No puede explicar los cálculos
+    \end{itemize}
+    
+    \item \textbf{Explicación de métodos y formato (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica perfectamente el uso de métodos de strings y f-strings
+        \item 4 pts: Explica correctamente con alguna imprecisión
+        \item 2 pts: Explicación superficial
+        \item 0 pts: No entiende los métodos que usó
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración y Modificación (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución en vivo (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Ejecuta el programa correctamente con diferentes valores de entrada
+        \item 6 pts: Ejecuta con algunos problemas menores
+        \item 3 pts: Dificultades para ejecutar su propio programa
+        \item 0 pts: No puede ejecutar el programa
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (12 pts):}
+    \begin{itemize}
+        \item 12 pts: Responde correcta y claramente a todas las preguntas sobre su código
+        \item 9 pts: Responde bien la mayoría de preguntas, algunas dudas
+        \item 5 pts: Respuestas parciales o confusas
+        \item 2 pts: Dificultad para responder preguntas básicas
+        \item 0 pts: No puede responder preguntas sobre su código
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Documentación y Buenas Prácticas (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios en el código (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Comentarios claros al inicio y en secciones clave del código
+        \item 3 pts: Comentarios presentes pero básicos o incompletos
+        \item 1 pt: Comentarios mínimos
+        \item 0 pts: Sin comentarios
+    \end{itemize}
+    
+    \item \textbf{Legibilidad del código (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Código perfectamente indentado, espaciado apropiado, muy legible
+        \item 3 pts: Código legible con errores menores de formato
+        \item 1 pt: Código funcional pero poco legible
+        \item 0 pts: Código difícil de leer o entender
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +15 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Desafío 1 - Validación básica (+4 pts):} Incluye validación para evitar división entre cero u otros errores lógicos
+    \item \textbf{Desafío 2 - Múltiples propinas (+5 pts):} Calcula y muestra resultados con diferentes porcentajes de propina (10\%, 15\%, 20\%)
+    \item \textbf{Desafío 3 - Redondeo inteligente (+3 pts):} Muestra versión redondeada al peso/dólar más cercano además del monto exacto
+    \item \textbf{Desafío 4 - Personalización de moneda (+3 pts):} Permite al usuario elegir el símbolo de moneda
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicar cómo funcionan durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste a la defensa sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Asiste pero evidencia clara de no entender el código (posible plagio)
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-3 pts:} Nombre de archivo incorrecto
+    \item \textbf{-2 pts:} Falta el encabezado con nombre, fecha y descripción
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de los conceptos
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida con errores menores
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita refuerzo
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita mejorar
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación oficial de Python:} \url{https://docs.python.org/es/3/}
+    \item \textbf{Funciones básicas:} Revisa las notas de clase sobre \texttt{print()}, \texttt{input()}, y type casting
+    \item \textbf{F-strings:} Busca ejemplos de formateo de strings en Python 3.6+
+    \item \textbf{Métodos de strings:} Experimenta en el intérprete interactivo de Python con \texttt{.strip()}, \texttt{.title()}, etc.
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Qué hago si mi programa da error?}\\
+R: Lee cuidadosamente el mensaje de error. Python te dice en qué línea está el problema y qué tipo de error es. Busca esa línea y verifica la sintaxis.
+
+\textbf{P: ¿Cómo muestro un número con 2 decimales?}\\
+R: Usa f-strings con el formato \texttt{:.2f}. Ejemplo: \texttt{print(f"\{valor:.2f\}")}
+
+\textbf{P: ¿Por qué obtengo error al sumar?}\\
+R: Probablemente intentas sumar strings. Recuerda convertir con \texttt{float()} o \texttt{int()} primero.
+
+\textbf{P: ¿Puedo usar otra estructura de mensajes?}\\
+R: Sí, siempre que cumplas todos los requisitos funcionales y técnicos.
+
+\textbf{P: ¿Es obligatorio hacer los desafíos opcionales?}\\
+R: No, son opcionales y solo dan puntos extra. Enfócate primero en completar bien los requisitos principales.
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito en tu primera tarea de programación!}\\
+\textit{Recuerda: todo programador experto fue alguna vez principiante.\\
+La práctica constante es la clave del aprendizaje.}
+\end{center}
+
+\end{document}

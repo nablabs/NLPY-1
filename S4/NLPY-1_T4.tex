@@ -1,0 +1,1150 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 4}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 4: Simulador de Lotería Nacional}\\
+\large Librerías y Módulos en Python}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido a la Semana 4! Has aprendido los fundamentos de Python: variables, condicionales, bucles y manejo de errores. Ahora es momento de ampliar tu poder de programación usando \textbf{librerías y módulos}.
+
+Las librerías son colecciones de código pre-escrito que puedes usar en tus programas. ¿Por qué reinventar la rueda cuando alguien ya creó una solución perfecta? Python tiene una vasta biblioteca estándar y miles de paquetes externos disponibles.
+
+En esta tarea, crearás un simulador completo de la Lotería Nacional de Costa Rica, usando múltiples librerías para generar números aleatorios, calcular estadísticas, trabajar con fechas, interactuar con el sistema operativo, y más.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Importar módulos con \texttt{import}
+    \item Usar importación selectiva con \texttt{from ... import ...}
+    \item Trabajar con módulos de la biblioteca estándar de Python
+    \item Usar \texttt{random} para generación de números aleatorios
+    \item Usar \texttt{statistics} para cálculos estadísticos
+    \item Usar \texttt{datetime} para manejo de fechas y horas
+    \item Usar \texttt{os} y \texttt{sys} para interacción con el sistema
+    \item Instalar paquetes externos con \texttt{pip}
+    \item Crear tus propios módulos personalizados
+    \item Organizar código en múltiples archivos
+    \item Entender la diferencia entre módulos y paquetes
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear un programa llamado \textbf{``Simulador de Lotería Nacional de Costa Rica''}. Este programa simula el sorteo de la Lotería Nacional, permite a usuarios comprar billetes virtuales, realizar sorteos, calcular premios, mantener estadísticas, y guardar/cargar datos.
+
+\subsection{Contexto de la Lotería Nacional}
+
+La Lotería Nacional de Costa Rica funciona así:
+\begin{itemize}
+    \item Los billetes tienen números de 00000 a 99999 (5 dígitos)
+    \item Cada billete tiene una serie (A, B, C, etc.)
+    \item El premio mayor es para el número exacto
+    \item Hay premios para aproximaciones (un número antes/después)
+    \item Hay premios para terminaciones (últimos 2, 3, 4 dígitos)
+    \item Los sorteos se realizan en fechas específicas
+\end{itemize}
+
+\section{Requisitos Funcionales}
+
+\subsection{Parte 1: Módulos a Utilizar}
+
+Tu programa DEBE usar las siguientes librerías:
+
+\subsubsection{1. Módulo random}
+
+\begin{lstlisting}[caption=Uso de random para sorteos]
+import random
+
+# Generar numero ganador (00000-99999)
+numero_ganador = random.randint(0, 99999)
+
+# Generar serie ganadora (A-Z)
+series = ['A', 'B', 'C', 'D', 'E']
+serie_ganadora = random.choice(series)
+
+# Simular venta de billetes aleatorios
+billetes_vendidos = random.sample(range(100000), 1000)
+
+# Generar multiples ganadores para aproximaciones
+aproximaciones = [numero_ganador - 1, numero_ganador + 1]
+\end{lstlisting}
+
+\subsubsection{2. Módulo statistics}
+
+\begin{lstlisting}[caption=Uso de statistics para analisis]
+import statistics
+
+# Lista de precios de billetes vendidos
+precios = [10000, 10000, 10000, 5000, 5000]
+
+# Calcular estadisticas de ventas
+promedio_precio = statistics.mean(precios)
+mediana_precio = statistics.median(precios)
+moda_precio = statistics.mode(precios)
+
+# Calcular desviacion estandar de numeros jugados
+numeros_jugados = [12345, 54321, 98765, 11111]
+desv_std = statistics.stdev(numeros_jugados)
+\end{lstlisting}
+
+\subsubsection{3. Módulo datetime}
+
+\begin{lstlisting}[caption=Uso de datetime para fechas]
+from datetime import datetime, timedelta
+
+# Obtener fecha y hora actual
+fecha_actual = datetime.now()
+print(f"Sorteo realizado: {fecha_actual.strftime('%d/%m/%Y %H:%M:%S')}")
+
+# Calcular proxima fecha de sorteo (cada domingo)
+dias_hasta_domingo = (6 - fecha_actual.weekday()) % 7
+proxima_fecha = fecha_actual + timedelta(days=dias_hasta_domingo)
+
+# Registrar tiempo de sorteo
+inicio = datetime.now()
+# ... realizar sorteo ...
+fin = datetime.now()
+duracion = (fin - inicio).total_seconds()
+print(f"Sorteo completo en {duracion} segundos")
+\end{lstlisting}
+
+\subsubsection{4. Módulo os}
+
+\begin{lstlisting}[caption=Uso de os para sistema de archivos]
+import os
+
+# Verificar si existe carpeta de datos
+if not os.path.exists('datos_loteria'):
+    os.makedirs('datos_loteria')
+    print("Carpeta de datos creada")
+
+# Listar archivos de sorteos anteriores
+archivos = os.listdir('datos_loteria')
+print(f"Sorteos guardados: {len(archivos)}")
+
+# Obtener informacion del sistema
+print(f"Sistema operativo: {os.name}")
+print(f"Directorio actual: {os.getcwd()}")
+\end{lstlisting}
+
+\subsubsection{5. Módulo sys}
+
+\begin{lstlisting}[caption=Uso de sys para informacion del sistema]
+import sys
+
+# Mostrar version de Python
+print(f"Python version: {sys.version}")
+
+# Verificar argumentos de linea de comandos
+if len(sys.argv) > 1:
+    modo = sys.argv[1]
+    print(f"Modo: {modo}")
+
+# Salir del programa con codigo de estado
+if error_critico:
+    print("Error critico detectado")
+    sys.exit(1)
+\end{lstlisting}
+
+\subsubsection{6. Librería externa: colorama (opcional)}
+
+\begin{lstlisting}[caption=Instalacion y uso de colorama para colores]
+# Instalar con: pip install colorama
+
+from colorama import Fore, Back, Style, init
+
+# Inicializar colorama
+init(autoreset=True)
+
+# Imprimir mensajes con colores
+print(Fore.GREEN + "FELICIDADES! HAS GANADO!")
+print(Fore.RED + "Lo sentimos, no ganaste esta vez")
+print(Fore.YELLOW + "Numero ganador: " + Fore.CYAN + "12345")
+print(Back.WHITE + Fore.BLACK + "Premio Mayor")
+\end{lstlisting}
+
+\subsection{Parte 2: Crear Módulo Propio}
+
+Debes crear al menos UN módulo personalizado llamado \texttt{utilidades\_loteria.py}:
+
+\begin{lstlisting}[caption=Archivo utilidades\_loteria.py]
+"""
+Modulo de utilidades para el simulador de loteria
+Contiene funciones auxiliares reutilizables
+"""
+
+def formatear_numero(numero):
+    """Formatea un numero de loteria con ceros a la izquierda"""
+    return str(numero).zfill(5)
+
+def validar_numero_loteria(numero):
+    """Valida que un numero este en rango valido (0-99999)"""
+    try:
+        num = int(numero)
+        return 0 <= num <= 99999
+    except ValueError:
+        return False
+
+def calcular_premio(numero_jugado, numero_ganador, tipo="exacto"):
+    """Calcula el premio segun tipo de acierto"""
+    premios = {
+        "exacto": 200000000,  # 200 millones
+        "aproximacion": 50000000,  # 50 millones
+        "3_cifras": 500000,  # 500 mil
+        "2_cifras": 100000   # 100 mil
+    }
+    return premios.get(tipo, 0)
+
+def obtener_terminaciones(numero):
+    """Obtiene las terminaciones de 2, 3 y 4 cifras"""
+    num_str = str(numero).zfill(5)
+    return {
+        "2_cifras": num_str[-2:],
+        "3_cifras": num_str[-3:],
+        "4_cifras": num_str[-4:]
+    }
+\end{lstlisting}
+
+Luego importar y usar en tu programa principal:
+
+\begin{lstlisting}[caption=Importar modulo propio en main.py]
+# Importar modulo completo
+import utilidades_loteria
+
+numero = utilidades_loteria.formatear_numero(1234)
+
+# O importar funciones especificas
+from utilidades_loteria import validar_numero_loteria, calcular_premio
+
+if validar_numero_loteria(numero_jugado):
+    premio = calcular_premio(numero_jugado, ganador, "exacto")
+\end{lstlisting}
+
+\subsection{Parte 3: Funcionalidades del Programa}
+
+\subsubsection{Menú Principal}
+
+\begin{enumerate}[leftmargin=*]
+    \item Comprar billetes de lotería
+    \item Realizar sorteo
+    \item Ver mis billetes
+    \item Ver resultados del último sorteo
+    \item Ver estadísticas generales
+    \item Verificar si gané
+    \item Información del sistema
+    \item Salir
+\end{enumerate}
+
+\subsubsection{Comprar Billetes}
+
+\begin{itemize}
+    \item Generar número aleatorio o elegir número específico
+    \item Elegir serie (A-E) o aleatoria
+    \item Cada billete cuesta ₡10,000
+    \item Permitir comprar múltiples billetes
+    \item Usar \texttt{random.randint()} para números aleatorios
+    \item Guardar billetes del usuario en una lista
+    \item Mostrar resumen de compra con fecha (\texttt{datetime})
+\end{itemize}
+
+\subsubsection{Realizar Sorteo}
+
+\begin{itemize}
+    \item Generar número ganador (00000-99999) con \texttt{random}
+    \item Generar serie ganadora con \texttt{random.choice()}
+    \item Generar aproximaciones (número -1 y +1)
+    \item Registrar fecha y hora del sorteo con \texttt{datetime}
+    \item Calcular todos los premios:
+    \begin{itemize}
+        \item Premio mayor (número exacto + serie)
+        \item Aproximaciones
+        \item 4 cifras (últimos 4 dígitos)
+        \item 3 cifras (últimos 3 dígitos)
+        \item 2 cifras (últimos 2 dígitos)
+    \end{itemize}
+    \item Guardar resultados del sorteo
+\end{itemize}
+
+\subsubsection{Verificar Premios}
+
+\begin{itemize}
+    \item Comparar billetes del usuario con resultados
+    \item Usar módulo propio para calcular premios
+    \item Mostrar si ganó y cuánto
+    \item Actualizar estadísticas de ganancias
+\end{itemize}
+
+\subsubsection{Estadísticas}
+
+Usar \texttt{statistics} para calcular:
+\begin{itemize}
+    \item Total de billetes comprados
+    \item Total invertido
+    \item Total ganado
+    \item Promedio de números jugados
+    \item Número más jugado (moda)
+    \item Serie más jugada
+    \item Rentabilidad (ganado/invertido)
+    \item Historial de sorteos realizados
+\end{itemize}
+
+\subsubsection{Información del Sistema}
+
+Usar \texttt{os} y \texttt{sys} para mostrar:
+\begin{itemize}
+    \item Versión de Python
+    \item Sistema operativo
+    \item Directorio actual
+    \item Archivos guardados
+    \item Espacio usado por datos
+\end{itemize}
+
+\newpage
+
+\subsection{Ejemplo de Ejecución}
+
+\begin{lstlisting}[caption=Flujo completo del programa]
+========================================
+  SIMULADOR LOTERIA NACIONAL CR
+========================================
+Python 3.11.5 | Sistema: Windows
+Fecha: 24/10/2025 14:30:15
+
+--- MENU PRINCIPAL ---
+1. Comprar billetes
+2. Realizar sorteo
+3. Ver mis billetes
+4. Resultados ultimo sorteo
+5. Estadisticas
+6. Verificar premios
+7. Info del sistema
+8. Salir
+
+Opcion: 1
+
+--- COMPRAR BILLETES ---
+1. Numero aleatorio
+2. Elegir numero especifico
+
+Opcion: 1
+
+Generando numero aleatorio...
+Numero: 45678
+Serie: C
+Precio: ₡10,000
+
+Confirmar compra? (s/n): s
+
+Billete comprado exitosamente!
+Fecha de compra: 24/10/2025 14:31:00
+
+Comprar otro? (s/n): s
+
+Opcion: 2
+Ingresa el numero (00000-99999): 12345
+Serie (A-E) o random (r): A
+Precio: ₡10,000
+
+Billete comprado exitosamente!
+
+Comprar otro? (s/n): n
+
+Total invertido: ₡20,000
+Billetes comprados: 2
+
+--- MENU PRINCIPAL ---
+Opcion: 3
+
+--- MIS BILLETES ---
+1. Numero: 45678 | Serie: C | Comprado: 24/10/2025 14:31
+2. Numero: 12345 | Serie: A | Comprado: 24/10/2025 14:32
+
+Total: 2 billetes
+
+--- MENU PRINCIPAL ---
+Opcion: 2
+
+--- REALIZANDO SORTEO ---
+Fecha del sorteo: 24/10/2025 14:35:00
+
+Generando numero ganador...
+Mezclando bolas...
+Seleccionando serie...
+
+NUMERO GANADOR: 12346
+SERIE GANADORA: A
+
+Aproximaciones:
+- 12345 (aproximacion anterior)
+- 12347 (aproximacion posterior)
+
+Premios por terminaciones:
+- 4 cifras (2346): ₡2,000,000
+- 3 cifras (346): ₡500,000
+- 2 cifras (46): ₡100,000
+
+Sorteo completado en 0.045 segundos
+
+--- MENU PRINCIPAL ---
+Opcion: 6
+
+--- VERIFICAR PREMIOS ---
+Revisando tus 2 billetes...
+
+Billete #1: 45678 - Serie C
+  Terminacion 2 cifras: NO
+  Terminacion 3 cifras: NO
+  Sin premio
+
+Billete #2: 12345 - Serie A
+  APROXIMACION ANTERIOR!
+  Premio: ₡50,000,000
+
+FELICIDADES! HAS GANADO ₡50,000,000!
+
+Tu inversion: ₡20,000
+Tus ganancias: ₡50,000,000
+Rentabilidad: 250,000%
+
+--- MENU PRINCIPAL ---
+Opcion: 5
+
+--- ESTADISTICAS GENERALES ---
+
+Datos de Usuario:
+- Total billetes comprados: 2
+- Total invertido: ₡20,000
+- Total ganado: ₡50,000,000
+- Rentabilidad: 250,000%
+
+Analisis de Numeros Jugados:
+- Numeros: [45678, 12345]
+- Promedio: 29,011.5
+- Numero mas jugado: N/A (todos diferentes)
+
+Series Jugadas:
+- Serie A: 1 vez
+- Serie C: 1 vez
+
+Historial de Sorteos:
+- Sorteos realizados: 1
+- Ultimo sorteo: 24/10/2025 14:35
+- Numero ganador: 12346 - Serie A
+
+--- MENU PRINCIPAL ---
+Opcion: 7
+
+--- INFORMACION DEL SISTEMA ---
+
+Python:
+- Version: 3.11.5
+- Path: C:\Python311\python.exe
+
+Sistema Operativo:
+- OS: Windows (nt)
+- Directorio actual: C:\Users\user\loteria
+
+Archivos:
+- Sorteos guardados: 1
+- Billetes guardados: 2
+- Carpeta datos: datos_loteria/
+
+Modulos cargados:
+- random
+- statistics
+- datetime
+- os
+- sys
+- utilidades_loteria
+
+--- MENU PRINCIPAL ---
+Opcion: 8
+
+Guardando datos...
+Gracias por usar el Simulador de Loteria!
+
+Hasta luego!
+\end{lstlisting}
+
+\newpage
+
+\section{Requisitos Técnicos Detallados}
+
+\subsection{Importaciones Requeridas}
+
+Tu archivo principal debe incluir:
+
+\begin{lstlisting}[caption=Importaciones del programa principal]
+# Modulos de biblioteca estandar
+import random
+import statistics
+import os
+import sys
+from datetime import datetime, timedelta
+
+# Modulo propio
+import utilidades_loteria
+# O importacion selectiva:
+# from utilidades_loteria import formatear_numero, calcular_premio
+
+# Libreria externa (opcional pero recomendado)
+try:
+    from colorama import Fore, Style, init
+    init(autoreset=True)
+    COLORAMA_DISPONIBLE = True
+except ImportError:
+    print("Colorama no instalado. Ejecutar: pip install colorama")
+    COLORAMA_DISPONIBLE = False
+\end{lstlisting}
+
+\subsection{Estructura de Archivos}
+
+Tu proyecto debe tener esta estructura:
+
+\begin{lstlisting}[caption=Estructura del proyecto]
+loteria/
+    main.py                    # Programa principal
+    utilidades_loteria.py      # Modulo personalizado
+    datos_loteria/             # Carpeta para datos (se crea automaticamente)
+        sorteos.txt
+        billetes.txt
+        estadisticas.txt
+    requirements.txt           # Lista de dependencias
+    README.txt                 # Instrucciones
+\end{lstlisting}
+
+\subsection{Archivo requirements.txt}
+
+Crear archivo con dependencias:
+
+\begin{lstlisting}[caption=requirements.txt]
+colorama>=0.4.6
+\end{lstlisting}
+
+Instrucciones para instalar:
+\begin{lstlisting}[language=bash]
+pip install -r requirements.txt
+\end{lstlisting}
+
+\subsection{Uso Correcto de Módulos}
+
+\subsubsection{Random}
+
+Debes usar al menos 3 funciones diferentes:
+
+\begin{lstlisting}
+import random
+
+# randint: numero entero aleatorio en rango
+numero = random.randint(0, 99999)
+
+# choice: elegir elemento aleatorio de lista
+serie = random.choice(['A', 'B', 'C', 'D', 'E'])
+
+# sample: multiples elementos sin repeticion
+numeros_vendidos = random.sample(range(100000), 50)
+
+# shuffle: mezclar lista (in-place)
+lista = [1, 2, 3, 4, 5]
+random.shuffle(lista)
+
+# random: float entre 0 y 1
+probabilidad = random.random()
+if probabilidad < 0.01:  # 1% de probabilidad
+    print("Bonus especial!")
+\end{lstlisting}
+
+\subsubsection{Statistics}
+
+Debes usar al menos 3 funciones:
+
+\begin{lstlisting}
+import statistics
+
+numeros = [12345, 54321, 11111, 99999, 12345]
+
+# mean: promedio
+promedio = statistics.mean(numeros)
+
+# median: mediana
+mediana = statistics.median(numeros)
+
+# mode: moda (mas frecuente)
+moda = statistics.mode(numeros)
+
+# stdev: desviacion estandar
+desviacion = statistics.stdev(numeros)
+
+# variance: varianza
+varianza = statistics.variance(numeros)
+\end{lstlisting}
+
+\subsubsection{Datetime}
+
+Debes usar funcionalidades de fecha/hora:
+
+\begin{lstlisting}
+from datetime import datetime, timedelta
+
+# Obtener fecha/hora actual
+ahora = datetime.now()
+
+# Formatear fecha
+fecha_str = ahora.strftime("%d/%m/%Y %H:%M:%S")
+
+# Parsear fecha desde string
+fecha = datetime.strptime("24/10/2025", "%d/%m/%Y")
+
+# Calcular diferencias de tiempo
+proximo_sorteo = ahora + timedelta(days=7)
+diferencia = proximo_sorteo - ahora
+dias_restantes = diferencia.days
+
+# Obtener componentes
+anio = ahora.year
+mes = ahora.month
+dia = ahora.day
+hora = ahora.hour
+\end{lstlisting}
+
+\subsection{Validaciones con Try-Except}
+
+Todas las importaciones y operaciones deben manejarse:
+
+\begin{lstlisting}
+# Manejar modulos opcionales
+try:
+    from colorama import Fore
+    TIENE_COLOR = True
+except ImportError:
+    TIENE_COLOR = False
+    print("Instalando sin colores...")
+
+# Manejar operaciones de archivo
+try:
+    with open('datos.txt', 'r') as f:
+        datos = f.read()
+except FileNotFoundError:
+    print("Archivo no encontrado, creando nuevo...")
+    datos = ""
+except PermissionError:
+    print("Sin permisos para leer archivo")
+\end{lstlisting}
+
+\section{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Lee la documentación:} Cada módulo tiene documentación oficial. Úsala.
+    
+    \item \textbf{Importa solo lo necesario:} No hagas \texttt{from modulo import *}
+    
+    \item \textbf{Organiza las importaciones:}
+    \begin{enumerate}
+        \item Biblioteca estándar primero
+        \item Librerías externas después
+        \item Módulos propios al final
+    \end{enumerate}
+    
+    \item \textbf{Usa alias cuando sea útil:} \texttt{import statistics as stats}
+    
+    \item \textbf{Comenta módulos propios:} Usa docstrings en funciones
+    
+    \item \textbf{Prueba instalación de paquetes:} Verifica que \texttt{pip} funciona
+    
+    \item \textbf{Maneja ImportError:} Los módulos externos pueden no estar instalados
+    
+    \item \textbf{No reinventes la rueda:} Si existe un módulo que hace lo que necesitas, úsalo
+\end{itemize}
+
+\section{Entregables}
+
+\begin{enumerate}[leftmargin=*]
+    \item \texttt{main.py} - Programa principal
+    \item \texttt{utilidades\_loteria.py} - Módulo personalizado
+    \item \texttt{requirements.txt} - Dependencias
+    \item \texttt{README.txt} - Instrucciones de instalación y uso
+    \item Carpeta \texttt{datos\_loteria/} se crea automáticamente
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando tu código y estructura de archivos.
+    
+    \item \textbf{Demostrar instalación de dependencias:}
+    \begin{itemize}
+        \item Mostrar archivo \texttt{requirements.txt}
+        \item Ejecutar \texttt{pip install -r requirements.txt}
+        \item Verificar que colorama se instala correctamente
+    \end{itemize}
+    
+    \item \textbf{Ejecutar el programa completo:}
+    \begin{itemize}
+        \item Comprar billetes
+        \item Realizar sorteo
+        \item Verificar premios
+        \item Mostrar estadísticas
+        \item Ver información del sistema
+    \end{itemize}
+    
+    \item \textbf{Explicar el uso de cada módulo:}
+    \begin{itemize}
+        \item Por qué usaste \texttt{random} y qué funciones
+        \item Cómo usaste \texttt{statistics} para cálculos
+        \item Para qué usaste \texttt{datetime}
+        \item Qué haces con \texttt{os} y \texttt{sys}
+        \item Cómo creaste y usas tu módulo personalizado
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas como:}
+    \begin{itemize}
+        \item ``¿Cuál es la diferencia entre \texttt{import random} y \texttt{from random import randint}?''
+        \item ``¿Qué hace \texttt{random.seed()}? ¿Para qué serviría?''
+        \item ``¿Cómo instalaste colorama?''
+        \item ``¿Qué pasa si colorama no está instalado?''
+        \item ``¿Por qué crear un módulo propio?''
+        \item ``¿Cómo funciona la importación de módulos en Python?''
+        \item ``¿Qué es \texttt{requirements.txt}?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar comprensión de:}
+    \begin{itemize}
+        \item Diferencia entre módulos de biblioteca estándar y externos
+        \item Cómo instalar paquetes con pip
+        \item Cómo crear y estructurar módulos propios
+        \item Buenas prácticas de importación
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Preguntas Típicas de la Defensa}
+
+Prepárate para responder:
+
+\begin{itemize}[leftmargin=*]
+    \item ¿Cuál es la diferencia entre \texttt{import random} y \texttt{from random import *}?
+    \item ¿Qué es pip y para qué sirve?
+    \item ¿Cómo verificas si un módulo está instalado?
+    \item ¿Qué hace \texttt{if \_\_name\_\_ == "\_\_main\_\_"}?
+    \item ¿Por qué usar \texttt{try-except} al importar colorama?
+    \item ¿Qué es un docstring y por qué usarlo?
+    \item ¿Cómo se organiza un proyecto con múltiples archivos?
+    \item Dame 3 funciones de \texttt{random} y para qué sirven
+    \item ¿Qué diferencia hay entre \texttt{mean} y \texttt{median}?
+\end{itemize}
+
+\subsection{Consejos para una Buena Defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Conoce cada módulo:} Lee la documentación de los que usaste
+    \item \textbf{Instala antes:} Verifica que pip funciona y colorama se instala
+    \item \textbf{Explica tu módulo:} Entiende cada función que creaste
+    \item \textbf{Ten ejemplos:} Muestra diferentes funcionalidades en acción
+    \item \textbf{Entiende imports:} Sé claro sobre las diferencias de importación
+\end{itemize}
+
+\subsection{Distribución de la Nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} El programa usa correctamente múltiples librerías
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar módulos y librerías
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar las librerías que usaste, la nota máxima será 40/100.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Módulo JSON para persistencia (+6 pts):}
+    \begin{itemize}
+        \item Usar \texttt{json} para guardar/cargar datos
+        \item Guardar historial de sorteos en formato JSON
+        \item Cargar datos anteriores al iniciar
+    \end{itemize}
+    
+    \item \textbf{Gráficos con matplotlib (+8 pts):}
+    \begin{itemize}
+        \item Instalar: \texttt{pip install matplotlib}
+        \item Generar gráfico de barras de números más jugados
+        \item Gráfico de pastel de distribución de premios
+        \item Histograma de números ganadores históricos
+    \end{itemize}
+    
+    \item \textbf{Módulo collections (+5 pts):}
+    \begin{itemize}
+        \item Usar \texttt{Counter} para contar frecuencias
+        \item Usar \texttt{defaultdict} para organizar datos
+        \item Mostrar top 10 números más jugados
+    \end{itemize}
+    
+    \item \textbf{Módulo argparse (+5 pts):}
+    \begin{itemize}
+        \item Agregar argumentos de línea de comandos
+        \item \texttt{python main.py --sorteo} para hacer sorteo directo
+        \item \texttt{python main.py --stats} para ver estadísticas
+    \end{itemize}
+    
+    \item \textbf{Módulo pickle para datos binarios (+4 pts):}
+    \begin{itemize}
+        \item Guardar objetos complejos con pickle
+        \item Serializar y deserializar datos
+        \item Comparar con JSON
+    \end{itemize}
+    
+    \item \textbf{Crear paquete completo (+7 pts):}
+    \begin{itemize}
+        \item Organizar en múltiples módulos
+        \item Crear \_\_init\_\_.py para paquete
+        \item Estructura: loteria/core/, loteria/utils/, loteria/data/
+    \end{itemize}
+\end{enumerate}
+
+\textit{Nota: Los puntos extra solo se otorgan si la implementación es correcta Y puedes explicarla en la defensa.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +35 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Uso de Módulos Estándar (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Módulo random (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Usa 3+ funciones diferentes apropiadamente
+        \item 4 pts: Usa 2 funciones correctamente
+        \item 2 pts: Usa solo 1 función
+        \item 0 pts: No usa random o incorrectamente
+    \end{itemize}
+    
+    \item \textbf{Módulo statistics (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Usa 3+ funciones para análisis de datos
+        \item 4 pts: Usa 2 funciones correctamente
+        \item 2 pts: Uso mínimo
+        \item 0 pts: No usa statistics
+    \end{itemize}
+    
+    \item \textbf{Módulo datetime (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Usa para fechas, horas, formateo y cálculos
+        \item 3 pts: Uso correcto pero limitado
+        \item 1 pt: Uso mínimo
+        \item 0 pts: No usa datetime
+    \end{itemize}
+    
+    \item \textbf{Módulos os y sys (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa ambos para interacción con sistema
+        \item 2 pts: Usa uno correctamente
+        \item 1 pt: Uso mínimo
+        \item 0 pts: No usa ninguno
+    \end{itemize}
+    
+    \item \textbf{Importaciones correctas (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Todas las importaciones bien organizadas y apropiadas
+        \item 2 pts: Importaciones funcionales con errores menores
+        \item 1 pt: Importaciones desorganizadas
+        \item 0 pts: Importaciones incorrectas
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Módulo Personalizado (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Creación del módulo (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Archivo separado con funciones bien definidas
+        \item 3 pts: Módulo funcional con errores menores
+        \item 1 pt: Intento de módulo pero incompleto
+        \item 0 pts: No crea módulo propio
+    \end{itemize}
+    
+    \item \textbf{Funciones en el módulo (3 pts):}
+    \begin{itemize}
+        \item 3 pts: 4+ funciones útiles y bien documentadas
+        \item 2 pts: 2-3 funciones
+        \item 1 pt: Solo 1 función
+        \item 0 pts: Sin funciones útiles
+    \end{itemize}
+    
+    \item \textbf{Uso del módulo (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Importa y usa correctamente en programa principal
+        \item 2 pts: Importa pero uso limitado
+        \item 1 pt: Importación con errores
+        \item 0 pts: No usa su propio módulo
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.3 Funcionalidad del Programa (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Compra de billetes (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Sistema completo con validaciones
+        \item 2 pts: Funcional con errores menores
+        \item 1 pt: Implementación básica
+        \item 0 pts: No funciona
+    \end{itemize}
+    
+    \item \textbf{Sistema de sorteo (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Sorteo completo con todos los premios
+        \item 2 pts: Sorteo funcional parcialmente
+        \item 1 pt: Sorteo básico
+        \item 0 pts: No implementa sorteo
+    \end{itemize}
+    
+    \item \textbf{Estadísticas (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Estadísticas completas con statistics
+        \item 1 pt: Estadísticas básicas
+        \item 0 pts: No calcula estadísticas
+    \end{itemize}
+    
+    \item \textbf{Persistencia de datos (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Usa os para crear carpetas y guardar datos
+        \item 1 pt: Guarda algunos datos
+        \item 0 pts: No guarda datos
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión de Módulos (30 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Explicación de importaciones (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica perfectamente import, from...import, diferencias
+        \item 6 pts: Explica correctamente con pequeñas dudas
+        \item 3 pts: Explicación básica
+        \item 0 pts: No entiende importaciones
+    \end{itemize}
+    
+    \item \textbf{Explicación de módulos usados (12 pts):}
+    \begin{itemize}
+        \item 12 pts: Explica claramente qué hace cada módulo y por qué lo usó
+        \item 9 pts: Explica la mayoría correctamente
+        \item 5 pts: Explicación superficial
+        \item 0 pts: No entiende los módulos que usó
+    \end{itemize}
+    
+    \item \textbf{Instalación de paquetes externos (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica pip, requirements.txt, instalación correctamente
+        \item 4 pts: Conoce el proceso con pequeñas dudas
+        \item 2 pts: Conocimiento básico
+        \item 0 pts: No sabe instalar paquetes
+    \end{itemize}
+    
+    \item \textbf{Creación de módulos propios (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Explica perfectamente cómo y por qué creó su módulo
+        \item 3 pts: Explicación correcta
+        \item 1 pt: Explicación vaga
+        \item 0 pts: No entiende su propio módulo
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración y Razonamiento (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Demostración de funcionalidades (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Demuestra todas las funcionalidades exitosamente
+        \item 6 pts: Demuestra la mayoría
+        \item 3 pts: Demostración parcial
+        \item 0 pts: No puede demostrar funcionamiento
+    \end{itemize}
+    
+    \item \textbf{Instalación de dependencias (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Demuestra instalación con pip y requirements.txt
+        \item 3 pts: Demuestra pero con errores menores
+        \item 1 pt: Tiene dificultades
+        \item 0 pts: No puede instalar dependencias
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Responde correctamente todas las preguntas sobre módulos
+        \item 6 pts: Responde la mayoría correctamente
+        \item 3 pts: Respuestas parciales
+        \item 0 pts: No puede responder preguntas básicas
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Calidad y Organización (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Estructura del proyecto (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Archivos bien organizados, estructura clara
+        \item 3 pts: Organización aceptable
+        \item 1 pt: Desorganizado
+        \item 0 pts: Sin estructura
+    \end{itemize}
+    
+    \item \textbf{Documentación (3 pts):}
+    \begin{itemize}
+        \item 3 pts: README, docstrings, comentarios claros
+        \item 2 pts: Documentación básica
+        \item 1 pt: Documentación mínima
+        \item 0 pts: Sin documentación
+    \end{itemize}
+    
+    \item \textbf{Requirements.txt (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Archivo correcto con todas las dependencias
+        \item 2 pts: Archivo presente con errores menores
+        \item 1 pt: Incompleto
+        \item 0 pts: No incluye requirements.txt
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +35 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Módulo JSON (+6 pts):} Persistencia de datos en formato JSON
+    \item \textbf{Gráficos con matplotlib (+8 pts):} Visualizaciones de estadísticas
+    \item \textbf{Módulo collections (+5 pts):} Counter, defaultdict para análisis
+    \item \textbf{Módulo argparse (+5 pts):} Argumentos de línea de comandos
+    \item \textbf{Módulo pickle (+4 pts):} Serialización binaria de datos
+    \item \textbf{Crear paquete completo (+7 pts):} Estructura con \_\_init\_\_.py
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicarla completamente durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Evidencia de no entender los módulos usados
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-5 pts:} No incluye módulo personalizado
+    \item \textbf{-3 pts:} No incluye requirements.txt
+    \item \textbf{-3 pts:} Usa \texttt{from modulo import *} (mala práctica)
+    \item \textbf{-5 pts:} No usa al menos 3 módulos diferentes
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de módulos y librerías
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida del uso de librerías
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita práctica
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita refuerzo
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación oficial:} \url{https://docs.python.org/es/3/tutorial/modules.html}
+    \item \textbf{PyPI (paquetes):} \url{https://pypi.org/}
+    \item \textbf{Módulo random:} \url{https://docs.python.org/es/3/library/random.html}
+    \item \textbf{Módulo statistics:} \url{https://docs.python.org/es/3/library/statistics.html}
+    \item \textbf{Módulo datetime:} \url{https://docs.python.org/es/3/library/datetime.html}
+    \item \textbf{Guía de pip:} \url{https://pip.pypa.io/en/stable/user_guide/}
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Cuál es la diferencia entre \texttt{import random} y \texttt{from random import randint}?}\\
+R: Con \texttt{import random} usas \texttt{random.randint()}. Con \texttt{from random import randint} usas solo \texttt{randint()}.
+
+\textbf{P: ¿Qué es pip?}\\
+R: Es el gestor de paquetes de Python. Permite instalar librerías externas.
+
+\textbf{P: ¿Cómo instalo colorama?}\\
+R: Ejecuta en la terminal: \texttt{pip install colorama}
+
+\textbf{P: ¿Qué pasa si no tengo pip?}\\
+R: Pip viene incluido con Python 3.4+. Si no lo tienes, instala Python de nuevo.
+
+\textbf{P: ¿Puedo usar otros módulos no mencionados?}\\
+R: Sí! Mientras cumplas con los requeridos, puedes usar otros adicionales.
+
+\textbf{P: ¿Cómo creo un módulo propio?}\\
+R: Simplemente crea un archivo .py con funciones, luego importalo con \texttt{import nombre\_archivo}
+
+\textbf{P: ¿Qué es \_\_name\_\_ == "\_\_main\_\_"?}\\
+R: Permite ejecutar código solo cuando el archivo se ejecuta directamente, no cuando se importa.
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito con tu simulador de lotería!}\\
+\textit{Los módulos y librerías son el superpoder de Python.\\
+Aprende a usarlos y tendrás herramientas para cualquier problema.}
+\end{center}
+
+\end{document}

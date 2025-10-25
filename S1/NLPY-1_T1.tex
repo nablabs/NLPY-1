@@ -1,0 +1,813 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 1}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 1: Sistema de Calificaciones}\\
+\large Condicionales y Control de Flujo}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido a la segunda semana del curso! Ya conoces los fundamentos de Python: variables, funciones básicas y tipos de datos. Ahora es momento de aprender a tomar decisiones en tu código.
+
+Los condicionales son el corazón de la lógica de programación. Permiten que tu programa tome diferentes caminos según las condiciones que establezcas. Es como cuando decides qué ropa ponerte según el clima, o qué ruta tomar según el tráfico.
+
+En esta tarea, crearás un sistema que evalúa calificaciones y toma decisiones basadas en diferentes criterios. Aprenderás a usar \texttt{if}, \texttt{elif}, \texttt{else}, operadores de comparación y lógicos para crear un programa inteligente que responda a diferentes situaciones.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Usar operadores de comparación: \texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{==}, \texttt{!=}
+    \item Implementar estructuras condicionales: \texttt{if}, \texttt{elif}, \texttt{else}
+    \item Combinar condiciones con operadores lógicos: \texttt{and}, \texttt{or}, \texttt{not}
+    \item Trabajar con expresiones booleanas y valores \texttt{True}/\texttt{False}
+    \item Anidar condicionales cuando sea necesario
+    \item Validar entradas del usuario con condiciones
+    \item Usar el operador \texttt{match} (Python 3.10+) para selección múltiple
+    \item Crear programas que tomen decisiones complejas
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear un programa llamado \textbf{``Sistema de Calificaciones Académicas del TEC''}. Este sistema ayudará a estudiantes a calcular su nota final en un curso y determinará si aprueban, reprueban, necesitan convocatoria, o si obtienen una mención de honor.
+
+El sistema debe solicitar diferentes calificaciones, calcular promedios, aplicar reglas académicas específicas, y dar retroalimentación personalizada según el rendimiento del estudiante.
+
+\subsection{Contexto Académico}
+
+En el sistema académico del TEC (y de la mayoría de universidades costarricenses):
+\begin{itemize}
+    \item La nota mínima para aprobar es \textbf{70}
+    \item La nota máxima es \textbf{100}
+    \item Entre 65 y 69 se puede ir a \textbf{convocatoria}
+    \item Menos de 65 es \textbf{reprobado}
+    \item 90 o más es \textbf{excelente} (mención de honor)
+    \item Se pueden tener diferentes componentes: exámenes, proyectos, tareas, etc.
+\end{itemize}
+
+\section{Requisitos Funcionales}
+
+Tu programa debe realizar las siguientes acciones:
+
+\subsection{Parte 1: Recopilación de Información}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Datos del estudiante:}
+    \begin{itemize}
+        \item Solicitar nombre del estudiante
+        \item Solicitar nombre del curso
+    \end{itemize}
+    
+    \item \textbf{Componentes de calificación:}
+    \begin{itemize}
+        \item Nota de exámenes (40\% de la nota final)
+        \item Nota de proyecto (30\% de la nota final)
+        \item Nota de tareas (20\% de la nota final)
+        \item Nota de participación (10\% de la nota final)
+    \end{itemize}
+    
+    \item \textbf{Preguntar si hubo ausencias:}
+    \begin{itemize}
+        \item Cantidad de ausencias en el semestre
+        \item Si tiene más de 3 ausencias, hay penalización
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Parte 2: Validaciones}
+
+Tu programa debe validar que:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Todas las notas estén en el rango válido:}
+    \begin{itemize}
+        \item Cada nota debe estar entre 0 y 100
+        \item Si alguna nota es inválida, mostrar mensaje de error y terminar
+    \end{itemize}
+    
+    \item \textbf{El nombre no esté vacío:}
+    \begin{itemize}
+        \item Verificar que el estudiante ingresó su nombre
+        \item Verificar que ingresó el nombre del curso
+    \end{itemize}
+    
+    \item \textbf{Las ausencias sean un número válido:}
+    \begin{itemize}
+        \item No pueden ser negativas
+        \item Deben ser un número entero
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Parte 3: Cálculos y Determinaciones}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Calcular la nota final:}
+    \begin{itemize}
+        \item Aplicar los porcentajes correctos a cada componente
+        \item Sumar para obtener la nota final
+    \end{itemize}
+    
+    \item \textbf{Aplicar penalización por ausencias:}
+    \begin{itemize}
+        \item Si tiene más de 3 ausencias: restar 5 puntos a la nota final
+        \item La nota nunca puede ser menor que 0
+    \end{itemize}
+    
+    \item \textbf{Determinar el estado académico:}
+    \begin{itemize}
+        \item Nota $\geq$ 90: ``Aprobado con Excelencia''
+        \item Nota $\geq$ 70: ``Aprobado''
+        \item Nota entre 65 y 69: ``Convocatoria''
+        \item Nota $<$ 65: ``Reprobado''
+    \end{itemize}
+    
+    \item \textbf{Determinar el componente más fuerte y más débil:}
+    \begin{itemize}
+        \item Identificar en cuál componente tuvo la mejor nota
+        \item Identificar en cuál componente tuvo la peor nota
+    \end{itemize}
+    
+    \item \textbf{Dar recomendaciones personalizadas:}
+    \begin{itemize}
+        \item Basadas en el rendimiento
+        \item Basadas en las ausencias
+        \item Basadas en los componentes débiles
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Parte 4: Presentación de Resultados}
+
+El programa debe mostrar:
+
+\begin{itemize}[leftmargin=*]
+    \item Resumen de notas por componente
+    \item Nota final calculada (con 2 decimales)
+    \item Estado académico (aprobado, convocatoria, reprobado, excelencia)
+    \item Componente más fuerte y más débil
+    \item Recomendaciones personalizadas
+    \item Si hubo penalización por ausencias
+\end{itemize}
+
+\newpage
+
+\subsection{Ejemplo de Ejecución 1: Estudiante Aprobado}
+
+\begin{lstlisting}[caption=Ejemplo - Estudiante aprobado con buenas notas]
+=== SISTEMA DE CALIFICACIONES ACADEMICAS ===
+
+--- INFORMACION DEL ESTUDIANTE ---
+Nombre del estudiante: Maria Fernandez
+Nombre del curso: Programacion en Python
+
+--- INGRESE LAS CALIFICACIONES ---
+Nota de examenes (40%): 85
+Nota de proyecto (30%): 90
+Nota de tareas (20%): 88
+Nota de participacion (10%): 95
+
+Cantidad de ausencias en el semestre: 2
+
+--- PROCESANDO CALIFICACIONES ---
+
+========================================
+       REPORTE DE CALIFICACIONES
+========================================
+
+Estudiante: Maria Fernandez
+Curso: Programacion en Python
+
+--- Desglose de Notas ---
+Examenes (40%):      85.00
+Proyecto (30%):      90.00
+Tareas (20%):        88.00
+Participacion (10%): 95.00
+
+--- Resultado Final ---
+Nota Final: 87.70
+Estado: APROBADO
+
+--- Analisis de Rendimiento ---
+Componente mas fuerte: Participacion (95.00)
+Componente mas debil: Examenes (85.00)
+
+--- Observaciones ---
+- Felicidades! Has aprobado el curso.
+- Tu participacion fue excelente, sigue asi!
+- Podrias mejorar en Examenes para la proxima.
+- Tienes un buen record de asistencia.
+
+========================================
+\end{lstlisting}
+
+\newpage
+
+\subsection{Ejemplo de Ejecución 2: Estudiante en Convocatoria}
+
+\begin{lstlisting}[caption=Ejemplo - Estudiante que va a convocatoria]
+=== SISTEMA DE CALIFICACIONES ACADEMICAS ===
+
+--- INFORMACION DEL ESTUDIANTE ---
+Nombre del estudiante: Carlos Rodriguez
+Nombre del curso: Calculo Diferencial
+
+--- INGRESE LAS CALIFICACIONES ---
+Nota de examenes (40%): 65
+Nota de proyecto (30%): 70
+Nota de tareas (20%): 68
+Nota de participacion (10%): 75
+
+Cantidad de ausencias en el semestre: 5
+
+--- PROCESANDO CALIFICACIONES ---
+ATENCION: Penalizacion de 5 puntos por exceso de ausencias!
+
+========================================
+       REPORTE DE CALIFICACIONES
+========================================
+
+Estudiante: Carlos Rodriguez
+Curso: Calculo Diferencial
+
+--- Desglose de Notas ---
+Examenes (40%):      65.00
+Proyecto (30%):      70.00
+Tareas (20%):        68.00
+Participacion (10%): 75.00
+
+--- Calculo ---
+Nota antes de penalizacion: 68.10
+Penalizacion por ausencias: -5.00
+Nota Final: 63.10
+
+Estado: REPROBADO
+
+--- Analisis de Rendimiento ---
+Componente mas fuerte: Participacion (75.00)
+Componente mas debil: Examenes (65.00)
+
+--- Observaciones ---
+- Lamentablemente has reprobado el curso.
+- Las ausencias afectaron significativamente tu nota.
+- Debes mejorar tu asistencia a clases.
+- Tu componente mas debil es Examenes, dedica mas tiempo.
+- Recomendamos tomar un curso de nivelacion.
+
+========================================
+\end{lstlisting}
+
+\newpage
+
+\section{Requisitos Técnicos Detallados}
+
+\subsection{Uso de Condicionales}
+
+Tu programa DEBE incluir:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Validación con \texttt{if}:}
+    \begin{lstlisting}
+# Ejemplo: Validar rango de notas
+if nota_examenes < 0 or nota_examenes > 100:
+    print("Error: La nota debe estar entre 0 y 100")
+    \end{lstlisting}
+    
+    \item \textbf{Múltiples condiciones con \texttt{elif}:}
+    \begin{lstlisting}
+# Ejemplo: Determinar estado academico
+if nota_final >= 90:
+    estado = "Aprobado con Excelencia"
+elif nota_final >= 70:
+    estado = "Aprobado"
+elif nota_final >= 65:
+    estado = "Convocatoria"
+else:
+    estado = "Reprobado"
+    \end{lstlisting}
+    
+    \item \textbf{Operadores lógicos (\texttt{and}, \texttt{or}, \texttt{not}):}
+    \begin{lstlisting}
+# Ejemplo: Verificar multiples condiciones
+if ausencias > 3 and nota_final > 0:
+    nota_final -= 5  # Aplicar penalizacion
+    
+if nombre == "" or curso == "":
+    print("Error: Debe ingresar el nombre")
+    \end{lstlisting}
+    
+    \item \textbf{Condicionales anidados:}
+    \begin{lstlisting}
+# Ejemplo: Dar recomendaciones especificas
+if estado == "Aprobado":
+    if nota_final >= 90:
+        print("Felicidades por tu excelencia!")
+    else:
+        print("Buen trabajo!")
+else:
+    if ausencias > 3:
+        print("Las ausencias afectaron tu nota")
+    \end{lstlisting}
+    
+    \item \textbf{Operador \texttt{match} (OPCIONAL - Python 3.10+):}
+    \begin{lstlisting}
+# Ejemplo: Match para categorizar estado
+match estado:
+    case "Aprobado con Excelencia":
+        print("Rendimiento sobresaliente!")
+    case "Aprobado":
+        print("Cumpliste con los objetivos!")
+    case "Convocatoria":
+        print("Tienes una oportunidad mas!")
+    case "Reprobado":
+        print("Debes mejorar para la proxima")
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Estructura del Código}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios descriptivos:}
+    \begin{itemize}
+        \item Encabezado con nombre, fecha y descripción
+        \item Comentarios explicando cada sección lógica
+        \item Comentarios en validaciones complejas
+    \end{itemize}
+    
+    \item \textbf{Variables con nombres claros:}
+    \begin{itemize}
+        \item \texttt{nota\_examenes}, \texttt{nota\_proyecto}, etc.
+        \item \texttt{nota\_final}, \texttt{estado\_academico}
+        \item \texttt{componente\_fuerte}, \texttt{componente\_debil}
+    \end{itemize}
+    
+    \item \textbf{Conversión de tipos apropiada:}
+    \begin{itemize}
+        \item \texttt{float()} para las notas
+        \item \texttt{int()} para las ausencias
+        \item \texttt{.strip()} para limpiar nombres
+    \end{itemize}
+    
+    \item \textbf{Formato profesional:}
+    \begin{itemize}
+        \item Usar f-strings para todos los mensajes
+        \item Mostrar notas con 2 decimales: \texttt{:.2f}
+        \item Líneas separadoras para organizar la salida
+        \item Mensajes claros y bien redactados
+    \end{itemize}
+\end{itemize}
+
+\section{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Planifica la lógica primero:} Dibuja un diagrama de flujo o escribe pseudocódigo antes de programar.
+    
+    \item \textbf{Valida temprano:} Verifica las entradas del usuario antes de hacer cálculos.
+    
+    \item \textbf{Prueba todos los casos:} Asegúrate de probar:
+    \begin{itemize}
+        \item Estudiante aprobado (nota $\geq$ 70)
+        \item Estudiante con excelencia (nota $\geq$ 90)
+        \item Estudiante en convocatoria (65-69)
+        \item Estudiante reprobado (nota $<$ 65)
+        \item Con y sin penalización por ausencias
+        \item Notas inválidas (fuera de rango)
+    \end{itemize}
+    
+    \item \textbf{Cuida el orden de los condicionales:} En estructuras \texttt{if-elif-else}, el orden importa.
+    
+    \item \textbf{Usa paréntesis para claridad:} Cuando combines condiciones, usa paréntesis para evitar errores.
+    
+    \item \textbf{No repitas código:} Si calculas algo más de una vez, guárdalo en una variable.
+    
+    \item \textbf{Mensajes amigables:} Los mensajes de error deben ser claros y ayudar al usuario.
+\end{itemize}
+
+\section{Entregables}
+
+\begin{enumerate}[leftmargin=*]
+    \item Archivo Python llamado \texttt{sistema\_calificaciones.py}
+    \item El código debe ejecutarse sin errores
+    \item Debe incluir todos los comentarios requeridos
+    \item Debe manejar todos los casos descritos
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando tu código en el editor.
+    
+    \item \textbf{Ejecutar tu programa} demostrando diferentes casos:
+    \begin{itemize}
+        \item Un estudiante que apruebe
+        \item Un estudiante que repruebe
+        \item Un estudiante en convocatoria
+        \item Un estudiante con penalización por ausencias
+        \item Validación de datos inválidos
+    \end{itemize}
+    
+    \item \textbf{Explicar tu código:}
+    \begin{itemize}
+        \item Cómo funcionan tus validaciones
+        \item Por qué usaste \texttt{if-elif-else} en ciertos lugares
+        \item Cómo determinaste el componente más fuerte/débil
+        \item Cómo calculaste la nota final con porcentajes
+        \item Qué operadores lógicos usaste y por qué
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas como:}
+    \begin{itemize}
+        \item ``¿Qué pasaría si cambias este \texttt{>=} por \texttt{>}?''
+        \item ``¿Por qué usaste \texttt{and} aquí y no \texttt{or}?''
+        \item ``¿Cómo modificarías el código para agregar otro componente?''
+        \item ``¿Qué pasa si las ausencias son 3 exactamente?''
+        \item ``¿Por qué validaste las notas antes de calcular?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar que entiendes la lógica:}
+    \begin{itemize}
+        \item Explica cómo fluye el programa según diferentes entradas
+        \item Describe qué condiciones llevan a qué resultados
+        \item Justifica tus decisiones de diseño
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Preguntas Típicas de la Defensa}
+
+Prepárate para responder:
+
+\begin{itemize}[leftmargin=*]
+    \item ¿Por qué validaste primero antes de calcular?
+    \item ¿Qué diferencia hay entre usar \texttt{==} y \texttt{=}?
+    \item ¿Cuál es la diferencia entre \texttt{and} y \texttt{or}?
+    \item Si cambio esta condición, ¿qué pasaría?
+    \item ¿Cómo decides entre usar \texttt{if-elif} o varios \texttt{if} separados?
+    \item ¿Por qué es importante el orden en los \texttt{elif}?
+    \item ¿Qué hace el operador \texttt{not}?
+    \item ¿Cómo probaste que tu programa funciona correctamente?
+\end{itemize}
+
+\subsection{Consejos para una Buena Defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Practica explicar tu código} a un amigo o en voz alta
+    \item \textbf{Entiende cada condicional} que escribiste
+    \item \textbf{Ten ejemplos preparados} con diferentes valores
+    \item \textbf{Conoce los operadores} de comparación y lógicos
+    \item \textbf{Sé honesto:} Si usaste ayuda, menciónalo, pero asegúrate de entender todo
+\end{itemize}
+
+\subsection{Distribución de la Nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} El programa funciona según los requisitos
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar y defender tu trabajo
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar tu código, la nota máxima será 40/100.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Múltiples intentos (+5 pts):}
+    \begin{itemize}
+        \item Si el usuario ingresa una nota inválida, permitir reintentar
+        \item No terminar el programa, dar 3 oportunidades
+    \end{itemize}
+    
+    \item \textbf{Tabla de honor (+4 pts):}
+    \begin{itemize}
+        \item Si la nota es $\geq$ 95, agregar a una ``Tabla de Honor''
+        \item Mostrar un mensaje especial de felicitación
+    \end{itemize}
+    
+    \item \textbf{Estadísticas adicionales (+4 pts):}
+    \begin{itemize}
+        \item Calcular el promedio de todos los componentes
+        \item Mostrar cuántos componentes están arriba de 80
+    \end{itemize}
+    
+    \item \textbf{Sistema de créditos (+5 pts):}
+    \begin{itemize}
+        \item Preguntar cuántos créditos tiene el curso (1-4)
+        \item Calcular el impacto en el promedio general del estudiante
+        \item Dar recomendaciones según la cantidad de créditos
+    \end{itemize}
+    
+    \item \textbf{Uso de \texttt{match} (+3 pts):}
+    \begin{itemize}
+        \item Implementar al menos un \texttt{match} de forma apropiada
+        \item Por ejemplo, para categorizar mensajes según el estado
+    \end{itemize}
+\end{enumerate}
+
+\textit{Nota: Los puntos extra solo se otorgan si la implementación es correcta Y puedes explicarla en la defensa.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +21 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Funcionalidad Básica (15 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución sin errores (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Programa ejecuta perfectamente en todos los casos
+        \item 3 pts: Ejecuta con errores menores en casos específicos
+        \item 1 pt: Ejecuta pero con errores frecuentes
+        \item 0 pts: No ejecuta o crashea
+    \end{itemize}
+    
+    \item \textbf{Recopilación de datos (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Solicita todos los datos requeridos (nombre, curso, 4 notas, ausencias)
+        \item 3 pts: Solicita la mayoría de datos, falta alguno
+        \item 1 pt: Solicita solo algunos datos
+        \item 0 pts: No solicita datos apropiadamente
+    \end{itemize}
+    
+    \item \textbf{Cálculo de nota final (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Calcula correctamente con porcentajes (40\%, 30\%, 20\%, 10\%)
+        \item 3 pts: Calcula pero con algún porcentaje incorrecto
+        \item 1 pt: Intenta calcular pero lógica incorrecta
+        \item 0 pts: No calcula o completamente incorrecto
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Validaciones (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Validación de rango de notas (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Valida que todas las notas estén entre 0 y 100
+        \item 3 pts: Valida la mayoría de notas
+        \item 1 pt: Validación incompleta o incorrecta
+        \item 0 pts: No valida rangos
+    \end{itemize}
+    
+    \item \textbf{Validación de nombres (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Verifica que nombre y curso no estén vacíos
+        \item 2 pts: Valida solo uno de los dos
+        \item 1 pt: Validación parcial
+        \item 0 pts: No valida nombres
+    \end{itemize}
+    
+    \item \textbf{Validación de ausencias (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Verifica que sean no negativas y entero válido
+        \item 2 pts: Validación parcial
+        \item 1 pt: Intenta validar pero con errores
+        \item 0 pts: No valida ausencias
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.3 Uso de Condicionales (15 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Determinación de estado académico (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Usa \texttt{if-elif-else} correctamente para 4 estados
+        \item 4 pts: Categoriza correctamente 3 de 4 estados
+        \item 2 pts: Lógica parcialmente correcta
+        \item 0 pts: No determina estado o lógica incorrecta
+    \end{itemize}
+    
+    \item \textbf{Penalización por ausencias (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Aplica -5 puntos si ausencias > 3, previene nota < 0
+        \item 2 pts: Aplica penalización pero sin verificación de mínimo
+        \item 1 pt: Lógica parcial
+        \item 0 pts: No implementa penalización
+    \end{itemize}
+    
+    \item \textbf{Identificación de componentes fuerte/débil (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Identifica correctamente ambos componentes
+        \item 3 pts: Identifica uno correctamente
+        \item 1 pt: Intenta pero lógica incorrecta
+        \item 0 pts: No identifica componentes
+    \end{itemize}
+    
+    \item \textbf{Recomendaciones personalizadas (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Da recomendaciones basadas en múltiples factores
+        \item 2 pts: Recomendaciones básicas pero relevantes
+        \item 1 pt: Recomendaciones genéricas o mínimas
+        \item 0 pts: No da recomendaciones
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión de Condicionales (25 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Explicación de operadores de comparación (7 pts):}
+    \begin{itemize}
+        \item 7 pts: Explica perfectamente \texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{==}, \texttt{!=}
+        \item 5 pts: Explica correctamente la mayoría
+        \item 3 pts: Explicación básica o con errores
+        \item 0 pts: No entiende los operadores
+    \end{itemize}
+    
+    \item \textbf{Explicación de if-elif-else (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica claramente cómo fluye la ejecución según condiciones
+        \item 6 pts: Explica correctamente con pequeñas imprecisiones
+        \item 3 pts: Explicación superficial o confusa
+        \item 0 pts: No entiende la estructura
+    \end{itemize}
+    
+    \item \textbf{Explicación de operadores lógicos (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Explica perfectamente \texttt{and}, \texttt{or}, \texttt{not} con ejemplos de su código
+        \item 7 pts: Explica correctamente con alguna duda
+        \item 4 pts: Explicación parcial o con errores
+        \item 0 pts: No entiende operadores lógicos
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración y Razonamiento (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución de diferentes casos (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Demuestra exitosamente 4+ casos diferentes
+        \item 6 pts: Demuestra 3 casos correctamente
+        \item 3 pts: Demuestra 2 casos
+        \item 0 pts: No puede ejecutar múltiples casos
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (12 pts):}
+    \begin{itemize}
+        \item 12 pts: Responde correcta y claramente todas las preguntas sobre lógica
+        \item 9 pts: Responde bien la mayoría, algunas dudas
+        \item 5 pts: Respuestas parciales o confusas
+        \item 2 pts: Dificultad con preguntas básicas
+        \item 0 pts: No puede responder sobre su lógica
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Calidad del Código (15 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios explicativos (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Comentarios claros en encabezado y secciones lógicas clave
+        \item 3 pts: Comentarios presentes pero básicos
+        \item 1 pt: Comentarios mínimos
+        \item 0 pts: Sin comentarios
+    \end{itemize}
+    
+    \item \textbf{Nombres de variables (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Todos los nombres son descriptivos y claros
+        \item 3 pts: Mayoría de nombres buenos, algunos confusos
+        \item 1 pt: Nombres poco claros
+        \item 0 pts: Nombres inapropiados (x, y, var1, etc.)
+    \end{itemize}
+    
+    \item \textbf{Presentación y formato (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Salida profesional, bien organizada, con f-strings y formato correcto
+        \item 3 pts: Salida aceptable, formato parcial
+        \item 1 pt: Salida básica, poco formato
+        \item 0 pts: Salida confusa o sin formato
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +21 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Múltiples intentos (+5 pts):} Permite reintentar entradas inválidas
+    \item \textbf{Tabla de honor (+4 pts):} Mensaje especial para notas $\geq$ 95
+    \item \textbf{Estadísticas adicionales (+4 pts):} Calcula promedios y cuenta componentes > 80
+    \item \textbf{Sistema de créditos (+5 pts):} Calcula impacto según créditos del curso
+    \item \textbf{Uso de match (+3 pts):} Implementa correctamente operador \texttt{match}
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicarla completamente durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste a la defensa sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Evidencia clara de no entender el código (posible plagio)
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-3 pts:} Nombre de archivo incorrecto
+    \item \textbf{-2 pts:} Falta encabezado con información del estudiante
+    \item \textbf{-5 pts:} No valida ninguna entrada del usuario
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de condicionales
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida de control de flujo
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita práctica
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita refuerzo
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación oficial:} \url{https://docs.python.org/es/3/tutorial/controlflow.html}
+    \item \textbf{Operadores de comparación:} Revisa las notas de clase sobre comparaciones
+    \item \textbf{Operadores lógicos:} Practica combinar condiciones con \texttt{and}, \texttt{or}, \texttt{not}
+    \item \textbf{Tablas de verdad:} Entiende cómo funcionan los operadores lógicos
+    \item \textbf{Debugging:} Usa \texttt{print()} para verificar el flujo de tu programa
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Cuál es la diferencia entre \texttt{=} y \texttt{==}?}\\
+R: \texttt{=} es asignación (guarda un valor), \texttt{==} es comparación (verifica si son iguales).
+
+\textbf{P: ¿Cuándo uso \texttt{and} vs \texttt{or}?}\\
+R: Usa \texttt{and} cuando AMBAS condiciones deben ser verdaderas. Usa \texttt{or} cuando AL MENOS UNA debe ser verdadera.
+
+\textbf{P: ¿Por qué el orden importa en \texttt{if-elif}?}\\
+R: Python evalúa de arriba hacia abajo y se detiene en la primera condición verdadera. Si pones condiciones en mal orden, podrías nunca llegar a algunas.
+
+\textbf{P: ¿Es obligatorio el \texttt{match}?}\\
+R: No, es opcional y da puntos extra. Puedes lograr todo con \texttt{if-elif-else}.
+
+\textbf{P: ¿Qué hago si no sé cómo encontrar el componente más fuerte?}\\
+R: Compara las 4 notas usando \texttt{if} para determinar cuál es la mayor.
+
+\textbf{P: ¿Puedo usar funciones?}\\
+R: Aún no hemos visto funciones formalmente. Para esta tarea, escribe todo en el flujo principal del programa.
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito en tu tarea de condicionales!}\\
+\textit{Los condicionales son la base de la lógica de programación.\\
+Domínalos y podrás crear programas inteligentes y útiles.}
+\end{center}
+
+\end{document}

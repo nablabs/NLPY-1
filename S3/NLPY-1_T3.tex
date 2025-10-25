@@ -1,0 +1,1009 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 3}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 3: Validador de Datos de Usuario}\\
+\large Excepciones y Manejo de Errores}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido a la Semana 3! Ya sabes programar con variables, tomar decisiones con condicionales, y repetir acciones con bucles. Ahora aprenderás una habilidad crucial: \textbf{manejar errores de forma elegante}.
+
+En el mundo real, los programas no siempre reciben datos perfectos. Los usuarios cometen errores, ingresan texto donde debería haber números, dividen entre cero, o intentan abrir archivos que no existen. Un buen programa no colapsa ante estos errores, sino que los maneja apropiadamente y guía al usuario hacia el uso correcto.
+
+Las \textbf{excepciones} son el mecanismo de Python para manejar estos errores. Con \texttt{try-except}, puedes anticipar problemas, capturarlos antes de que hagan crash tu programa, y responder de forma apropiada.
+
+En esta tarea, crearás un sistema robusto de validación de datos que maneja todo tipo de errores con gracia y profesionalismo.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Identificar tipos de errores comunes: \texttt{ValueError}, \texttt{ZeroDivisionError}, \texttt{TypeError}, \texttt{IndexError}
+    \item Usar bloques \texttt{try-except} para capturar y manejar excepciones
+    \item Implementar la cláusula \texttt{else} en manejo de excepciones
+    \item Usar la cláusula \texttt{finally} para código que siempre debe ejecutarse
+    \item Crear excepciones personalizadas con \texttt{raise}
+    \item Manejar múltiples tipos de excepciones en un solo bloque
+    \item Validar entradas de usuario de forma robusta
+    \item Escribir código que nunca haga crash inesperadamente
+    \item Dar mensajes de error útiles y comprensibles
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear un programa llamado \textbf{``Sistema de Registro de Estudiantes de la UCR''}. Este sistema permite registrar información de estudiantes costarricenses y validar TODOS los datos de forma exhaustiva usando manejo de excepciones.
+
+El sistema debe capturar errores, dar mensajes claros, y nunca terminar inesperadamente. Cada entrada debe validarse múltiples veces hasta que sea correcta.
+
+\subsection{Datos a Registrar}
+
+Para cada estudiante se debe capturar:
+
+\begin{enumerate}
+    \item \textbf{Información Personal:}
+    \begin{itemize}
+        \item Nombre completo (no vacío, solo letras y espacios)
+        \item Edad (número entero entre 17 y 99)
+        \item Cédula (formato: 1-2345-6789, validación de formato)
+        \item Correo electrónico (debe contener @ y un dominio)
+    \end{itemize}
+    
+    \item \textbf{Información Académica:}
+    \begin{itemize}
+        \item Carrera (no vacía, de una lista predefinida)
+        \item Año de ingreso (entre 2015 y 2025)
+        \item Promedio actual (decimal entre 0.0 y 100.0)
+        \item Cantidad de créditos aprobados (entero no negativo)
+    \end{itemize}
+    
+    \item \textbf{Información Financiera:}
+    \begin{itemize}
+        \item Tipo de beca (ninguna, media, completa)
+        \item Monto de matrícula (decimal positivo)
+        \item Estado de pago (al día / pendiente)
+    \end{itemize}
+\end{enumerate}
+
+\section{Requisitos Funcionales}
+
+\subsection{Parte 1: Validaciones con Try-Except}
+
+\subsubsection{Validación de Edad}
+
+Debe manejar los siguientes errores:
+
+\begin{lstlisting}[caption=Validación robusta de edad]
+def validar_edad():
+    while True:
+        try:
+            edad_str = input("Ingresa tu edad: ")
+            
+            # Convertir a entero (puede lanzar ValueError)
+            edad = int(edad_str)
+            
+            # Validar rango con raise
+            if edad < 17:
+                raise ValueError("Debes tener al menos 17 años")
+            if edad > 99:
+                raise ValueError("Edad invalida (maximo 99)")
+            
+            # Si llega aqui, la edad es valida
+            return edad
+            
+        except ValueError as e:
+            # Capturar tanto errores de conversion como personalizados
+            if "invalid literal" in str(e):
+                print("Error: Debes ingresar un numero entero")
+            else:
+                print(f"Error: {e}")
+        except Exception as e:
+            print(f"Error inesperado: {e}")
+\end{lstlisting}
+
+\subsubsection{Validación de Nombre}
+
+\begin{lstlisting}[caption=Validación de nombre con excepciones]
+def validar_nombre():
+    while True:
+        try:
+            nombre = input("Nombre completo: ").strip()
+            
+            # Validar que no este vacio
+            if not nombre:
+                raise ValueError("El nombre no puede estar vacio")
+            
+            # Validar que solo contenga letras y espacios
+            if not all(c.isalpha() or c.isspace() for c in nombre):
+                raise ValueError("El nombre solo puede contener letras")
+            
+            # Validar longitud minima
+            if len(nombre) < 3:
+                raise ValueError("El nombre es demasiado corto")
+            
+            return nombre.title()
+            
+        except ValueError as e:
+            print(f"Error: {e}")
+\end{lstlisting}
+
+\subsection{Parte 2: Validaciones Complejas}
+
+\subsubsection{Validación de Cédula Costarricense}
+
+Formato: X-XXXX-XXXX (donde X son dígitos)
+
+\begin{lstlisting}[caption=Validación de cedula]
+def validar_cedula():
+    while True:
+        try:
+            cedula = input("Cedula (formato 1-2345-6789): ").strip()
+            
+            # Validar formato basico
+            if not cedula:
+                raise ValueError("La cedula no puede estar vacia")
+            
+            # Separar por guiones
+            partes = cedula.split('-')
+            
+            # Validar cantidad de partes
+            if len(partes) != 3:
+                raise ValueError("Formato incorrecto. Usa: X-XXXX-XXXX")
+            
+            # Validar longitud de cada parte
+            if len(partes[0]) != 1:
+                raise ValueError("Primera parte debe tener 1 digito")
+            if len(partes[1]) != 4:
+                raise ValueError("Segunda parte debe tener 4 digitos")
+            if len(partes[2]) != 4:
+                raise ValueError("Tercera parte debe tener 4 digitos")
+            
+            # Validar que sean numeros
+            for parte in partes:
+                if not parte.isdigit():
+                    raise ValueError("La cedula solo debe contener digitos")
+            
+            return cedula
+            
+        except ValueError as e:
+            print(f"Error: {e}")
+        except IndexError:
+            print("Error: Formato de cedula invalido")
+\end{lstlisting}
+
+\subsubsection{Validación de Correo}
+
+\begin{lstlisting}[caption=Validación basica de correo electronico]
+def validar_correo():
+    while True:
+        try:
+            correo = input("Correo electronico: ").strip().lower()
+            
+            if not correo:
+                raise ValueError("El correo no puede estar vacio")
+            
+            # Validar que contenga @
+            if '@' not in correo:
+                raise ValueError("El correo debe contener @")
+            
+            # Separar usuario y dominio
+            partes = correo.split('@')
+            
+            if len(partes) != 2:
+                raise ValueError("El correo debe tener exactamente un @")
+            
+            usuario, dominio = partes
+            
+            if not usuario:
+                raise ValueError("El correo debe tener usuario antes del @")
+            
+            if not dominio:
+                raise ValueError("El correo debe tener dominio despues del @")
+            
+            # Validar que el dominio tenga punto
+            if '.' not in dominio:
+                raise ValueError("El dominio debe contener un punto")
+            
+            return correo
+            
+        except ValueError as e:
+            print(f"Error: {e}")
+        except Exception as e:
+            print(f"Error inesperado: {e}")
+\end{lstlisting}
+
+\subsection{Parte 3: Uso de Try-Except-Else-Finally}
+
+\subsubsection{Validación de Promedio con Else}
+
+\begin{lstlisting}[caption=Uso de else en try-except]
+def validar_promedio():
+    while True:
+        try:
+            promedio_str = input("Promedio (0.0 - 100.0): ")
+            promedio = float(promedio_str)
+            
+            if promedio < 0 or promedio > 100:
+                raise ValueError("El promedio debe estar entre 0 y 100")
+                
+        except ValueError as e:
+            if "could not convert" in str(e):
+                print("Error: Debes ingresar un numero decimal")
+            else:
+                print(f"Error: {e}")
+        else:
+            # Este bloque solo se ejecuta si NO hubo excepcion
+            print(f"Promedio {promedio:.2f} registrado exitosamente")
+            return promedio
+        finally:
+            # Este bloque SIEMPRE se ejecuta
+            print("Validacion de promedio completada")
+\end{lstlisting}
+
+\subsection{Parte 4: Cálculos con Manejo de Errores}
+
+\subsubsection{Cálculo de Monto a Pagar (con ZeroDivisionError)}
+
+\begin{lstlisting}[caption=Manejo de division entre cero]
+def calcular_monto_pagar(matricula, creditos, tipo_beca):
+    try:
+        # Calcular descuento segun tipo de beca
+        if tipo_beca == "completa":
+            descuento = 1.0  # 100%
+        elif tipo_beca == "media":
+            descuento = 0.5  # 50%
+        else:
+            descuento = 0.0  # 0%
+        
+        # Calcular monto con descuento
+        monto_descuento = matricula * descuento
+        monto_final = matricula - monto_descuento
+        
+        # Calcular costo por credito
+        if creditos == 0:
+            raise ZeroDivisionError("No se puede calcular con 0 creditos")
+        
+        costo_por_credito = monto_final / creditos
+        
+        return monto_final, costo_por_credito
+        
+    except ZeroDivisionError as e:
+        print(f"Error de division: {e}")
+        return matricula, 0.0
+    except TypeError as e:
+        print(f"Error de tipo: {e}")
+        return 0.0, 0.0
+    finally:
+        print("Calculo de montos finalizado")
+\end{lstlisting}
+
+\subsection{Parte 5: Menú Principal Robusto}
+
+El programa debe tener un menú que NUNCA falle:
+
+\begin{enumerate}[leftmargin=*]
+    \item Registrar nuevo estudiante
+    \item Ver estudiantes registrados
+    \item Buscar estudiante por cédula
+    \item Calcular estadísticas
+    \item Salir
+\end{enumerate}
+
+Todo el menú debe estar envuelto en try-except para capturar cualquier error.
+
+\newpage
+
+\subsection{Ejemplo de Ejecución}
+
+\begin{lstlisting}[caption=Flujo completo con manejo de errores]
+========================================
+  SISTEMA DE REGISTRO DE ESTUDIANTES
+========================================
+
+--- MENU PRINCIPAL ---
+1. Registrar nuevo estudiante
+2. Ver estudiantes registrados
+3. Buscar estudiante
+4. Estadisticas
+5. Salir
+
+Elige una opcion: abc
+Error: Debes ingresar un numero entero
+
+Elige una opcion: 9
+Error: Opcion invalida. Debe ser entre 1 y 5
+
+Elige una opcion: 1
+
+--- REGISTRO DE ESTUDIANTE ---
+
+=== INFORMACION PERSONAL ===
+
+Nombre completo: 123
+Error: El nombre solo puede contener letras
+
+Nombre completo: An
+Error: El nombre es demasiado corto
+
+Nombre completo: Ana Maria Gomez
+Validacion exitosa!
+
+Ingresa tu edad: veinte
+Error: Debes ingresar un numero entero
+
+Ingresa tu edad: 15
+Error: Debes tener al menos 17 años
+
+Ingresa tu edad: 20
+Validacion exitosa!
+
+Cedula (formato 1-2345-6789): 12345678
+Error: Formato incorrecto. Usa: X-XXXX-XXXX
+
+Cedula (formato 1-2345-6789): 1-23-4567
+Error: Segunda parte debe tener 4 digitos
+
+Cedula (formato 1-2345-6789): 1-2345-6789
+Validacion exitosa!
+
+Correo electronico: ana.gmail.com
+Error: El correo debe contener @
+
+Correo electronico: ana@
+Error: El correo debe tener dominio despues del @
+
+Correo electronico: ana@gmail.com
+Validacion exitosa!
+
+=== INFORMACION ACADEMICA ===
+
+Carreras disponibles:
+1. Ingenieria en Computacion
+2. Administracion de Empresas
+3. Ingenieria en Diseno Industrial
+4. Arquitectura
+5. Ingenieria en Biotecnologia
+
+Elige tu carrera (1-5): 6
+Error: Opcion invalida
+
+Elige tu carrera (1-5): 1
+Carrera seleccionada: Ingenieria en Computacion
+
+Año de ingreso (2015-2025): 2010
+Error: Año invalido. Debe ser entre 2015 y 2025
+
+Año de ingreso (2015-2025): 2022
+Validacion exitosa!
+
+Promedio (0.0 - 100.0): cien
+Error: Debes ingresar un numero decimal
+Validacion de promedio completada
+
+Promedio (0.0 - 100.0): 150
+Error: El promedio debe estar entre 0 y 100
+Validacion de promedio completada
+
+Promedio (0.0 - 100.0): 85.5
+Promedio 85.50 registrado exitosamente
+Validacion de promedio completada
+
+Creditos aprobados: -10
+Error: Los creditos no pueden ser negativos
+
+Creditos aprobados: 45
+Validacion exitosa!
+
+=== INFORMACION FINANCIERA ===
+
+Tipo de beca:
+1. Ninguna
+2. Media beca (50%)
+3. Beca completa (100%)
+
+Elige tipo de beca: 2
+Beca seleccionada: Media beca
+
+Monto de matricula: mil
+Error: Debes ingresar un numero
+
+Monto de matricula: 150000
+Validacion exitosa!
+
+Calculo de montos finalizado
+Monto final a pagar: ₡75,000.00
+Costo por credito: ₡1,666.67
+
+--- RESUMEN DEL REGISTRO ---
+Nombre: Ana Maria Gomez
+Edad: 20 años
+Cedula: 1-2345-6789
+Correo: ana@gmail.com
+Carrera: Ingenieria en Computacion
+Año de ingreso: 2022
+Promedio: 85.50
+Creditos: 45
+Beca: Media beca
+Matricula original: ₡150,000.00
+Monto a pagar: ₡75,000.00
+
+Estudiante registrado exitosamente!
+\end{lstlisting}
+
+\newpage
+
+\section{Requisitos Técnicos Detallados}
+
+\subsection{Tipos de Excepciones a Manejar}
+
+Tu programa DEBE capturar y manejar:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{ValueError:}
+    \begin{itemize}
+        \item Conversión de string a int/float falla
+        \item Valores fuera de rango válido
+        \item Excepciones personalizadas con \texttt{raise ValueError()}
+    \end{itemize}
+    
+    \item \textbf{ZeroDivisionError:}
+    \begin{itemize}
+        \item División entre cero en cálculos
+        \item Debe capturarse y manejar apropiadamente
+    \end{itemize}
+    
+    \item \textbf{IndexError:}
+    \begin{itemize}
+        \item Acceso a índices inválidos en listas
+        \item Por ejemplo, al parsear formatos
+    \end{itemize}
+    
+    \item \textbf{TypeError:}
+    \begin{itemize}
+        \item Operaciones con tipos incompatibles
+        \item Intentar concatenar string con número, etc.
+    \end{itemize}
+    
+    \item \textbf{Exception (genérica):}
+    \begin{itemize}
+        \item Como último recurso para errores inesperados
+        \item Debe ser el último except en la cadena
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Estructura de Try-Except-Else-Finally}
+
+\textbf{Uso obligatorio en al menos 3 validaciones:}
+
+\begin{lstlisting}
+try:
+    # Codigo que puede fallar
+    valor = int(input("Ingresa un numero: "))
+    
+except ValueError:
+    # Manejar error especifico
+    print("Error: Debes ingresar un numero")
+    
+except Exception as e:
+    # Manejar cualquier otro error
+    print(f"Error inesperado: {e}")
+    
+else:
+    # Solo se ejecuta si NO hubo excepcion
+    print("Valor ingresado correctamente")
+    
+finally:
+    # SIEMPRE se ejecuta, haya o no haya excepcion
+    print("Validacion finalizada")
+\end{lstlisting}
+
+\subsection{Uso de Raise para Excepciones Personalizadas}
+
+Debes usar \texttt{raise} para validaciones lógicas:
+
+\begin{lstlisting}
+def validar_rango(valor, minimo, maximo):
+    try:
+        if valor < minimo:
+            raise ValueError(f"Valor muy bajo (minimo: {minimo})")
+        if valor > maximo:
+            raise ValueError(f"Valor muy alto (maximo: {maximo})")
+        return True
+    except ValueError as e:
+        print(f"Error: {e}")
+        return False
+\end{lstlisting}
+
+\subsection{Múltiples Excepciones en un Bloque}
+
+Puedes capturar múltiples excepciones:
+
+\begin{lstlisting}
+try:
+    # Codigo riesgoso
+    resultado = operacion_compleja()
+except (ValueError, TypeError) as e:
+    # Manejar multiples tipos de excepciones
+    print(f"Error de valor o tipo: {e}")
+except ZeroDivisionError:
+    # Manejar division por cero especificamente
+    print("Error: Division entre cero")
+\end{lstlisting}
+
+\section{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{No uses try-except para todo:} Solo usa donde realmente pueda haber un error.
+    
+    \item \textbf{Sé específico con las excepciones:} Captura el tipo exacto de error cuando sea posible.
+    
+    \item \textbf{Mensajes de error claros:} Explica qué salió mal y cómo corregirlo.
+    
+    \item \textbf{No escondas errores:} Un \texttt{except} vacío o que solo hace \texttt{pass} es mala práctica.
+    
+    \item \textbf{Valida antes de convertir:} Usa métodos como \texttt{.isdigit()} antes de \texttt{int()}.
+    
+    \item \textbf{Usa raise para validaciones:} Es más claro que retornar valores especiales.
+    
+    \item \textbf{Finally para limpieza:} Usa \texttt{finally} para cerrar archivos, conexiones, etc.
+    
+    \item \textbf{Prueba todos los errores:} Ingresa datos incorrectos intencionalmente para verificar el manejo.
+    
+    \item \textbf{Evita try-except muy amplios:} Agrupa solo el código que puede fallar.
+\end{itemize}
+
+\section{Entregables}
+
+\begin{enumerate}[leftmargin=*]
+    \item Archivo Python llamado \texttt{registro\_estudiantes.py}
+    \item El código NO debe crashear bajo ninguna circunstancia
+    \item Debe manejar TODAS las validaciones con try-except
+    \item Debe incluir comentarios explicando el manejo de errores
+    \item Debe demostrar uso de try-except-else-finally
+    \item Debe usar \texttt{raise} para excepciones personalizadas
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando tu código en el editor.
+    
+    \item \textbf{Demostrar el manejo de errores:}
+    \begin{itemize}
+        \item Ingresar datos incorrectos intencionalmente
+        \item Mostrar que el programa NUNCA crashea
+        \item Demostrar cada tipo de excepción capturada
+        \item Mostrar validaciones funcionando correctamente
+    \end{itemize}
+    
+    \item \textbf{Explicar tus bloques try-except:}
+    \begin{itemize}
+        \item Por qué elegiste capturar cada tipo de excepción
+        \item Cómo funciona cada bloque de validación
+        \item Qué hace el código en \texttt{else} vs \texttt{finally}
+        \item Cuándo y por qué usas \texttt{raise}
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas como:}
+    \begin{itemize}
+        \item ``¿Qué diferencia hay entre \texttt{ValueError} y \texttt{TypeError}?''
+        \item ``¿Por qué usaste \texttt{raise} aquí?''
+        \item ``¿Qué pasaría si no capturaras este error?''
+        \item ``¿Cuál es la diferencia entre \texttt{else} y poner el código después del try?''
+        \item ``¿Cuándo se ejecuta el bloque \texttt{finally}?''
+        \item ``¿Qué hace \texttt{Exception as e}?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar comprensión de:}
+    \begin{itemize}
+        \item Diferentes tipos de excepciones
+        \item Cuándo usar try-except vs validación con if
+        \item El flujo de ejecución con try-except-else-finally
+        \item Buenas prácticas en manejo de errores
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Preguntas Típicas de la Defensa}
+
+Prepárate para responder:
+
+\begin{itemize}[leftmargin=*]
+    \item ¿Cuál es la diferencia entre \texttt{except ValueError} y \texttt{except Exception}?
+    \item ¿Por qué el orden de los \texttt{except} importa?
+    \item ¿Cuándo usarías \texttt{raise} en lugar de \texttt{print}?
+    \item ¿Qué significa \texttt{as e} en \texttt{except ValueError as e}?
+    \item ¿Cuál es la diferencia entre \texttt{else} y \texttt{finally}?
+    \item Dame un ejemplo de cuándo usar \texttt{ZeroDivisionError}
+    \item ¿Por qué no usar \texttt{except:} sin especificar el tipo?
+    \item ¿Cómo probaste que tu programa maneja todos los errores?
+\end{itemize}
+
+\subsection{Consejos para una Buena Defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Conoce cada excepción:} Entiende qué causa cada tipo de error
+    \item \textbf{Practica romper tu programa:} Ingresa datos inválidos y verifica el comportamiento
+    \item \textbf{Explica el flujo:} Describe qué pasa cuando hay y cuando no hay error
+    \item \textbf{Ten ejemplos preparados:} De cada tipo de excepción que capturas
+    \item \textbf{Entiende raise:} Sé claro sobre cuándo y por qué crear excepciones
+\end{itemize}
+
+\subsection{Distribución de la Nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} El programa maneja errores sin crashear
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar el manejo de excepciones
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar tus try-except, la nota máxima será 40/100.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Registro en archivo (+7 pts):}
+    \begin{itemize}
+        \item Guardar estudiantes en archivo de texto
+        \item Manejar \texttt{FileNotFoundError}, \texttt{PermissionError}
+        \item Usar \texttt{try-except-finally} para cerrar archivos apropiadamente
+    \end{itemize}
+    
+    \item \textbf{Validación avanzada de cédula (+5 pts):}
+    \begin{itemize}
+        \item Verificar dígito verificador real de cédulas costarricenses
+        \item Validar provincia según primer dígito
+        \item Manejar excepciones personalizadas
+    \end{itemize}
+    
+    \item \textbf{Sistema de log de errores (+6 pts):}
+    \begin{itemize}
+        \item Registrar en archivo todos los errores que ocurren
+        \item Incluir timestamp, tipo de error, mensaje
+        \item Usar módulo \texttt{datetime}
+    \end{itemize}
+    
+    \item \textbf{Excepciones personalizadas (+5 pts):}
+    \begin{itemize}
+        \item Crear clases de excepciones propias: \texttt{CedulaInvalidaError}, \texttt{PromedioInvalidoError}
+        \item Usar correctamente en el programa
+        \item Explicar en la defensa cómo funcionan
+    \end{itemize}
+    
+    \item \textbf{Reintentos limitados (+4 pts):}
+    \begin{itemize}
+        \item Permitir solo 3 intentos por campo
+        \item Si falla 3 veces, preguntar si desea continuar o cancelar
+        \item Usar excepciones para controlar el flujo
+    \end{itemize}
+\end{enumerate}
+
+\textit{Nota: Los puntos extra solo se otorgan si la implementación es correcta Y puedes explicarla en la defensa.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +27 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Implementación de Try-Except (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Try-except básico (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Usa try-except correctamente en múltiples validaciones
+        \item 4 pts: Usa en varias validaciones con errores menores
+        \item 2 pts: Uso mínimo o incorrecto
+        \item 0 pts: No usa try-except
+    \end{itemize}
+    
+    \item \textbf{Manejo de ValueError (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Captura y maneja apropiadamente en conversiones y validaciones
+        \item 3 pts: Maneja pero con mensajes poco claros
+        \item 1 pt: Implementación parcial
+        \item 0 pts: No maneja ValueError
+    \end{itemize}
+    
+    \item \textbf{Manejo de múltiples tipos de excepciones (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Maneja al menos 4 tipos diferentes de excepciones apropiadamente
+        \item 4 pts: Maneja 3 tipos diferentes
+        \item 2 pts: Maneja solo 1-2 tipos
+        \item 0 pts: Solo maneja Exception genérica
+    \end{itemize}
+    
+    \item \textbf{Uso de raise (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa raise correctamente para excepciones personalizadas
+        \item 2 pts: Usa raise pero no en todos los casos apropiados
+        \item 1 pt: Uso mínimo o incorrecto
+        \item 0 pts: No usa raise
+    \end{itemize}
+    
+    \item \textbf{Try-except-else-finally (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Usa la estructura completa en al menos 2 validaciones
+        \item 2 pts: Usa en 1 validación correctamente
+        \item 1 pt: Usa pero incorrectamente
+        \item 0 pts: No usa else ni finally
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Validaciones Implementadas (12 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Validación de información personal (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Valida nombre, edad, cédula y correo con try-except
+        \item 3 pts: Valida 3 de 4 campos
+        \item 2 pts: Valida 2 de 4 campos
+        \item 0 pts: Validación mínima o sin excepciones
+    \end{itemize}
+    
+    \item \textbf{Validación de información académica (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Valida carrera, año, promedio y créditos apropiadamente
+        \item 3 pts: Valida 3 de 4 campos
+        \item 2 pts: Valida 2 de 4 campos
+        \item 0 pts: Validación insuficiente
+    \end{itemize}
+    
+    \item \textbf{Validación de información financiera (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Valida tipo de beca y monto con manejo de errores
+        \item 3 pts: Validación parcial
+        \item 1 pt: Validación mínima
+        \item 0 pts: No valida apropiadamente
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.3 Robustez del Programa (8 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{El programa NUNCA crashea (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Imposible hacer crash el programa con entradas inválidas
+        \item 3 pts: Maneja la mayoría de casos, falla en casos extremos
+        \item 1 pt: Crashea con entradas inválidas comunes
+        \item 0 pts: Crashea frecuentemente
+    \end{itemize}
+    
+    \item \textbf{Mensajes de error claros (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Todos los mensajes son claros y útiles
+        \item 1 pt: Mensajes básicos pero comprensibles
+        \item 0 pts: Mensajes confusos o genéricos
+    \end{itemize}
+    
+    \item \textbf{Flujo de validación completo (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Todas las entradas se validan en bucles hasta que sean correctas
+        \item 1 pt: La mayoría de entradas se validan apropiadamente
+        \item 0 pts: Validación incompleta o acepta datos inválidos
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión de Excepciones (30 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Explicación de tipos de excepciones (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Explica perfectamente ValueError, TypeError, ZeroDivisionError, etc.
+        \item 7 pts: Explica correctamente la mayoría
+        \item 4 pts: Explicación básica o con errores
+        \item 0 pts: No entiende los tipos de excepciones
+    \end{itemize}
+    
+    \item \textbf{Explicación de try-except-else-finally (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Explica claramente cuándo se ejecuta cada bloque
+        \item 7 pts: Explica correctamente con pequeñas imprecisiones
+        \item 4 pts: Explicación superficial o confusa
+        \item 0 pts: No entiende la estructura
+    \end{itemize}
+    
+    \item \textbf{Explicación de raise (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica perfectamente cuándo y por qué usar raise
+        \item 4 pts: Explicación correcta pero incompleta
+        \item 2 pts: Explicación vaga
+        \item 0 pts: No entiende raise
+    \end{itemize}
+    
+    \item \textbf{Buenas prácticas (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Explica por qué no usar except: vacío, importancia de ser específico
+        \item 3 pts: Conoce algunas buenas prácticas
+        \item 1 pt: Conocimiento mínimo
+        \item 0 pts: No conoce buenas prácticas
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración y Razonamiento (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Demostración de manejo de errores (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Demuestra múltiples tipos de errores siendo capturados correctamente
+        \item 7 pts: Demuestra varios casos de error
+        \item 4 pts: Demuestra casos básicos
+        \item 0 pts: No puede demostrar el manejo de errores
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Responde correcta y claramente todas las preguntas sobre excepciones
+        \item 7 pts: Responde bien la mayoría
+        \item 4 pts: Respuestas parciales o confusas
+        \item 2 pts: Dificultad con preguntas básicas
+        \item 0 pts: No puede responder sobre su código
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Calidad del Código (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios sobre manejo de errores (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Comentarios claros explicando cada bloque try-except
+        \item 3 pts: Comentarios presentes pero básicos
+        \item 1 pt: Comentarios mínimos
+        \item 0 pts: Sin comentarios
+    \end{itemize}
+    
+    \item \textbf{Organización del código (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Código perfectamente organizado, funciones bien estructuradas
+        \item 2 pts: Código organizado con errores menores
+        \item 1 pt: Poco organizado
+        \item 0 pts: Código desorganizado
+    \end{itemize}
+    
+    \item \textbf{Mensajes al usuario (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Mensajes profesionales, claros y útiles en todos los errores
+        \item 2 pts: Mensajes aceptables
+        \item 1 pt: Mensajes básicos
+        \item 0 pts: Mensajes confusos o ausentes
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +27 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Registro en archivo (+7 pts):} Guarda/lee estudiantes con manejo de FileNotFoundError
+    \item \textbf{Validación avanzada de cédula (+5 pts):} Valida dígito verificador y provincia
+    \item \textbf{Sistema de log de errores (+6 pts):} Registra todos los errores en archivo con timestamp
+    \item \textbf{Excepciones personalizadas (+5 pts):} Crea y usa clases de excepciones propias
+    \item \textbf{Reintentos limitados (+4 pts):} Máximo 3 intentos por campo con opción de cancelar
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicarla completamente durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Evidencia de no entender el manejo de excepciones
+    \item \textbf{-10 pts:} El programa crashea con entradas inválidas comunes
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-3 pts:} Nombre de archivo incorrecto
+    \item \textbf{-5 pts:} Usa \texttt{except:} sin especificar tipo (mala práctica)
+    \item \textbf{-3 pts:} No usa raise en ninguna validación
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de manejo de excepciones
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida de try-except
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita práctica
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita refuerzo
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación oficial:} \url{https://docs.python.org/es/3/tutorial/errors.html}
+    \item \textbf{Lista de excepciones:} \url{https://docs.python.org/es/3/library/exceptions.html}
+    \item \textbf{Try-except:} Revisa las notas sobre captura de excepciones
+    \item \textbf{Raise:} Practica crear excepciones personalizadas
+    \item \textbf{Finally:} Entiende cuándo usar para limpieza de recursos
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Cuál es la diferencia entre ValueError y TypeError?}\\
+R: ValueError es cuando el tipo es correcto pero el valor no (ej: int("abc")). TypeError es cuando el tipo es incorrecto para la operación (ej: "5" + 5).
+
+\textbf{P: ¿Cuándo debo usar raise?}\\
+R: Cuando detectas un error lógico en tu programa que no es un error de Python sino de validación de negocio.
+
+\textbf{P: ¿Cuál es la diferencia entre else y poner código después del try?}\\
+R: El código en else solo se ejecuta si NO hubo excepción. El código después se ejecuta siempre (si no hay return/break).
+
+\textbf{P: ¿Cuándo se ejecuta finally?}\\
+R: SIEMPRE, haya o no haya excepción, incluso si hay return en try o except.
+
+\textbf{P: ¿Por qué no usar except: sin especificar?}\\
+R: Porque captura TODAS las excepciones, incluso las del sistema, y puede esconder errores importantes.
+
+\textbf{P: ¿Puedo tener múltiples except para un try?}\\
+R: Sí! De hecho es recomendado para manejar diferentes errores de forma diferente.
+
+\textbf{P: ¿Es obligatorio validar TODO con try-except?}\\
+R: No. Usa if para validaciones simples. Usa try-except para operaciones que pueden fallar (conversiones, división, etc.).
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito en tu sistema de validación!}\\
+\textit{El manejo de excepciones es lo que separa un programa amateur\\
+de uno profesional y robusto.}
+\end{center}
+
+\end{document}

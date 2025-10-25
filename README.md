@@ -1,6 +1,6 @@
 # Curso de Programación en Python
 
-Este curso proporciona una introducción comprensiva a la programación en Python, desde conceptos básicos hasta temas avanzados.
+Este curso proporciona una introducción comprensiva a la programación en Python, desde conceptos básicos hasta temas avanzados. Hecho por, y para costarricenses.
 
 ## Estructura del Curso
 

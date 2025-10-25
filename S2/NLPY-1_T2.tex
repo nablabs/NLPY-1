@@ -1,0 +1,886 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 2}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 2: Juego de Adivinanzas}\\
+\large Bucles y Estructuras de Repetición}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido a la Semana 2! Ya dominas los fundamentos de Python y sabes tomar decisiones con condicionales. Ahora es momento de aprender una de las herramientas más poderosas de la programación: \textbf{los bucles}.
+
+Los bucles (loops) permiten que tu programa repita acciones múltiples veces sin tener que escribir el mismo código una y otra vez. Es como cuando preparas 10 tazas de café: no escribes 10 veces las instrucciones, simplemente repites el proceso 10 veces.
+
+En esta tarea crearás un juego interactivo de adivinanzas que usa bucles para dar múltiples oportunidades al jugador, validar entradas, generar números aleatorios y crear una experiencia de juego completa y divertida.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Usar bucles \texttt{while} para repetir código mientras una condición sea verdadera
+    \item Usar bucles \texttt{for} para iterar sobre secuencias
+    \item Trabajar con la función \texttt{range()} para generar secuencias de números
+    \item Controlar el flujo de bucles con \texttt{break} y \texttt{continue}
+    \item Validar entradas del usuario usando bucles
+    \item Evitar bucles infinitos mediante condiciones bien diseñadas
+    \item Combinar bucles con condicionales para lógica compleja
+    \item Iterar sobre listas y secuencias
+    \item Usar contadores y acumuladores en bucles
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear un programa llamado \textbf{``Adivinador de Números - Edición Costa Rica''}. Este es un juego interactivo donde:
+
+\begin{itemize}
+    \item El programa genera un número secreto aleatorio
+    \item El jugador tiene un número limitado de intentos para adivinarlo
+    \item El programa da pistas después de cada intento (muy alto, muy bajo, cerca, lejos)
+    \item Se llevan estadísticas del juego
+    \item El jugador puede jugar múltiples rondas
+    \item Hay diferentes niveles de dificultad
+\end{itemize}
+
+El juego debe ser entretenido, dar retroalimentación útil, y demostrar tu dominio de bucles \texttt{while}, \texttt{for}, \texttt{break}, \texttt{continue}, y \texttt{range()}.
+
+\subsection{Modos de Juego}
+
+El programa debe ofrecer 3 niveles de dificultad:
+
+\begin{enumerate}
+    \item \textbf{Fácil:} Número entre 1 y 50, 10 intentos, pistas detalladas
+    \item \textbf{Medio:} Número entre 1 and 100, 7 intentos, pistas normales
+    \item \textbf{Difícil:} Número entre 1 y 200, 5 intentos, pistas básicas
+\end{enumerate}
+
+\section{Requisitos Funcionales}
+
+\subsection{Parte 1: Menú Principal}
+
+El programa debe iniciar con un menú que permita:
+
+\begin{enumerate}[leftmargin=*]
+    \item Jugar una nueva partida
+    \item Ver estadísticas (partidas jugadas, ganadas, perdidas)
+    \item Ver instrucciones del juego
+    \item Salir del programa
+\end{enumerate}
+
+\textbf{Implementación requerida:}
+\begin{itemize}
+    \item Usar un bucle \texttt{while} para mantener el menú activo
+    \item Validar que la opción elegida sea válida (1-4)
+    \item Si la opción es inválida, pedir nuevamente (usar \texttt{continue})
+    \item Solo salir cuando el usuario elija la opción correspondiente
+\end{itemize}
+
+\subsection{Parte 2: Selección de Dificultad}
+
+Cuando el jugador elige jugar:
+
+\begin{enumerate}[leftmargin=*]
+    \item Mostrar los 3 niveles de dificultad con sus características
+    \item Solicitar que elija un nivel (1-3)
+    \item Validar la selección con un bucle
+    \item Configurar el juego según el nivel elegido:
+    \begin{itemize}
+        \item Rango de números (máximo)
+        \item Cantidad de intentos permitidos
+        \item Nivel de detalle de pistas
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Parte 3: Mecánica del Juego}
+
+\subsubsection{Generación del Número Secreto}
+
+\begin{itemize}
+    \item Usar \texttt{import random}
+    \item Generar número aleatorio según el nivel: \texttt{random.randint(1, maximo)}
+    \item El número debe mantenerse secreto durante el juego
+\end{itemize}
+
+\subsubsection{Bucle Principal del Juego}
+
+Implementar con \texttt{while} o \texttt{for} con \texttt{range()}:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Mostrar intento actual:} ``Intento 1 de 10''
+    
+    \item \textbf{Solicitar adivinanza del jugador:}
+    \begin{itemize}
+        \item Validar que sea un número
+        \item Validar que esté en el rango válido
+        \item Si es inválido, no contar como intento y pedir nuevamente
+    \end{itemize}
+    
+    \item \textbf{Comparar con el número secreto:}
+    \begin{itemize}
+        \item Si adivinó correctamente: ¡Felicitar y terminar con \texttt{break}!
+        \item Si no adivinó: Dar pistas según el nivel
+    \end{itemize}
+    
+    \item \textbf{Sistema de pistas:}
+    \begin{itemize}
+        \item \textbf{Básicas (todos los niveles):} ``Muy alto'' o ``Muy bajo''
+        \item \textbf{Normales (medio y fácil):} ``Cerca'' (diferencia $\leq$ 10) o ``Lejos''
+        \item \textbf{Detalladas (solo fácil):} ``¡Hirviendo!'' (diferencia $\leq$ 5), ``Tibio'' (6-10), ``Frío'' (11-20), ``Congelado'' (21+)
+    \end{itemize}
+    
+    \item \textbf{Mostrar intentos restantes:} Después de cada pista
+    
+    \item \textbf{Si se acaban los intentos:} Revelar el número y terminar
+\end{enumerate}
+
+\subsection{Parte 4: Historial de Intentos}
+
+Durante el juego, mantener una lista de todos los números que el jugador ha intentado:
+
+\begin{itemize}
+    \item Usar una lista para guardar cada intento
+    \item Antes de dar pistas, mostrar todos los intentos anteriores
+    \item Usar un bucle \texttt{for} para mostrar el historial formateado
+    \item Detectar si el jugador intenta el mismo número dos veces (dar aviso)
+\end{itemize}
+
+\subsection{Parte 5: Estadísticas Globales}
+
+El programa debe mantener estadísticas entre partidas:
+
+\begin{itemize}
+    \item Total de partidas jugadas
+    \item Partidas ganadas
+    \item Partidas perdidas
+    \item Mejor puntuación (menor número de intentos para ganar)
+    \item Nivel más jugado
+\end{itemize}
+
+\textbf{Implementación:}
+\begin{itemize}
+    \item Usar variables que se actualicen después de cada partida
+    \item Mostrar estadísticas cuando el usuario lo solicite del menú
+    \item Usar bucles \texttt{for} para mostrar estadísticas formateadas
+\end{itemize}
+
+\subsection{Parte 6: Validación de Entradas}
+
+Todas las entradas del usuario deben validarse con bucles:
+
+\begin{lstlisting}[caption=Ejemplo de validación con while]
+# Validar que sea un numero
+while True:
+    entrada = input("Ingresa tu adivinanza: ")
+    if entrada.isdigit():
+        numero = int(entrada)
+        if 1 <= numero <= maximo:
+            break  # Entrada valida, salir del bucle
+        else:
+            print(f"Error: Debe estar entre 1 y {maximo}")
+    else:
+        print("Error: Debes ingresar un numero")
+\end{lstlisting}
+
+\newpage
+
+\subsection{Ejemplo de Ejecución Completa}
+
+\begin{lstlisting}[caption=Flujo de juego completo]
+========================================
+  ADIVINADOR DE NUMEROS - COSTA RICA
+========================================
+
+--- MENU PRINCIPAL ---
+1. Jugar nueva partida
+2. Ver estadisticas
+3. Instrucciones
+4. Salir
+
+Elige una opcion: 2
+
+--- ESTADISTICAS ---
+Partidas jugadas: 5
+Partidas ganadas: 3
+Partidas perdidas: 2
+Mejor puntuacion: 4 intentos
+Nivel mas jugado: Medio
+
+Presiona ENTER para continuar...
+
+--- MENU PRINCIPAL ---
+1. Jugar nueva partida
+2. Ver estadisticas
+3. Instrucciones
+4. Salir
+
+Elige una opcion: 1
+
+--- SELECCIONA DIFICULTAD ---
+1. FACIL   - Numero entre 1 y 50  (10 intentos)
+2. MEDIO   - Numero entre 1 y 100 (7 intentos)
+3. DIFICIL - Numero entre 1 y 200 (5 intentos)
+
+Elige dificultad: 2
+
+========================================
+Nivel MEDIO: Adivina el numero entre 1 y 100
+Tienes 7 intentos. Buena suerte!
+========================================
+
+Intento 1 de 7
+Tus intentos anteriores: (ninguno)
+Ingresa tu adivinanza: 50
+
+Muy bajo! El numero es mayor que 50.
+Estas lejos del numero secreto.
+Intentos restantes: 6
+
+Intento 2 de 7
+Tus intentos anteriores: [50]
+Ingresa tu adivinanza: 75
+
+Muy alto! El numero es menor que 75.
+Estas cerca del numero secreto!
+Intentos restantes: 5
+
+Intento 3 de 7
+Tus intentos anteriores: [50, 75]
+Ingresa tu adivinanza: 65
+
+Muy bajo! El numero es mayor que 65.
+Estas cerca del numero secreto!
+Intentos restantes: 4
+
+Intento 4 de 7
+Tus intentos anteriores: [50, 75, 65]
+Ingresa tu adivinanza: 70
+
+Muy bajo! El numero es mayor que 70.
+Estas muy cerca del numero secreto!
+Intentos restantes: 3
+
+Intento 5 de 7
+Tus intentos anteriores: [50, 75, 65, 70]
+Ingresa tu adivinanza: 73
+
+CORRECTO! El numero era 73!
+Lo adivinaste en 5 intentos!
+
+--- RESUMEN DE LA PARTIDA ---
+Numero secreto: 73
+Intentos usados: 5 de 7
+Tus intentos: 50, 75, 65, 70, 73
+Nivel: MEDIO
+Resultado: GANASTE!
+
+Quieres jugar otra vez? (s/n): s
+
+[El juego reinicia...]
+\end{lstlisting}
+
+\newpage
+
+\section{Requisitos Técnicos Detallados}
+
+\subsection{Uso Obligatorio de Bucles}
+
+Tu programa DEBE incluir:
+
+\subsubsection{1. Bucle \texttt{while} para el menú principal}
+
+\begin{lstlisting}
+# Menu que se repite hasta que el usuario elija salir
+juego_activo = True
+while juego_activo:
+    # Mostrar menu
+    # Procesar opcion
+    if opcion == 4:
+        juego_activo = False  # Salir del bucle
+\end{lstlisting}
+
+\subsubsection{2. Bucle \texttt{for} con \texttt{range()} para intentos}
+
+\begin{lstlisting}
+# Dar un numero limitado de intentos
+for intento in range(1, max_intentos + 1):
+    print(f"Intento {intento} de {max_intentos}")
+    # Pedir adivinanza
+    # Si adivina correctamente:
+    #     break  # Salir del bucle
+\end{lstlisting}
+
+\textbf{O usar \texttt{while} con contador:}
+
+\begin{lstlisting}
+intento = 1
+while intento <= max_intentos:
+    print(f"Intento {intento} de {max_intentos}")
+    # Logica del juego
+    intento += 1  # Incrementar contador
+\end{lstlisting}
+
+\subsubsection{3. Bucle \texttt{while True} para validación}
+
+\begin{lstlisting}
+# Validar entrada hasta que sea correcta
+while True:
+    try:
+        numero = int(input("Ingresa un numero: "))
+        if 1 <= numero <= maximo:
+            break  # Entrada valida, salir
+        else:
+            print("Fuera de rango!")
+    except ValueError:
+        print("Debe ser un numero!")
+\end{lstlisting}
+
+\subsubsection{4. Bucle \texttt{for} para iterar sobre listas}
+
+\begin{lstlisting}
+# Mostrar historial de intentos
+print("Tus intentos anteriores: ", end="")
+for intento in lista_intentos:
+    print(intento, end=" ")
+print()  # Nueva linea
+\end{lstlisting}
+
+\subsubsection{5. Uso de \texttt{break} y \texttt{continue}}
+
+\begin{lstlisting}
+# break: Salir del bucle cuando se adivine
+if adivinanza == numero_secreto:
+    print("Correcto!")
+    break
+
+# continue: Saltar iteracion si entrada invalida
+if not entrada.isdigit():
+    print("Error: Solo numeros")
+    continue  # Volver al inicio del bucle
+\end{lstlisting}
+
+\subsection{Estructura General del Código}
+
+Tu código debe estar organizado así:
+
+\begin{lstlisting}
+# Encabezado con tu informacion
+# Nombre, fecha, descripcion
+
+# Importar libreria random
+import random
+
+# Variables globales para estadisticas
+partidas_jugadas = 0
+partidas_ganadas = 0
+partidas_perdidas = 0
+mejor_puntuacion = float('inf')
+
+# Bucle principal del programa
+while True:
+    # Mostrar menu principal
+    # Opcion 1: Jugar
+    # Opcion 2: Ver estadisticas
+    # Opcion 3: Instrucciones
+    # Opcion 4: Salir
+\end{lstlisting}
+
+\subsection{Validaciones Requeridas}
+
+Debes validar con bucles:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Opción del menú:} Debe ser 1, 2, 3, o 4
+    \item \textbf{Nivel de dificultad:} Debe ser 1, 2, o 3
+    \item \textbf{Adivinanza:} Debe ser un número entero en el rango válido
+    \item \textbf{Jugar otra vez:} Debe ser 's' o 'n' (aceptar mayúsculas/minúsculas)
+\end{enumerate}
+
+\section{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Evita bucles infinitos:} Asegúrate que siempre hay una forma de salir del bucle
+    
+    \item \textbf{Usa \texttt{break} sabiamente:} Para salir de bucles cuando se cumpla una condición
+    
+    \item \textbf{Usa \texttt{continue} para saltar:} Cuando una iteración no deba completarse
+    
+    \item \textbf{Incrementa contadores:} Si usas \texttt{while}, no olvides incrementar el contador
+    
+    \item \textbf{Prueba diferentes niveles:} Asegúrate que cada dificultad funciona correctamente
+    
+    \item \textbf{Prueba casos extremos:}
+    \begin{itemize}
+        \item Adivinar en el primer intento
+        \item Agotar todos los intentos
+        \item Ingresar el número máximo
+        \item Ingresar el número mínimo (1)
+        \item Ingresar valores inválidos
+    \end{itemize}
+    
+    \item \textbf{Usa variables descriptivas:}
+    \begin{itemize}
+        \item \texttt{numero\_secreto}, no \texttt{x}
+        \item \texttt{intento\_actual}, no \texttt{i}
+        \item \texttt{max\_intentos}, no \texttt{n}
+    \end{itemize}
+    
+    \item \textbf{Comenta bucles complejos:} Explica qué hace cada bucle y por qué
+\end{itemize}
+
+\section{Entregables}
+
+\begin{enumerate}[leftmargin=*]
+    \item Archivo Python llamado \texttt{adivinador\_numeros.py}
+    \item El código debe ejecutarse sin errores
+    \item Debe incluir todos los comentarios requeridos
+    \item Debe implementar todos los niveles de dificultad
+    \item Debe mantener estadísticas entre partidas
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando tu código en el editor.
+    
+    \item \textbf{Ejecutar tu programa} demostrando:
+    \begin{itemize}
+        \item El menú principal funcionando
+        \item Una partida ganada
+        \item Una partida perdida
+        \item Las estadísticas actualizándose
+        \item Validación de entradas inválidas
+        \item Los 3 niveles de dificultad
+    \end{itemize}
+    
+    \item \textbf{Explicar tus bucles:}
+    \begin{itemize}
+        \item Por qué elegiste \texttt{while} vs \texttt{for} en cada caso
+        \item Cómo funciona tu bucle de validación
+        \item Qué condición hace que cada bucle termine
+        \item Cómo usas \texttt{break} y \texttt{continue}
+        \item Cómo evitaste bucles infinitos
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas como:}
+    \begin{itemize}
+        \item ``¿Qué pasa si quitas este \texttt{break}?''
+        \item ``¿Por qué usaste \texttt{range(1, max\_intentos + 1)} y no \texttt{range(max\_intentos)}?''
+        \item ``¿Cómo funciona el sistema de pistas?''
+        \item ``¿Qué hace \texttt{continue} en este bucle?''
+        \item ``¿Cómo mantienes las estadísticas entre partidas?''
+        \item ``¿Qué pasaría si el usuario nunca elige salir?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar comprensión de:}
+    \begin{itemize}
+        \item La diferencia entre \texttt{while} y \texttt{for}
+        \item Cuándo usar cada tipo de bucle
+        \item Cómo funcionan \texttt{break} y \texttt{continue}
+        \item Qué es un bucle infinito y cómo evitarlo
+        \item Cómo iterar sobre listas
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Preguntas Típicas de la Defensa}
+
+Prepárate para responder:
+
+\begin{itemize}[leftmargin=*]
+    \item ¿Cuál es la diferencia entre \texttt{while} y \texttt{for}?
+    \item ¿Por qué elegiste \texttt{while True} para la validación?
+    \item ¿Qué hace \texttt{range(1, 11)}? ¿Incluye el 11?
+    \item ¿Cómo funciona el \texttt{break}? Dame un ejemplo de tu código
+    \item ¿Qué pasaría si olvidas incrementar el contador en un \texttt{while}?
+    \item ¿Cómo iteraste sobre la lista de intentos?
+    \item Si cambio \texttt{break} por \texttt{continue}, ¿qué pasa?
+    \item ¿Cómo garantizas que el menú siempre vuelva a mostrarse?
+    \item ¿Por qué es importante validar antes de procesar?
+\end{itemize}
+
+\subsection{Consejos para una Buena Defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Conoce tus bucles:} Entiende perfectamente cada \texttt{while} y \texttt{for} que usaste
+    \item \textbf{Practica modificaciones:} ¿Qué pasa si cambias una condición?
+    \item \textbf{Explica el flujo:} Describe cómo el programa pasa por los bucles
+    \item \textbf{Ten ejemplos listos:} Prepara casos de prueba interesantes
+    \item \textbf{Entiende \texttt{break} y \texttt{continue}:} Son conceptos clave de esta semana
+\end{itemize}
+
+\subsection{Distribución de la Nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} El programa funciona según los requisitos
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar y defender tu trabajo
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar tus bucles, la nota máxima será 40/100.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Modo multijugador (+6 pts):}
+    \begin{itemize}
+        \item 2 jugadores se turnan para adivinar
+        \item Gana quien adivine en menos intentos
+        \item Mantener estadísticas por jugador
+    \end{itemize}
+    
+    \item \textbf{Pistas avanzadas (+5 pts):}
+    \begin{itemize}
+        \item ``El número es par/impar''
+        \item ``Es múltiplo de X''
+        \item ``Es primo'' (si has investigado números primos)
+    \end{itemize}
+    
+    \item \textbf{Sistema de puntuación (+5 pts):}
+    \begin{itemize}
+        \item Calcular puntos: (intentos\_restantes $\times$ 10) + bonus\_dificultad
+        \item Mantener tabla de mejores puntuaciones (top 5)
+        \item Mostrar ranking al finalizar
+    \end{itemize}
+    
+    \item \textbf{Modo contrarreloj (+6 pts):}
+    \begin{itemize}
+        \item Agregar límite de tiempo usando \texttt{time}
+        \item Mostrar tiempo restante
+        \item Terminar si se acaba el tiempo
+    \end{itemize}
+    
+    \item \textbf{Generador de patrones (+4 pts):}
+    \begin{itemize}
+        \item Además del juego, un modo que genera patrones numéricos con \texttt{for}
+        \item Pirámides, secuencias, tablas de multiplicar
+        \item Al menos 3 patrones diferentes
+    \end{itemize}
+\end{enumerate}
+
+\textit{Nota: Los puntos extra solo se otorgan si la implementación es correcta Y puedes explicarla en la defensa.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +26 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Implementación de Bucles (18 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Bucle \texttt{while} para menú principal (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Menú funcional que se repite hasta salir
+        \item 3 pts: Funciona pero con pequeños errores
+        \item 1 pt: Implementación parcial o incorrecta
+        \item 0 pts: No implementa menú con bucle
+    \end{itemize}
+    
+    \item \textbf{Bucle para intentos del juego (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Usa \texttt{for} con \texttt{range()} o \texttt{while} correctamente
+        \item 4 pts: Funciona pero lógica mejorable
+        \item 2 pts: Funciona parcialmente
+        \item 0 pts: No implementa bucle de intentos
+    \end{itemize}
+    
+    \item \textbf{Bucles de validación (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Valida todas las entradas con bucles apropiados
+        \item 4 pts: Valida la mayoría de entradas
+        \item 2 pts: Validación mínima
+        \item 0 pts: No valida entradas con bucles
+    \end{itemize}
+    
+    \item \textbf{Uso de \texttt{break} y \texttt{continue} (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Usa ambos correctamente en contextos apropiados
+        \item 3 pts: Usa uno correctamente
+        \item 1 pt: Intenta usar pero con errores
+        \item 0 pts: No usa \texttt{break} ni \texttt{continue}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Funcionalidad del Juego (12 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Generación de número aleatorio (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Genera correctamente según nivel de dificultad
+        \item 2 pts: Genera pero con errores menores
+        \item 1 pt: Implementación parcial
+        \item 0 pts: No genera número aleatorio
+    \end{itemize}
+    
+    \item \textbf{Sistema de pistas (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Pistas precisas y diferenciadas por nivel
+        \item 3 pts: Pistas funcionales pero no diferenciadas
+        \item 2 pts: Pistas básicas solamente
+        \item 0 pts: No da pistas
+    \end{itemize}
+    
+    \item \textbf{Niveles de dificultad (3 pts):}
+    \begin{itemize}
+        \item 3 pts: 3 niveles funcionando correctamente
+        \item 2 pts: 2 niveles funcionando
+        \item 1 pt: Solo 1 nivel
+        \item 0 pts: No implementa niveles
+    \end{itemize}
+    
+    \item \textbf{Detección de victoria/derrota (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Detecta ambos casos correctamente y termina apropiadamente
+        \item 1 pt: Detecta pero con errores
+        \item 0 pts: No detecta correctamente
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.3 Características Adicionales (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Historial de intentos (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Lista completa con iteración usando \texttt{for}
+        \item 3 pts: Mantiene lista pero presentación mejorable
+        \item 1 pt: Implementación parcial
+        \item 0 pts: No mantiene historial
+    \end{itemize}
+    
+    \item \textbf{Estadísticas globales (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Mantiene todas las estadísticas entre partidas
+        \item 3 pts: Mantiene algunas estadísticas
+        \item 1 pt: Estadísticas básicas
+        \item 0 pts: No mantiene estadísticas
+    \end{itemize}
+    
+    \item \textbf{Opción de jugar múltiples partidas (2 pts):}
+    \begin{itemize}
+        \item 2 pts: Permite jugar múltiples veces sin reiniciar programa
+        \item 1 pt: Funciona con errores
+        \item 0 pts: Requiere reiniciar programa
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión de Bucles (30 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Explicación de \texttt{while} vs \texttt{for} (10 pts):}
+    \begin{itemize}
+        \item 10 pts: Explica perfectamente diferencias y cuándo usar cada uno
+        \item 7 pts: Explica correctamente con pequeñas imprecisiones
+        \item 4 pts: Explicación básica o parcial
+        \item 0 pts: No entiende la diferencia
+    \end{itemize}
+    
+    \item \textbf{Explicación de \texttt{break} y \texttt{continue} (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica claramente ambos con ejemplos de su código
+        \item 6 pts: Explica correctamente con alguna duda
+        \item 3 pts: Explicación superficial
+        \item 0 pts: No entiende su funcionamiento
+    \end{itemize}
+    
+    \item \textbf{Explicación de \texttt{range()} (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica perfectamente cómo funciona y sus parámetros
+        \item 4 pts: Explica correctamente lo básico
+        \item 2 pts: Explicación confusa
+        \item 0 pts: No entiende \texttt{range()}
+    \end{itemize}
+    
+    \item \textbf{Prevención de bucles infinitos (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica cómo garantizó que cada bucle termina
+        \item 4 pts: Comprensión básica del concepto
+        \item 2 pts: Explicación vaga
+        \item 0 pts: No comprende el concepto
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración y Razonamiento (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución de diferentes escenarios (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Demuestra exitosamente múltiples escenarios (ganar, perder, validaciones)
+        \item 6 pts: Demuestra varios escenarios
+        \item 3 pts: Demuestra escenarios básicos
+        \item 0 pts: No puede demostrar diferentes casos
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (12 pts):}
+    \begin{itemize}
+        \item 12 pts: Responde correcta y claramente todas las preguntas sobre bucles
+        \item 9 pts: Responde bien la mayoría
+        \item 5 pts: Respuestas parciales
+        \item 2 pts: Dificultad con preguntas básicas
+        \item 0 pts: No puede responder sobre su lógica
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Calidad del Código (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Comentarios explicativos (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Comentarios claros explicando bucles complejos
+        \item 3 pts: Comentarios presentes pero básicos
+        \item 1 pt: Comentarios mínimos
+        \item 0 pts: Sin comentarios
+    \end{itemize}
+    
+    \item \textbf{Nombres de variables (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Todos los nombres son descriptivos
+        \item 2 pts: Mayoría de nombres buenos
+        \item 1 pt: Nombres poco claros
+        \item 0 pts: Nombres inapropiados
+    \end{itemize}
+    
+    \item \textbf{Organización y legibilidad (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Código perfectamente organizado y legible
+        \item 2 pts: Código legible con errores menores
+        \item 1 pt: Poco organizado
+        \item 0 pts: Código desorganizado
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +26 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Modo multijugador (+6 pts):} Implementa sistema de turnos entre 2 jugadores
+    \item \textbf{Pistas avanzadas (+5 pts):} Pistas matemáticas (par/impar, múltiplos, primos)
+    \item \textbf{Sistema de puntuación (+5 pts):} Calcula puntos y mantiene top 5
+    \item \textbf{Modo contrarreloj (+6 pts):} Límite de tiempo con módulo \texttt{time}
+    \item \textbf{Generador de patrones (+4 pts):} Genera 3+ patrones numéricos con bucles
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicarla completamente durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Evidencia de no entender el código
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-3 pts:} Nombre de archivo incorrecto
+    \item \textbf{-5 pts:} Bucle infinito en el código (no termina nunca)
+    \item \textbf{-3 pts:} No usa \texttt{import random} correctamente
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de bucles
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida de estructuras de repetición
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita práctica
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita refuerzo
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación oficial:} \url{https://docs.python.org/es/3/tutorial/controlflow.html}
+    \item \textbf{Módulo random:} \url{https://docs.python.org/es/3/library/random.html}
+    \item \textbf{Bucles while:} Revisa las notas sobre condiciones de terminación
+    \item \textbf{Bucles for:} Practica con \texttt{range()} en el intérprete interactivo
+    \item \textbf{Break y continue:} Experimenta con ejemplos simples primero
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Cuál es la diferencia entre \texttt{while} y \texttt{for}?}\\
+R: \texttt{while} repite mientras una condición sea verdadera. \texttt{for} repite un número específico de veces o sobre una secuencia.
+
+\textbf{P: ¿Qué hace \texttt{range(1, 11)}?}\\
+R: Genera números del 1 al 10 (el límite superior 11 NO se incluye).
+
+\textbf{P: ¿Cómo evito un bucle infinito?}\\
+R: Asegúrate que la condición del \texttt{while} eventualmente sea falsa, o que haya un \texttt{break} en algún punto.
+
+\textbf{P: ¿Cuándo uso \texttt{break} vs \texttt{continue}?}\\
+R: \texttt{break} sale completamente del bucle. \texttt{continue} salta a la siguiente iteración.
+
+\textbf{P: ¿Cómo genero un número aleatorio?}\\
+R: \texttt{import random} y luego \texttt{random.randint(1, 100)} para un número entre 1 y 100.
+
+\textbf{P: ¿Puedo usar listas?}\\
+R: Sí! Para el historial de intentos es perfecto usar una lista.
+
+\textbf{P: ¿Es obligatorio hacer los 3 niveles de dificultad?}\\
+R: Sí, es un requisito funcional obligatorio.
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito en tu juego de adivinanzas!}\\
+\textit{Los bucles son el corazón de la programación.\\
+Domínalos y podrás automatizar cualquier tarea repetitiva.}
+\end{center}
+
+\end{document}

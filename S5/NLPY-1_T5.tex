@@ -1,0 +1,994 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{array}
+
+\geometry{margin=2cm}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Curso de Programación en Python}
+\rhead{Semana 5}
+\cfoot{\thepage}
+
+% Configuración para código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+\title{\textbf{Tarea Semana 5: Calculadora Científica con Tests}\\
+\large Pruebas Unitarias y Testing}
+\author{Curso de Programación en Python}
+\date{Tiempo de entrega: 1 semana}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+¡Bienvenido a la Semana 5! Has aprendido a programar, tomar decisiones, usar bucles, manejar errores y trabajar con librerías. Ahora es momento de aprender una habilidad profesional crucial: \textbf{testing}.
+
+¿Cómo sabes que tu código funciona correctamente? ¿Cómo garantizas que funciona en todos los casos posibles? ¿Cómo te aseguras que un cambio no rompe funcionalidad existente? La respuesta es: \textbf{pruebas unitarias}.
+
+Las pruebas unitarias son código que verifica que tu código funciona correctamente. Los programadores profesionales escriben tests para cada función que crean. En esta tarea, aprenderás a usar \texttt{pytest}, el framework de testing más popular de Python, para crear pruebas exhaustivas de una calculadora científica.
+
+\section{Objetivos de Aprendizaje}
+
+Al completar esta tarea, serás capaz de:
+
+\begin{itemize}[leftmargin=*]
+    \item Entender la importancia del testing en desarrollo de software
+    \item Instalar y configurar \texttt{pytest}
+    \item Escribir funciones de prueba con \texttt{pytest}
+    \item Usar la función \texttt{assert} para verificar resultados
+    \item Crear pruebas para casos normales, límite y excepciones
+    \item Organizar tests en archivos separados
+    \item Ejecutar tests y entender reportes de pytest
+    \item Aplicar Test-Driven Development (TDD) básico
+    \item Calcular cobertura de código con \texttt{pytest-cov}
+    \item Identificar y corregir bugs usando tests
+\end{itemize}
+
+\section{Enunciado del Proyecto}
+
+\subsection{Descripción General}
+
+Vas a crear una \textbf{Calculadora Científica} completa con operaciones matemáticas avanzadas, Y crear pruebas unitarias exhaustivas para cada función usando \texttt{pytest}.
+
+Este proyecto tiene DOS partes iguales en importancia:
+\begin{enumerate}
+    \item Implementar las funciones de la calculadora
+    \item Escribir tests completos para cada función
+\end{enumerate}
+
+\subsection{Filosofía TDD (Test-Driven Development)}
+
+Opcionalmente, puedes aplicar TDD:
+\begin{enumerate}
+    \item Escribir el test PRIMERO (que falla porque la función no existe)
+    \item Implementar la función mínima para que pase
+    \item Refactorizar si es necesario
+    \item Repetir
+\end{enumerate}
+
+\section{Requisitos Funcionales}
+
+\subsection{Parte 1: Funciones a Implementar}
+
+Debes crear un archivo \texttt{calculadora.py} con las siguientes funciones:
+
+\subsubsection{Operaciones Básicas}
+
+\begin{lstlisting}[caption=Operaciones basicas]
+def sumar(a, b):
+    """Suma dos numeros"""
+    return a + b
+
+def restar(a, b):
+    """Resta b de a"""
+    return a - b
+
+def multiplicar(a, b):
+    """Multiplica dos numeros"""
+    return a * b
+
+def dividir(a, b):
+    """Divide a entre b
+    Raises:
+        ValueError: Si b es 0
+    """
+    if b == 0:
+        raise ValueError("No se puede dividir entre cero")
+    return a / b
+\end{lstlisting}
+
+\subsubsection{Operaciones Avanzadas}
+
+\begin{lstlisting}[caption=Operaciones avanzadas]
+def potencia(base, exponente):
+    """Calcula base elevado a exponente"""
+    return base ** exponente
+
+def raiz_cuadrada(numero):
+    """Calcula la raiz cuadrada
+    Raises:
+        ValueError: Si numero es negativo
+    """
+    if numero < 0:
+        raise ValueError("No se puede raiz de numero negativo")
+    return numero ** 0.5
+
+def factorial(n):
+    """Calcula el factorial de n
+    Raises:
+        ValueError: Si n es negativo o no es entero
+    """
+    if not isinstance(n, int):
+        raise ValueError("n debe ser un entero")
+    if n < 0:
+        raise ValueError("n debe ser positivo")
+    if n == 0 or n == 1:
+        return 1
+    resultado = 1
+    for i in range(2, n + 1):
+        resultado *= i
+    return resultado
+
+def es_primo(n):
+    """Verifica si n es un numero primo
+    Returns:
+        bool: True si es primo, False si no
+    Raises:
+        ValueError: Si n no es entero positivo
+    """
+    if not isinstance(n, int) or n < 2:
+        raise ValueError("n debe ser entero mayor o igual a 2")
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+\end{lstlisting}
+
+\subsubsection{Operaciones con Listas}
+
+\begin{lstlisting}[caption=Operaciones con listas]
+def promedio(numeros):
+    """Calcula el promedio de una lista
+    Raises:
+        ValueError: Si la lista esta vacia
+    """
+    if not numeros:
+        raise ValueError("La lista no puede estar vacia")
+    return sum(numeros) / len(numeros)
+
+def mediana(numeros):
+    """Calcula la mediana de una lista
+    Raises:
+        ValueError: Si la lista esta vacia
+    """
+    if not numeros:
+        raise ValueError("La lista no puede estar vacia")
+    ordenados = sorted(numeros)
+    n = len(ordenados)
+    if n % 2 == 0:
+        return (ordenados[n//2 - 1] + ordenados[n//2]) / 2
+    return ordenados[n//2]
+
+def maximo(numeros):
+    """Retorna el maximo de una lista
+    Raises:
+        ValueError: Si la lista esta vacia
+    """
+    if not numeros:
+        raise ValueError("La lista no puede estar vacia")
+    return max(numeros)
+
+def minimo(numeros):
+    """Retorna el minimo de una lista
+    Raises:
+        ValueError: Si la lista esta vacia
+    """
+    if not numeros:
+        raise ValueError("La lista no puede estar vacia")
+    return min(numeros)
+\end{lstlisting}
+
+\subsection{Parte 2: Tests a Implementar}
+
+Debes crear un archivo \texttt{test\_calculadora.py} con tests para TODAS las funciones:
+
+\subsubsection{Estructura de un Test}
+
+\begin{lstlisting}[caption=Ejemplo de test basico]
+import pytest
+from calculadora import sumar, dividir, raiz_cuadrada
+
+# Test simple
+def test_sumar_dos_positivos():
+    """Verifica suma de dos numeros positivos"""
+    resultado = sumar(2, 3)
+    assert resultado == 5
+
+# Test con multiples casos
+def test_sumar_varios_casos():
+    """Verifica suma en varios escenarios"""
+    assert sumar(0, 0) == 0
+    assert sumar(-1, 1) == 0
+    assert sumar(-5, -3) == -8
+    assert sumar(100, 200) == 300
+
+# Test de excepciones
+def test_dividir_entre_cero_lanza_error():
+    """Verifica que dividir entre 0 lanza ValueError"""
+    with pytest.raises(ValueError):
+        dividir(10, 0)
+
+# Test con mensaje de error especifico
+def test_raiz_negativo_mensaje_error():
+    """Verifica el mensaje de error especifico"""
+    with pytest.raises(ValueError, match="No se puede raiz"):
+        raiz_cuadrada(-4)
+\end{lstlisting}
+
+\subsubsection{Tests Requeridos para cada Función}
+
+Para CADA función debes crear al menos:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Test de caso normal:} Entrada típica esperada
+    \item \textbf{Test de caso límite:} Valores en los bordes (0, 1, -1, máximos, mínimos)
+    \item \textbf{Test de excepciones:} Verificar que se lanzan errores apropiados
+    \item \textbf{Test de tipos:} Verificar comportamiento con diferentes tipos
+\end{enumerate}
+
+\subsubsection{Ejemplo Completo: Tests para \texttt{factorial}}
+
+\begin{lstlisting}[caption=Tests completos para factorial]
+import pytest
+from calculadora import factorial
+
+# Casos normales
+def test_factorial_de_0():
+    """Factorial de 0 debe ser 1"""
+    assert factorial(0) == 1
+
+def test_factorial_de_1():
+    """Factorial de 1 debe ser 1"""
+    assert factorial(1) == 1
+
+def test_factorial_de_5():
+    """Factorial de 5 debe ser 120"""
+    assert factorial(5) == 120
+
+def test_factorial_de_10():
+    """Factorial de 10 debe ser 3628800"""
+    assert factorial(10) == 3628800
+
+# Casos limite
+def test_factorial_numero_grande():
+    """Factorial de numero grande"""
+    resultado = factorial(20)
+    assert resultado == 2432902008176640000
+
+# Casos de error
+def test_factorial_negativo_lanza_error():
+    """Factorial de negativo debe lanzar ValueError"""
+    with pytest.raises(ValueError, match="debe ser positivo"):
+        factorial(-5)
+
+def test_factorial_float_lanza_error():
+    """Factorial de float debe lanzar ValueError"""
+    with pytest.raises(ValueError, match="debe ser un entero"):
+        factorial(5.5)
+
+def test_factorial_string_lanza_error():
+    """Factorial de string debe lanzar ValueError"""
+    with pytest.raises(ValueError):
+        factorial("cinco")
+
+# Tests parametrizados (avanzado)
+@pytest.mark.parametrize("n, esperado", [
+    (0, 1),
+    (1, 1),
+    (2, 2),
+    (3, 6),
+    (4, 24),
+    (5, 120),
+])
+def test_factorial_valores_conocidos(n, esperado):
+    """Verifica factorial para valores conocidos"""
+    assert factorial(n) == esperado
+\end{lstlisting}
+
+\newpage
+
+\subsection{Parte 3: Ejecutar Tests}
+
+\subsubsection{Instalación de pytest}
+
+\begin{lstlisting}[language=bash, caption=Instalacion de pytest]
+# Instalar pytest
+pip install pytest
+
+# Instalar pytest-cov para cobertura
+pip install pytest-cov
+\end{lstlisting}
+
+\subsubsection{Ejecutar Tests}
+
+\begin{lstlisting}[language=bash, caption=Comandos de pytest]
+# Ejecutar todos los tests
+pytest
+
+# Ejecutar con mas detalle
+pytest -v
+
+# Ejecutar tests de un archivo especifico
+pytest test_calculadora.py
+
+# Ejecutar un test especifico
+pytest test_calculadora.py::test_sumar_dos_positivos
+
+# Ejecutar con cobertura de codigo
+pytest --cov=calculadora --cov-report=html
+
+# Ver que tests pasaron/fallaron
+pytest --tb=short
+\end{lstlisting}
+
+\subsubsection{Salida Esperada}
+
+\begin{lstlisting}[caption=Ejemplo de salida de pytest]
+========================= test session starts =========================
+platform win32 -- Python 3.11.5, pytest-7.4.0
+collected 45 items
+
+test_calculadora.py::test_sumar_dos_positivos PASSED           [ 2%]
+test_calculadora.py::test_sumar_negativos PASSED               [ 4%]
+test_calculadora.py::test_restar_basico PASSED                 [ 6%]
+test_calculadora.py::test_multiplicar_por_cero PASSED          [ 8%]
+test_calculadora.py::test_dividir_normales PASSED              [11%]
+test_calculadora.py::test_dividir_entre_cero PASSED            [13%]
+test_calculadora.py::test_potencia_basica PASSED               [15%]
+test_calculadora.py::test_raiz_cuadrada_4 PASSED               [17%]
+test_calculadora.py::test_raiz_negativo_error PASSED           [20%]
+test_calculadora.py::test_factorial_5 PASSED                   [22%]
+test_calculadora.py::test_factorial_negativo_error PASSED      [24%]
+test_calculadora.py::test_es_primo_2 PASSED                    [26%]
+test_calculadora.py::test_es_primo_17 PASSED                   [28%]
+test_calculadora.py::test_es_primo_4_no_primo PASSED           [31%]
+test_calculadora.py::test_promedio_lista PASSED                [33%]
+test_calculadora.py::test_promedio_vacio_error PASSED          [35%]
+test_calculadora.py::test_mediana_lista_impar PASSED           [37%]
+test_calculadora.py::test_mediana_lista_par PASSED             [40%]
+... (mas tests) ...
+
+========================== 45 passed in 0.15s =========================
+
+---------- coverage: platform win32, python 3.11.5 -----------
+Name              Stmts   Miss  Cover
+-------------------------------------
+calculadora.py       85      0   100%
+-------------------------------------
+TOTAL                85      0   100%
+\end{lstlisting}
+
+\newpage
+
+\section{Requisitos Técnicos Detallados}
+
+\subsection{Estructura del Proyecto}
+
+\begin{lstlisting}[caption=Estructura de archivos]
+calculadora_proyecto/
+    calculadora.py           # Funciones de la calculadora
+    test_calculadora.py      # Tests con pytest
+    requirements.txt         # Dependencias
+    README.txt              # Documentacion
+    htmlcov/                # Reporte de cobertura (generado)
+        index.html
+\end{lstlisting}
+
+\subsection{Archivo requirements.txt}
+
+\begin{lstlisting}[caption=requirements.txt]
+pytest>=7.4.0
+pytest-cov>=4.1.0
+\end{lstlisting}
+
+\subsection{Cantidad Mínima de Tests}
+
+Debes crear AL MENOS:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{40 tests diferentes} (funciones que empiezan con \texttt{test\_})
+    \item \textbf{Tests para todas las funciones} implementadas
+    \item \textbf{Casos normales:} Al menos 2 por función
+    \item \textbf{Casos límite:} Al menos 1 por función
+    \item \textbf{Casos de error:} Para funciones que lanzan excepciones
+    \item \textbf{Cobertura:} Al menos 90\% de cobertura de código
+\end{itemize}
+
+\subsection{Uso de Assert}
+
+\begin{lstlisting}[caption=Diferentes formas de assert]
+# Assert simple
+assert resultado == 5
+
+# Assert con mensaje personalizado
+assert resultado == 5, "La suma deberia dar 5"
+
+# Assert de comparacion
+assert resultado > 0
+assert resultado >= 10
+assert resultado < 100
+
+# Assert de tipo
+assert isinstance(resultado, int)
+assert isinstance(resultado, float)
+
+# Assert de pertenencia
+assert resultado in [1, 2, 3, 4, 5]
+assert "error" in str(excepcion)
+
+# Assert de valores aproximados (para floats)
+assert abs(resultado - 3.14159) < 0.00001
+# O mejor con pytest:
+assert resultado == pytest.approx(3.14159)
+\end{lstlisting}
+
+\subsection{Uso de pytest.raises}
+
+\begin{lstlisting}[caption=Verificar excepciones]
+import pytest
+
+# Verificar que se lanza excepcion
+def test_lanza_error():
+    with pytest.raises(ValueError):
+        funcion_que_falla()
+
+# Verificar mensaje de error
+def test_mensaje_error():
+    with pytest.raises(ValueError, match="debe ser positivo"):
+        factorial(-5)
+
+# Capturar excepcion para mas verificaciones
+def test_error_completo():
+    with pytest.raises(ValueError) as exc_info:
+        dividir(10, 0)
+    
+    assert "cero" in str(exc_info.value)
+\end{lstlisting}
+
+\subsection{Tests Parametrizados (Avanzado - Opcional)}
+
+\begin{lstlisting}[caption=Tests parametrizados con pytest]
+import pytest
+
+@pytest.mark.parametrize("a, b, esperado", [
+    (2, 3, 5),
+    (0, 0, 0),
+    (-1, 1, 0),
+    (100, 200, 300),
+    (-5, -3, -8),
+])
+def test_sumar_parametrizado(a, b, esperado):
+    """Un test que se ejecuta 5 veces con diferentes valores"""
+    assert sumar(a, b) == esperado
+
+# Test de es_primo parametrizado
+@pytest.mark.parametrize("n", [2, 3, 5, 7, 11, 13, 17, 19, 23])
+def test_numeros_primos(n):
+    """Verifica que numeros primos son identificados"""
+    assert es_primo(n) == True
+
+@pytest.mark.parametrize("n", [4, 6, 8, 9, 10, 12, 15, 16, 18])
+def test_numeros_no_primos(n):
+    """Verifica que numeros no primos son identificados"""
+    assert es_primo(n) == False
+\end{lstlisting}
+
+\section{Ejemplo de Test-Driven Development}
+
+\subsection{Paso 1: Escribir el Test Primero}
+
+\begin{lstlisting}[caption=Test primero (falla porque funcion no existe)]
+# test_calculadora.py
+from calculadora import mcd  # Funcion que aun no existe
+
+def test_mcd_12_y_8():
+    """Maximo comun divisor de 12 y 8 debe ser 4"""
+    assert mcd(12, 8) == 4
+
+# Al ejecutar: pytest -> ERROR: cannot import 'mcd'
+\end{lstlisting}
+
+\subsection{Paso 2: Implementar Función Mínima}
+
+\begin{lstlisting}[caption=Implementacion minima]
+# calculadora.py
+def mcd(a, b):
+    """Calcula el maximo comun divisor"""
+    while b:
+        a, b = b, a % b
+    return a
+
+# Al ejecutar: pytest -> PASSED
+\end{lstlisting}
+
+\subsection{Paso 3: Agregar Más Tests}
+
+\begin{lstlisting}[caption=Mas tests para cubrir casos]
+def test_mcd_casos_varios():
+    assert mcd(12, 8) == 4
+    assert mcd(20, 15) == 5
+    assert mcd(17, 13) == 1
+    assert mcd(100, 50) == 50
+
+def test_mcd_con_cero():
+    assert mcd(5, 0) == 5
+    assert mcd(0, 5) == 5
+\end{lstlisting}
+
+\section{Consejos y Recomendaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Un test, un concepto:} Cada test debe verificar UNA cosa específica
+    
+    \item \textbf{Nombres descriptivos:} \texttt{test\_factorial\_de\_numero\_negativo\_lanza\_error}
+    
+    \item \textbf{Documenta los tests:} Usa docstrings para explicar qué verifica cada test
+    
+    \item \textbf{Ejecuta tests frecuentemente:} Después de cada cambio
+    
+    \item \textbf{Tests independientes:} Cada test debe poder ejecutarse solo
+    
+    \item \textbf{Casos de error importan:} Verifica que los errores se manejan correctamente
+    
+    \item \textbf{Cobertura no es todo:} 100\% cobertura no significa código perfecto
+    
+    \item \textbf{Red-Green-Refactor:} Test falla (red) → Código pasa (green) → Mejorar (refactor)
+    
+    \item \textbf{Automatiza:} Los tests deben ejecutarse automáticamente
+\end{itemize}
+
+\section{Entregables}
+
+\begin{enumerate}[leftmargin=*]
+    \item \texttt{calculadora.py} - Todas las funciones implementadas
+    \item \texttt{test\_calculadora.py} - Al menos 40 tests
+    \item \texttt{requirements.txt} - Dependencias del proyecto
+    \item \texttt{README.txt} - Instrucciones de instalación y ejecución
+    \item \texttt{reporte\_cobertura.txt} - Captura del reporte de cobertura
+    \item TODOS los tests deben pasar (0 fallos)
+    \item Cobertura mínima: 90\%
+\end{enumerate}
+
+\section{Defensa del Código (60\% de la nota final)}
+
+\subsection{¿Qué es la defensa del código?}
+
+La defensa del código es una reunión virtual donde presentarás y explicarás tu trabajo. Esta defensa es \textbf{obligatoria} y representa el \textbf{60\% de la nota final} de esta tarea.
+
+\subsection{¿Cómo funciona?}
+
+Durante la defensa deberás:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Compartir tu pantalla} mostrando código y terminal.
+    
+    \item \textbf{Ejecutar los tests en vivo:}
+    \begin{itemize}
+        \item \texttt{pytest -v} para ver todos los tests
+        \item \texttt{pytest --cov=calculadora} para ver cobertura
+        \item Demostrar que TODOS los tests pasan
+        \item Abrir reporte HTML de cobertura
+    \end{itemize}
+    
+    \item \textbf{Explicar tus tests:}
+    \begin{itemize}
+        \item Por qué creaste cada tipo de test
+        \item Qué verifica cada assert
+        \item Cómo elegiste los casos de prueba
+        \item Por qué ciertos valores son casos límite
+    \end{itemize}
+    
+    \item \textbf{Demostrar TDD (si aplicaste):}
+    \begin{itemize}
+        \item Escribir un nuevo test que falle
+        \item Implementar la función para que pase
+        \item Mostrar el proceso red-green-refactor
+    \end{itemize}
+    
+    \item \textbf{Responder preguntas como:}
+    \begin{itemize}
+        \item ``¿Por qué es importante hacer testing?''
+        \item ``¿Qué diferencia hay entre un caso normal y un caso límite?''
+        \item ``¿Cómo funciona pytest.raises?''
+        \item ``¿Qué significa 90\% de cobertura?''
+        \item ``¿Rompe un test intencionalmente, qué pasa?''
+        \item ``¿Cómo verificas excepciones con mensajes específicos?''
+        \item ``¿Qué es TDD y cuáles son sus ventajas?''
+    \end{itemize}
+    
+    \item \textbf{Demostrar comprensión de:}
+    \begin{itemize}
+        \item Propósito de las pruebas unitarias
+        \item Estructura de un test (Arrange-Act-Assert)
+        \item Tipos de casos de prueba
+        \item Interpretación de reportes de pytest
+        \item Concepto de cobertura de código
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Preguntas Típicas de la Defensa}
+
+Prepárate para responder:
+
+\begin{itemize}[leftmargin=*]
+    \item ¿Por qué hacer testing? ¿No basta con probar manualmente?
+    \item ¿Qué es un test unitario?
+    \item ¿Qué hace \texttt{assert}?
+    \item ¿Cómo se usa \texttt{pytest.raises}?
+    \item ¿Qué es un caso límite? Dame ejemplos
+    \item ¿Qué significa que un test pase?
+    \item ¿Qué es cobertura de código?
+    \item ¿100\% cobertura significa código sin bugs?
+    \item ¿Qué es TDD?
+    \item ¿Cómo instalaste pytest?
+\end{itemize}
+
+\subsection{Consejos para una Buena Defensa}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecuta antes:} Verifica que todos los tests pasan antes de la defensa
+    \item \textbf{Conoce tus tests:} Entiende cada test que escribiste
+    \item \textbf{Practica romper tests:} Cambia código y observa qué tests fallan
+    \item \textbf{Entiende pytest:} Lee la documentación básica
+    \item \textbf{Cobertura visual:} Abre el HTML de cobertura y navégalo
+\end{itemize}
+
+\subsection{Distribución de la Nota}
+
+\begin{itemize}
+    \item \textbf{Código funcional (40\%):} Funciones y tests implementados correctamente
+    \item \textbf{Defensa del código (60\%):} Tu capacidad de explicar testing
+\end{itemize}
+
+\textbf{Importante:} Si no asistes a la defensa o no puedes explicar tus tests, la nota máxima será 40/100.
+
+\section{Desafíos Opcionales (Puntos Extra)}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Tests parametrizados (+5 pts):}
+    \begin{itemize}
+        \item Usar \texttt{@pytest.mark.parametrize} en al menos 5 tests
+        \item Demostrar comprensión de parametrización
+    \end{itemize}
+    
+    \item \textbf{Fixtures de pytest (+6 pts):}
+    \begin{itemize}
+        \item Crear fixtures con \texttt{@pytest.fixture}
+        \item Usar fixtures para datos de prueba reutilizables
+        \item Ejemplo: fixture con lista de números para tests de promedio/mediana
+    \end{itemize}
+    
+    \item \textbf{Más funciones matemáticas (+7 pts):}
+    \begin{itemize}
+        \item Implementar: MCD, MCM, fibonacci, es\_perfecto
+        \item Crear tests completos para cada una (10+ tests por función)
+    \end{itemize}
+    
+    \item \textbf{Cobertura 100\% (+4 pts):}
+    \begin{itemize}
+        \item Lograr exactamente 100\% de cobertura de código
+        \item Incluir captura de pantalla del reporte
+    \end{itemize}
+    
+    \item \textbf{Pytest con markers (+5 pts):}
+    \begin{itemize}
+        \item Usar \texttt{@pytest.mark.slow} para tests lentos
+        \item Usar \texttt{@pytest.mark.skip} con razón
+        \item Ejecutar solo ciertos markers
+    \end{itemize}
+    
+    \item \textbf{Tests de integración (+6 pts):}
+    \begin{itemize}
+        \item Crear función que usa múltiples operaciones
+        \item Tests que verifican interacción entre funciones
+        \item Ejemplo: calculadora de ecuación cuadrática
+    \end{itemize}
+\end{enumerate}
+
+\textit{Nota: Los puntos extra solo se otorgan si la implementación es correcta Y puedes explicarla en la defensa.}
+
+\newpage
+
+\section{Rúbrica de Evaluación}
+
+\subsection{Distribución General}
+
+\begin{itemize}
+    \item \textbf{Código Funcional:} 40\% (40 puntos)
+    \item \textbf{Defensa del Código:} 60\% (60 puntos)
+    \item \textbf{Total:} 100 puntos
+    \item \textbf{Puntos Extra:} Hasta +33 puntos adicionales
+\end{itemize}
+
+\subsection{Parte 1: Código Funcional (40 puntos)}
+
+\subsubsection{1.1 Implementación de Funciones (15 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Operaciones básicas (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Suma, resta, multiplicación, división correctas
+        \item 3 pts: 3 de 4 correctas
+        \item 2 pts: 2 de 4 correctas
+        \item 0 pts: Menos de 2 correctas
+    \end{itemize}
+    
+    \item \textbf{Operaciones avanzadas (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Potencia, raíz, factorial, es\_primo correctas
+        \item 5 pts: 3 de 4 correctas
+        \item 3 pts: 2 de 4 correctas
+        \item 0 pts: Menos de 2 correctas
+    \end{itemize}
+    
+    \item \textbf{Operaciones con listas (5 pts):}
+    \begin{itemize}
+        \item 5 pts: Promedio, mediana, máximo, mínimo correctas
+        \item 4 pts: 3 de 4 correctas
+        \item 2 pts: 2 de 4 correctas
+        \item 0 pts: Menos de 2 correctas
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{1.2 Calidad de Tests (25 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Cantidad de tests (5 pts):}
+    \begin{itemize}
+        \item 5 pts: 40+ tests diferentes
+        \item 4 pts: 30-39 tests
+        \item 3 pts: 20-29 tests
+        \item 1 pt: 10-19 tests
+        \item 0 pts: Menos de 10 tests
+    \end{itemize}
+    
+    \item \textbf{Cobertura de casos (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Tests cubren casos normales, límite y errores para todas las funciones
+        \item 6 pts: Buena cobertura pero falta en algunas funciones
+        \item 4 pts: Cobertura básica
+        \item 0 pts: Cobertura insuficiente
+    \end{itemize}
+    
+    \item \textbf{Uso correcto de assert (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Todos los assert son apropiados y verifican correctamente
+        \item 3 pts: Mayoría correctos
+        \item 1 pt: Uso básico
+        \item 0 pts: No usa assert correctamente
+    \end{itemize}
+    
+    \item \textbf{Tests de excepciones (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Usa pytest.raises correctamente para verificar errores
+        \item 3 pts: Usa en algunos casos
+        \item 1 pt: Uso incorrecto
+        \item 0 pts: No verifica excepciones
+    \end{itemize}
+    
+    \item \textbf{Cobertura de código (4 pts):}
+    \begin{itemize}
+        \item 4 pts: 90\%+ de cobertura
+        \item 3 pts: 80-89\% de cobertura
+        \item 2 pts: 70-79\% de cobertura
+        \item 1 pt: 60-69\% de cobertura
+        \item 0 pts: Menos de 60\%
+    \end{itemize}
+\end{itemize}
+
+\subsection{Parte 2: Defensa del Código (60 puntos)}
+
+\subsubsection{2.1 Comprensión de Testing (30 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Concepto de testing (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica perfectamente por qué hacer testing y sus beneficios
+        \item 6 pts: Explicación correcta con pequeñas dudas
+        \item 3 pts: Comprensión básica
+        \item 0 pts: No entiende el propósito del testing
+    \end{itemize}
+    
+    \item \textbf{Tipos de casos de prueba (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica claramente casos normales, límite y excepciones con ejemplos
+        \item 6 pts: Explica correctamente con alguna confusión
+        \item 3 pts: Explicación superficial
+        \item 0 pts: No diferencia tipos de casos
+    \end{itemize}
+    
+    \item \textbf{Uso de pytest (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Explica assert, pytest.raises, ejecución de tests
+        \item 6 pts: Explica correctamente lo básico
+        \item 3 pts: Conocimiento limitado
+        \item 0 pts: No entiende pytest
+    \end{itemize}
+    
+    \item \textbf{Cobertura de código (6 pts):}
+    \begin{itemize}
+        \item 6 pts: Explica qué es, cómo medirla, qué significa
+        \item 4 pts: Comprensión básica
+        \item 2 pts: Explicación vaga
+        \item 0 pts: No entiende cobertura
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.2 Demostración Práctica (20 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Ejecución de tests (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Ejecuta tests con diferentes opciones, todos pasan
+        \item 6 pts: Ejecuta correctamente pero algún test falla
+        \item 3 pts: Dificultades para ejecutar
+        \item 0 pts: No puede ejecutar tests
+    \end{itemize}
+    
+    \item \textbf{Reporte de cobertura (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Genera y explica reporte de cobertura HTML
+        \item 3 pts: Genera reporte con ayuda
+        \item 1 pt: Dificultades
+        \item 0 pts: No puede generar reporte
+    \end{itemize}
+    
+    \item \textbf{Respuesta a preguntas técnicas (8 pts):}
+    \begin{itemize}
+        \item 8 pts: Responde correctamente todas las preguntas sobre testing
+        \item 6 pts: Responde la mayoría correctamente
+        \item 3 pts: Respuestas parciales
+        \item 0 pts: No puede responder preguntas básicas
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{2.3 Calidad y Organización (10 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Nombres de tests descriptivos (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Todos los tests tienen nombres claros y descriptivos
+        \item 2 pts: Mayoría con buenos nombres
+        \item 1 pt: Nombres poco claros
+        \item 0 pts: Nombres confusos
+    \end{itemize}
+    
+    \item \textbf{Documentación de tests (4 pts):}
+    \begin{itemize}
+        \item 4 pts: Todos los tests con docstrings explicativos
+        \item 3 pts: Mayoría documentados
+        \item 1 pt: Documentación mínima
+        \item 0 pts: Sin documentación
+    \end{itemize}
+    
+    \item \textbf{Organización del código (3 pts):}
+    \begin{itemize}
+        \item 3 pts: Tests bien organizados, agrupados lógicamente
+        \item 2 pts: Organización aceptable
+        \item 1 pt: Poco organizado
+        \item 0 pts: Desorganizado
+    \end{itemize}
+\end{itemize}
+
+\subsection{Puntos Extra (Hasta +33 puntos)}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Tests parametrizados (+5 pts):} Uso correcto de \texttt{@pytest.mark.parametrize}
+    \item \textbf{Fixtures (+6 pts):} Creación y uso de fixtures para datos de prueba
+    \item \textbf{Más funciones matemáticas (+7 pts):} 4+ funciones adicionales con tests
+    \item \textbf{Cobertura 100\% (+4 pts):} Cobertura completa del código
+    \item \textbf{Pytest markers (+5 pts):} Uso de markers (slow, skip, etc.)
+    \item \textbf{Tests de integración (+6 pts):} Tests que verifican múltiples funciones
+\end{itemize}
+
+\textbf{Nota:} Los puntos extra solo se otorgan si la implementación es correcta Y el estudiante puede explicarla completamente durante la defensa.
+
+\subsection{Penalizaciones}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{-100\% de la defensa:} No asiste sin justificación (nota máxima = 40/100)
+    \item \textbf{-50\% de la defensa:} Evidencia de no entender los tests que escribió
+    \item \textbf{-10 pts:} Algún test falla al ejecutar
+    \item \textbf{-5 pts:} Entrega tardía de 1 día
+    \item \textbf{-10 pts:} Entrega tardía de 2-3 días
+    \item \textbf{-20 pts:} Entrega tardía de 4+ días
+    \item \textbf{-5 pts:} No incluye requirements.txt
+    \item \textbf{-5 pts:} Menos de 40 tests
+    \item \textbf{-3 pts:} No incluye reporte de cobertura
+\end{itemize}
+
+\subsection{Nota Mínima Aprobatoria}
+
+Para aprobar esta tarea necesitas obtener al menos \textbf{60 puntos de 100}.
+
+\subsection{Escala de Calificación}
+
+\begin{itemize}
+    \item \textbf{90-100+ pts:} Excelente - Dominio completo de testing
+    \item \textbf{80-89 pts:} Muy Bueno - Comprensión sólida de pruebas unitarias
+    \item \textbf{70-79 pts:} Bueno - Comprensión aceptable, necesita práctica
+    \item \textbf{60-69 pts:} Suficiente - Comprensión básica, necesita refuerzo
+    \item \textbf{0-59 pts:} Insuficiente - No aprobado
+\end{itemize}
+
+\section{Recursos de Apoyo}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Documentación pytest:} \url{https://docs.pytest.org/}
+    \item \textbf{Tutorial pytest:} \url{https://docs.pytest.org/en/stable/getting-started.html}
+    \item \textbf{Pytest-cov:} \url{https://pytest-cov.readthedocs.io/}
+    \item \textbf{Testing en Python:} \url{https://realpython.com/pytest-python-testing/}
+    \item \textbf{TDD con Python:} \url{https://realpython.com/python-testing/}
+\end{itemize}
+
+\section{Preguntas Frecuentes}
+
+\textbf{P: ¿Por qué hacer testing si puedo probar manualmente?}\\
+R: Los tests automáticos son más rápidos, consistentes, y detectan regresiones cuando cambias código.
+
+\textbf{P: ¿Cómo instalo pytest?}\\
+R: \texttt{pip install pytest}
+
+\textbf{P: ¿Cómo ejecuto un solo test?}\\
+R: \texttt{pytest test\_calculadora.py::test\_nombre\_especifico}
+
+\textbf{P: ¿Qué significa que un test pasa?}\\
+R: Que el assert se cumplió, el resultado fue el esperado.
+
+\textbf{P: ¿Cómo veo la cobertura?}\\
+R: \texttt{pytest --cov=calculadora --cov-report=html}
+
+\textbf{P: ¿100\% cobertura significa sin bugs?}\\
+R: No. Significa que todas las líneas se ejecutaron, pero puede haber casos no probados.
+
+\textbf{P: ¿Qué es un caso límite?}\\
+R: Valores en los bordes del rango válido: 0, 1, -1, máximos, mínimos, listas vacías, etc.
+
+\textbf{P: ¿Cuántos tests son suficientes?}\\
+R: No hay número mágico. Debes cubrir casos normales, límite y errores para cada función.
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{¡Éxito con tus pruebas unitarias!}\\
+\textit{Los tests son la red de seguridad del programador.\\
+Aprende a escribirlos bien y programarás con confianza.}
+\end{center}
+
+\end{document}
