@@ -1,0 +1,713 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\geometry{margin=2.5cm}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{NLPY-1}
+\lhead{Proyecto Final Libre}
+\rfoot{\thepage}
+
+\definecolor{nablue}{RGB}{0,102,204}
+\definecolor{nagreen}{RGB}{34,139,34}
+\definecolor{naorange}{RGB}{255,140,0}
+
+\title{\textbf{\Huge Proyecto Final Libre}\\[0.5em]
+\Large Curso de Programación en Python NLPY-1\\[0.5em]
+\large Semana 9}
+\author{nablabs}
+\date{2025}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{1cm}
+
+\begin{tcolorbox}[colback=nablue!5!white,colframe=nablue,title=\textbf{Objetivo del Proyecto}]
+Desarrollar una aplicación completa en Python que integre \textbf{todos} los conceptos y técnicas aprendidas durante el curso, demostrando dominio de la programación y capacidad de resolver problemas reales.
+\end{tcolorbox}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Descripción General}
+
+Este proyecto final representa la culminación de tu aprendizaje en el curso NLPY-1. A diferencia de los proyectos semanales, este proyecto es \textbf{libre}: tú decides qué aplicación desarrollar, siempre y cuando cumpla con los requisitos técnicos establecidos.
+
+\subsection{Libertad Creativa}
+
+Tienes total libertad para elegir:
+\begin{itemize}
+    \item El tema de tu aplicación
+    \item El dominio del problema a resolver
+    \item La interfaz de usuario (consola, GUI, web)
+    \item Las librerías adicionales que desees utilizar
+    \item El nivel de complejidad y características extras
+\end{itemize}
+
+\subsection{Salón de la Fama}
+
+\begin{tcolorbox}[colback=nagreen!5!white,colframe=nagreen,title=\textbf{¡Oportunidad Especial!}]
+Los proyectos más \textbf{sorprendentes} y \textbf{llamativos} serán presentados en el \textbf{Salón de la Fama} de la página web de nablabs. Tu trabajo podría inspirar a futuros estudiantes y formar parte de la historia del curso.
+
+\vspace{0.5em}
+\textit{Criterios para el Salón de la Fama:}
+\begin{itemize}
+    \item Originalidad y creatividad
+    \item Calidad técnica de implementación
+    \item Impacto visual o funcional
+    \item Utilidad práctica
+    \item Código limpio y bien documentado
+\end{itemize}
+\end{tcolorbox}
+
+\section{Requisitos Técnicos Obligatorios}
+
+Tu proyecto \textbf{DEBE} implementar todos los temas vistos durante el curso:
+
+\subsection{Semana 0: Funciones y Variables}
+\begin{itemize}
+    \item Uso de funciones con parámetros y valores de retorno
+    \item Variables de diferentes tipos (strings, integers, floats)
+    \item Formateo de strings (f-strings)
+    \item Métodos de strings (strip, title, capitalize, split, etc.)
+    \item Operadores aritméticos
+    \item Conversión de tipos (type casting)
+    \item Función \texttt{input()} para interacción con el usuario
+\end{itemize}
+
+\subsection{Semana 1: Condicionales}
+\begin{itemize}
+    \item Sentencias \texttt{if}, \texttt{elif}, \texttt{else}
+    \item Operadores de comparación (\texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{==}, \texttt{!=})
+    \item Operadores lógicos (\texttt{and}, \texttt{or}, \texttt{not})
+    \item Valores booleanos y expresiones booleanas
+    \item (Opcional) Operador \texttt{match} para casos complejos
+\end{itemize}
+
+\subsection{Semana 2: Bucles}
+\begin{itemize}
+    \item Bucles \texttt{while} para iteraciones condicionales
+    \item Bucles \texttt{for} para iteración sobre secuencias
+    \item Uso de \texttt{range()}
+    \item Sentencias \texttt{break} y \texttt{continue}
+    \item Validación de entrada con bucles
+\end{itemize}
+
+\subsection{Semana 3: Excepciones}
+\begin{itemize}
+    \item Bloques \texttt{try} y \texttt{except}
+    \item Manejo de múltiples tipos de excepciones
+    \item Uso de \texttt{else} y \texttt{finally}
+    \item Creación de excepciones personalizadas con \texttt{raise}
+    \item Mensajes de error descriptivos
+\end{itemize}
+
+\subsection{Semana 4: Librerías}
+\begin{itemize}
+    \item Importación de módulos estándar (\texttt{random}, \texttt{datetime}, \texttt{statistics}, etc.)
+    \item Uso de al menos 2 librerías externas instaladas con \texttt{pip}
+    \item Creación de al menos 1 módulo propio
+    \item Uso apropiado de \texttt{import} y \texttt{from ... import ...}
+\end{itemize}
+
+\subsection{Semana 5: Pruebas Unitarias}
+\begin{itemize}
+    \item Archivo separado de pruebas usando \texttt{pytest}
+    \item Al menos 10 pruebas unitarias diferentes
+    \item Pruebas para casos normales, casos límite y excepciones
+    \item Uso de \texttt{assert} para validaciones
+    \item Todas las pruebas deben pasar exitosamente
+\end{itemize}
+
+\subsection{Semana 6: Entrada/Salida de Archivos}
+\begin{itemize}
+    \item Lectura y escritura de archivos
+    \item Uso del bloque \texttt{with} para manejo seguro de archivos
+    \item Trabajo con archivos CSV (usando el módulo \texttt{csv})
+    \item Persistencia de datos entre ejecuciones
+    \item Manejo de errores en operaciones de archivos
+\end{itemize}
+
+\subsection{Semana 7: Expresiones Regulares}
+\begin{itemize}
+    \item Uso del módulo \texttt{re}
+    \item Al menos 3 patrones regex diferentes
+    \item Validación de formatos (emails, teléfonos, cédulas, etc.)
+    \item Uso de funciones como \texttt{search()}, \texttt{match()}, \texttt{findall()}, o \texttt{sub()}
+    \item Patrones con metacaracteres y cuantificadores
+\end{itemize}
+
+\subsection{Semana 8: Programación Orientada a Objetos}
+\begin{itemize}
+    \item Al menos 4 clases diferentes bien diseñadas
+    \item Uso de \texttt{\_\_init\_\_} (constructor)
+    \item Atributos de instancia y métodos
+    \item Al menos 1 ejemplo de herencia
+    \item Uso de \texttt{@property} para encapsulación
+    \item Métodos especiales (\texttt{\_\_str\_\_}, \texttt{\_\_repr\_\_})
+    \item (Opcional) \texttt{@classmethod} o \texttt{@staticmethod}
+\end{itemize}
+
+\subsection{Semana 9: Et Cetera}
+\begin{itemize}
+    \item Uso de conjuntos (sets) o diccionarios avanzados
+    \item Al menos 2 list comprehensions
+    \item Al menos 1 dictionary comprehension
+    \item Uso de funciones lambda
+    \item (Opcional) Uso de \texttt{*args} o \texttt{**kwargs}
+    \item (Opcional) Decoradores o generadores
+\end{itemize}
+
+\section{Evaluación}
+
+\subsection{Distribución de Puntos}
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Criterio} & \textbf{Puntos} \\
+\hline
+Implementación de todos los requisitos técnicos & 40 \\
+Funcionalidad y lógica del programa & 20 \\
+Calidad del código (limpieza, organización) & 15 \\
+Documentación y comentarios & 10 \\
+Pruebas unitarias completas y efectivas & 10 \\
+Creatividad e innovación & 5 \\
+\hline
+\textbf{Total} & \textbf{100} \\
+\hline
+\textbf{Bonus: Juego Retro} & \textbf{+20} \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Bonus: Juego Retro (+20 puntos)}
+
+\begin{tcolorbox}[colback=naorange!5!white,colframe=naorange,title=\textbf{Desafío Especial: Juegos Retro}]
+Si decides desarrollar un \textbf{juego retro clásico}, recibirás \textbf{20 puntos adicionales} por la complejidad técnica que esto implica.
+
+\vspace{0.5em}
+\textbf{Ejemplos de juegos retro:}
+\begin{itemize}
+    \item Space Invaders
+    \item Bomberman (estilo NES)
+    \item Donkey Kong
+    \item Snake
+    \item Pac-Man
+    \item Asteroids
+    \item Pong
+    \item Tetris
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Requisitos adicionales para el bonus:}
+\begin{itemize}
+    \item El juego debe ser jugable y funcional
+    \item Debe incluir mecánicas básicas del juego original
+    \item Interfaz gráfica (puede usar \texttt{pygame}, \texttt{tkinter}, etc.)
+    \item Sistema de puntuación
+    \item \textbf{IMPORTANTE:} Debe implementar TODOS los temas del curso
+\end{itemize}
+
+\vspace{0.5em}
+\textit{Nota: Desarrollar un juego retro es significativamente más complejo, pero también más gratificante y tiene mayor probabilidad de llegar al Salón de la Fama.}
+\end{tcolorbox}
+
+\section{Ideas de Proyectos Sugeridas}
+
+A continuación se presentan 8 ideas de proyectos completamente desarrolladas. Puedes elegir una de estas o crear tu propia idea original.
+
+\subsection{Sistema de Gestión de Citas Médicas}
+
+\textbf{Descripción:} Aplicación para gestionar citas médicas en una clínica u hospital.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Paciente, Doctor, Cita, Clínica
+    \item \textbf{GUI:} Formularios para registrar pacientes/doctores, calendario visual de citas
+    \item \textbf{Archivos:} Guardar datos en CSV/JSON, exportar reportes de citas
+    \item \textbf{Regex:} Validar cédulas costarricenses, emails, teléfonos
+    \item \textbf{Librerías:} \texttt{datetime} para manejo de fechas y horarios, \texttt{random} para generar códigos únicos de cita
+    \item \textbf{Testing:} Validar lógica de reservas, detectar conflictos de horarios
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Registro de pacientes y doctores
+    \item Agendar, modificar y cancelar citas
+    \item Validar disponibilidad de horarios
+    \item Búsqueda de citas por paciente, doctor o fecha
+    \item Recordatorios de citas próximas
+    \item Generación de reportes estadísticos
+\end{itemize}
+
+\subsection{Gestor de Finanzas Personales}
+
+\textbf{Descripción:} Aplicación para controlar ingresos, gastos y presupuestos personales.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Cuenta, Transacción, Categoría, Usuario
+    \item \textbf{GUI:} Dashboard con gráficos de gastos, formularios de ingreso/egreso
+    \item \textbf{Archivos:} Persistencia de transacciones, importar extractos bancarios CSV
+    \item \textbf{Regex:} Validar números de cuenta, parsear descripciones de transacciones
+    \item \textbf{Librerías:} \texttt{matplotlib} para gráficos, \texttt{statistics} para análisis
+    \item \textbf{Excepciones:} Manejo de saldos insuficientes, transacciones inválidas
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Registro de ingresos y gastos
+    \item Categorización de transacciones
+    \item Visualización de gastos por categoría
+    \item Presupuestos mensuales con alertas
+    \item Reportes financieros con gráficos
+    \item Importación de datos desde archivos CSV
+\end{itemize}
+
+\subsection{Sistema de Biblioteca Digital}
+
+\textbf{Descripción:} Plataforma para gestionar préstamos de libros en una biblioteca.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Libro, Usuario, Préstamo, Biblioteca
+    \item \textbf{GUI:} Catálogo visual, búsqueda avanzada, gestión de préstamos
+    \item \textbf{Archivos:} Base de datos de libros en CSV, historial de préstamos
+    \item \textbf{Regex:} Búsqueda por patrones (ISBN, autor, título)
+    \item \textbf{Librerías:} \texttt{datetime} para fechas de devolución, \texttt{random} para códigos
+    \item \textbf{Testing:} Validar reglas de préstamo, cálculo de multas por atraso
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Catálogo de libros con búsqueda avanzada
+    \item Sistema de préstamos y devoluciones
+    \item Control de disponibilidad
+    \item Cálculo automático de multas
+    \item Historial de préstamos por usuario
+    \item Reservas de libros prestados
+\end{itemize}
+
+\subsection{Administrador de Tareas y Proyectos}
+
+\textbf{Descripción:} Aplicación tipo Trello para gestionar tareas y proyectos.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Tarea, Proyecto, Etiqueta, Usuario
+    \item \textbf{GUI:} Tableros visuales, filtros, calendario de tareas
+    \item \textbf{Archivos:} Guardar proyectos y tareas, exportar reportes
+    \item \textbf{Regex:} Parsear fechas, buscar por etiquetas
+    \item \textbf{Librerías:} \texttt{datetime}, \texttt{os} para organizar archivos
+    \item \textbf{Comprehensions:} Filtrar tareas por estado, prioridad, fecha
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Creación de proyectos y tareas
+    \item Estados de tareas (por hacer, en progreso, completado)
+    \item Sistema de prioridades
+    \item Fechas límite con recordatorios
+    \item Etiquetas y categorías personalizadas
+    \item Vista de calendario
+    \item Exportación de reportes de productividad
+\end{itemize}
+
+\subsection{Sistema de Reservas de Hotel/Hostel}
+
+\textbf{Descripción:} Plataforma para gestionar reservas de habitaciones.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Habitación, Reserva, Cliente, Hotel
+    \item \textbf{GUI:} Calendario de disponibilidad, formulario de reserva
+    \item \textbf{Archivos:} Persistencia de reservas, generación de facturas
+    \item \textbf{Regex:} Validar pasaportes, tarjetas de crédito (formato)
+    \item \textbf{Librerías:} \texttt{datetime} para fechas, \texttt{random} para códigos de reserva
+    \item \textbf{Excepciones:} Manejo de overbooking, cancelaciones
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Búsqueda de habitaciones disponibles
+    \item Sistema de reservas con confirmación
+    \item Diferentes tipos de habitaciones y tarifas
+    \item Check-in y check-out
+    \item Generación de facturas
+    \item Cancelaciones y reembolsos
+    \item Estadísticas de ocupación
+\end{itemize}
+
+\subsection{Plataforma de Quiz/Exámenes Online}
+
+\textbf{Descripción:} Sistema para crear y realizar exámenes en línea.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Pregunta, Examen, Estudiante, Resultado
+    \item \textbf{GUI:} Interfaz de examen, timer, resultados con gráficos
+    \item \textbf{Archivos:} Banco de preguntas en CSV, exportar calificaciones
+    \item \textbf{Regex:} Validar formatos de respuestas específicas
+    \item \textbf{Librerías:} \texttt{random} para barajear preguntas, \texttt{statistics} para análisis
+    \item \textbf{Testing:} Verificar lógica de calificación automática
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Creación de bancos de preguntas
+    \item Diferentes tipos de preguntas (opción múltiple, verdadero/falso, respuesta corta)
+    \item Temporizador para exámenes
+    \item Calificación automática
+    \item Barajeo de preguntas y opciones
+    \item Estadísticas de desempeño
+    \item Exportación de resultados
+\end{itemize}
+
+\subsection{Sistema de Inventario para Pulpería/Minisuper}
+
+\textbf{Descripción:} Aplicación de punto de venta e inventario para negocio.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Producto, Venta, Cliente, Inventario
+    \item \textbf{GUI:} Punto de venta, gestión de stock, reportes visuales
+    \item \textbf{Archivos:} Base de datos de productos, registro de ventas
+    \item \textbf{Regex:} Validar códigos de barras, buscar productos
+    \item \textbf{Librerías:} \texttt{datetime} para ventas, \texttt{statistics} para análisis
+    \item \textbf{Excepciones:} Stock insuficiente, precios inválidos
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Registro de productos con código de barras
+    \item Control de inventario en tiempo real
+    \item Proceso de venta con cálculo de total
+    \item Alertas de stock bajo
+    \item Historial de ventas
+    \item Reportes de productos más vendidos
+    \item Gestión de proveedores
+\end{itemize}
+
+\subsection{Aplicación de Recetas de Cocina Tica}
+
+\textbf{Descripción:} Plataforma para gestionar y buscar recetas de comida costarricense.
+
+\vspace{0.5em}
+\textbf{Componentes principales:}
+\begin{itemize}
+    \item \textbf{Clases:} Receta, Ingrediente, Usuario, Favoritos
+    \item \textbf{GUI:} Buscador visual, filtros por ingredientes, timer de cocina
+    \item \textbf{Archivos:} Base de datos de recetas, exportar lista de compras
+    \item \textbf{Regex:} Parsear cantidades (``2 tazas'', ``500g''), buscar ingredientes
+    \item \textbf{Librerías:} \texttt{random} para sugerir recetas del día
+    \item \textbf{Comprehensions:} Filtrar recetas por ingredientes disponibles
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{Funcionalidades:}
+\begin{itemize}
+    \item Base de datos de recetas típicas costarricenses
+    \item Búsqueda por nombre, ingredientes o categoría
+    \item Sistema de favoritos
+    \item Generación automática de lista de compras
+    \item Conversión de unidades
+    \item Timer para cocinar
+    \item Sugerencias aleatorias de recetas
+    \item Exportar recetas a archivo
+\end{itemize}
+
+\section{Entregables}
+
+\subsection{Código Fuente}
+
+\begin{itemize}
+    \item Todos los archivos \texttt{.py} necesarios
+    \item Módulos organizados en carpetas apropiadas
+    \item Archivo de pruebas \texttt{test\_*.py}
+    \item Archivos de datos (CSV, JSON, etc.)
+    \item Archivo \texttt{requirements.txt} con todas las dependencias
+\end{itemize}
+
+\subsection{Documentación}
+
+\begin{itemize}
+    \item \texttt{README.md} con:
+    \begin{itemize}
+        \item Descripción del proyecto
+        \item Instrucciones de instalación
+        \item Cómo ejecutar el programa
+        \item Cómo ejecutar las pruebas
+        \item Ejemplos de uso
+    \end{itemize}
+    \item Comentarios en el código explicando lógica compleja
+    \item Docstrings en todas las funciones y clases
+\end{itemize}
+
+\subsection{Video Demostración (Opcional pero Recomendado)}
+
+\begin{itemize}
+    \item Video de 3-5 minutos mostrando la funcionalidad
+    \item Explicación de características principales
+    \item Demostración de casos de uso
+    \item \textit{Aumenta significativamente las posibilidades de llegar al Salón de la Fama}
+\end{itemize}
+
+\section{Cronograma de Entrega}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Fecha} & \textbf{Entregable} \\
+\hline
+Semana 9, Día 3 & Propuesta de proyecto (1 párrafo) \\
+Semana 9, Día 5 & Diseño de clases y estructura \\
+Semana 10, Día 3 & Avance del 50\% funcional \\
+Semana 10, Día 7 & \textbf{Entrega final completa} \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Recomendaciones}
+
+\begin{enumerate}
+    \item \textbf{Planifica primero:} Diseña tu aplicación antes de programar. Define las clases, funciones y flujo de datos.
+    
+    \item \textbf{Desarrollo iterativo:} No intentes hacer todo de una vez. Desarrolla por características incrementales.
+    
+    \item \textbf{Prueba continuamente:} Escribe pruebas mientras desarrollas, no al final.
+    
+    \item \textbf{Commits frecuentes:} Si usas Git, haz commits pequeños y frecuentes con mensajes descriptivos.
+    
+    \item \textbf{Código limpio:} Sigue convenciones de estilo (PEP 8), usa nombres descriptivos, evita repetición.
+    
+    \item \textbf{Maneja errores:} No dejes que tu programa crashee. Maneja todas las excepciones apropiadamente.
+    
+    \item \textbf{Documenta:} Escribe docstrings y comentarios útiles. Tu código debe ser entendible por otros.
+    
+    \item \textbf{Sé creativo:} Los proyectos más memorables son los que muestran originalidad e innovación.
+    
+    \item \textbf{Piensa en el usuario:} Haz que tu aplicación sea intuitiva y fácil de usar.
+    
+    \item \textbf{Ve más allá:} Los requisitos son el mínimo. Agregar características extra te distinguirá.
+\end{enumerate}
+
+\section{Criterios de Calidad del Código}
+
+\subsection{Organización}
+\begin{itemize}
+    \item Estructura de archivos lógica y clara
+    \item Separación de responsabilidades (clases bien definidas)
+    \item Módulos importados correctamente
+\end{itemize}
+
+\subsection{Estilo}
+\begin{itemize}
+    \item Cumplimiento con PEP 8
+    \item Nombres de variables descriptivos (no \texttt{x}, \texttt{y}, \texttt{data})
+    \item Funciones con un propósito claro y único
+    \item Longitud apropiada de funciones (no más de 50 líneas idealmente)
+\end{itemize}
+
+\subsection{Documentación}
+\begin{itemize}
+    \item Docstrings en todas las clases y funciones públicas
+    \item Comentarios explicando lógica no obvia
+    \item README completo y claro
+\end{itemize}
+
+\subsection{Manejo de Errores}
+\begin{itemize}
+    \item Excepciones manejadas apropiadamente
+    \item Mensajes de error útiles para el usuario
+    \item No uso de \texttt{except:} sin especificar el tipo de excepción
+\end{itemize}
+
+\section{Ejemplos de Implementación de Requisitos}
+
+\subsection{Ejemplo: Expresiones Regulares}
+
+\begin{verbatim}
+import re
+
+class ValidadorCostarricense:
+    """Validador de formatos costarricenses"""
+    
+    @staticmethod
+    def validar_cedula(cedula):
+        """Valida formato de cédula costarricense (0-0000-0000)"""
+        patron = r'^\d-\d{4}-\d{4}$'
+        return re.match(patron, cedula) is not None
+    
+    @staticmethod
+    def validar_telefono(telefono):
+        """Valida teléfono costarricense (8 dígitos)"""
+        patron = r'^[2-8]\d{3}-?\d{4}$'
+        return re.match(patron, telefono) is not None
+\end{verbatim}
+
+\subsection{Ejemplo: List Comprehension}
+
+\begin{verbatim}
+# Filtrar tareas pendientes con alta prioridad
+tareas_urgentes = [tarea for tarea in self.tareas 
+                   if tarea.prioridad == 'alta' 
+                   and tarea.estado == 'pendiente']
+
+# Obtener nombres de clientes activos
+nombres_activos = [cliente.nombre.title() 
+                   for cliente in self.clientes 
+                   if cliente.activo]
+\end{verbatim}
+
+\subsection{Ejemplo: Testing}
+
+\begin{verbatim}
+import pytest
+from sistema import Cuenta, TransaccionInvalida
+
+def test_deposito_valido():
+    cuenta = Cuenta("Juan", 1000)
+    cuenta.depositar(500)
+    assert cuenta.saldo == 1500
+
+def test_retiro_saldo_insuficiente():
+    cuenta = Cuenta("María", 100)
+    with pytest.raises(TransaccionInvalida):
+        cuenta.retirar(200)
+
+def test_transferencia_exitosa():
+    cuenta1 = Cuenta("Pedro", 1000)
+    cuenta2 = Cuenta("Ana", 500)
+    cuenta1.transferir(cuenta2, 300)
+    assert cuenta1.saldo == 700
+    assert cuenta2.saldo == 800
+\end{verbatim}
+
+\section{Preguntas Frecuentes}
+
+\subsection{¿Puedo usar librerías que no vimos en clase?}
+
+Sí, de hecho es recomendado. Debes usar al menos 2 librerías externas, y puedes elegir las que mejor se adapten a tu proyecto.
+
+\subsection{¿Tengo que usar GUI o puede ser solo consola?}
+
+Puedes usar consola, GUI o incluso web. Lo importante es la funcionalidad y el cumplimiento de requisitos técnicos.
+
+\subsection{¿Puedo trabajar en equipo?}
+
+Este proyecto es individual. Sin embargo, puedes discutir ideas y conceptos con compañeros, siempre que el código sea tuyo.
+
+\subsection{¿Qué pasa si mi proyecto no incluye algún requisito?}
+
+Cada requisito faltante resultará en deducción de puntos. Asegúrate de implementar TODO.
+
+\subsection{¿Puedo hacer algo diferente a las ideas sugeridas?}
+
+¡Por supuesto! Las ideas son solo sugerencias. Tu creatividad es bienvenida y valorada.
+
+\subsection{¿Cuánto código debo escribir?}
+
+No hay un mínimo estricto, pero un proyecto completo típicamente tiene 500-1500 líneas de código (sin contar archivos de datos).
+
+\section{Recursos Adicionales}
+
+\subsection{Documentación Oficial}
+\begin{itemize}
+    \item Python: \url{https://docs.python.org/3/}
+    \item Pytest: \url{https://docs.pytest.org/}
+    \item Expresiones Regulares: \url{https://docs.python.org/3/library/re.html}
+\end{itemize}
+
+\subsection{Librerías Útiles}
+\begin{itemize}
+    \item \texttt{tkinter} - GUI básica
+    \item \texttt{pygame} - Juegos 2D
+    \item \texttt{matplotlib} - Gráficos
+    \item \texttt{pandas} - Manipulación de datos
+    \item \texttt{requests} - APIs HTTP
+    \item \texttt{pillow} - Procesamiento de imágenes
+\end{itemize}
+
+\section{Checklist Final}
+
+Antes de entregar, verifica que tu proyecto incluya:
+
+\begin{itemize}
+    \item[$\square$] Funciones con parámetros y return
+    \item[$\square$] Variables y type casting
+    \item[$\square$] F-strings y métodos de strings
+    \item[$\square$] Condicionales (if/elif/else)
+    \item[$\square$] Operadores lógicos
+    \item[$\square$] Bucles while y for
+    \item[$\square$] Break y continue
+    \item[$\square$] Try/except con al menos 3 tipos de excepciones
+    \item[$\square$] Raise para excepciones personalizadas
+    \item[$\square$] Importación de módulos estándar
+    \item[$\square$] Al menos 2 librerías externas
+    \item[$\square$] Creación de módulo propio
+    \item[$\square$] Archivo de pruebas con pytest
+    \item[$\square$] Al menos 10 pruebas unitarias
+    \item[$\square$] Lectura y escritura de archivos
+    \item[$\square$] Uso de archivos CSV
+    \item[$\square$] Bloque with para archivos
+    \item[$\square$] Al menos 3 patrones regex
+    \item[$\square$] Funciones del módulo re
+    \item[$\square$] Al menos 4 clases
+    \item[$\square$] Uso de \_\_init\_\_
+    \item[$\square$] Al menos 1 ejemplo de herencia
+    \item[$\square$] @property
+    \item[$\square$] \_\_str\_\_ y/o \_\_repr\_\_
+    \item[$\square$] Al menos 2 list comprehensions
+    \item[$\square$] Al menos 1 dictionary comprehension
+    \item[$\square$] Funciones lambda
+    \item[$\square$] Sets o diccionarios avanzados
+    \item[$\square$] README.md completo
+    \item[$\square$] requirements.txt
+    \item[$\square$] Código comentado y documentado
+    \item[$\square$] Todas las pruebas pasan
+\end{itemize}
+
+\vspace{1cm}
+
+\begin{tcolorbox}[colback=nablue!5!white,colframe=nablue,title=\textbf{¡Mucho Éxito!}]
+Este proyecto es tu oportunidad para demostrar todo lo que has aprendido. No tengas miedo de ser ambicioso y creativo. Los mejores proyectos son aquellos que resuelven problemas reales o que simplemente son divertidos de usar.
+
+\vspace{0.5em}
+\textbf{Recuerda:} El objetivo no es solo cumplir requisitos, sino crear algo de lo que estés orgulloso.
+
+\vspace{0.5em}
+\centering
+\textit{¡Nos vemos en el Salón de la Fama!}
+\end{tcolorbox}
+
+\end{document}
