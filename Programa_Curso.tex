@@ -1,0 +1,1036 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{fontawesome5}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% Configuración de colores
+\definecolor{nablabrownmain}{HTML}{AB886D}
+\definecolor{nablabrownlight}{HTML}{D4C4B0}
+\definecolor{nablabrowndark}{HTML}{8B6849}
+\definecolor{nablabeige}{HTML}{F5F1E8}
+
+% Configuración de enlaces
+\hypersetup{
+    colorlinks=true,
+    linkcolor=nablabrowndark,
+    urlcolor=nablabrownmain,
+    citecolor=nablabrowndark,
+    pdfborder={0 0 0}
+}
+
+% Configuración de títulos de secciones
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{nablabrownmain}}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{nablabrowndark}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{nablabrowndark}}
+  {\thesubsubsection}{1em}{}
+
+% Configuración de encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{nablabrownmain}{Introducción a la Programación con Python}}
+\fancyhead[R]{\textcolor{nablabrowndark}{Nablabs}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{nablabrownmain}\leaders\hrule height \headrulewidth\hfill}}
+
+% Cajas personalizadas
+\newtcolorbox{objetivobox}{
+    colback=nablabeige,
+    colframe=nablabrownmain,
+    fonttitle=\bfseries,
+    title=Objetivo,
+    arc=2mm,
+    boxrule=1pt
+}
+
+\newtcolorbox{notabox}{
+    colback=yellow!10,
+    colframe=orange,
+    fonttitle=\bfseries,
+    title=\faExclamationTriangle\ Nota Importante,
+    arc=2mm,
+    boxrule=1pt,
+    leftrule=3mm
+}
+
+\newtcolorbox{infobox}{
+    colback=blue!5,
+    colframe=blue!50,
+    fonttitle=\bfseries,
+    title=\faInfoCircle\ Información,
+    arc=2mm,
+    boxrule=1pt
+}
+
+\begin{document}
+
+% Portada
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries\textcolor{nablabrownmain}{PROGRAMA DE CURSO}\par}
+    \vspace{1cm}
+    {\LARGE\textcolor{nablabrowndark}{Introducción a la Programación con Python}\par}
+    \vspace{2cm}
+    
+    {\Large\textbf{$\nabla$ Nablabs}\par}
+    \vspace{1cm}
+    
+    {\large NLPY-1\par}
+    \vspace{2cm}
+    
+    \begin{tabular}{ll}
+        \textbf{Duración:} & 14 semanas totales \\
+        & (10 semanas de clases + 4 semanas de proyecto final) \\
+        \textbf{Nivel:} & Principiante \\
+        \textbf{Modalidad:} & Virtual Sincrónica \\
+        \textbf{Carga horaria:} & 8 horas semanales \\
+        & (4 horas de clase + 4 horas extraclase recomendadas) \\
+    \end{tabular}
+    
+    \vfill
+    {\large Versión 1.0 -- Octubre 2025\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Descripción General del Curso}
+
+Este curso proporciona una introducción comprensiva y práctica a la programación utilizando Python como lenguaje principal. Diseñado específicamente para estudiantes sin conocimientos previos de programación, el curso adopta un enfoque pedagógico gradual que combina teoría, ejemplos prácticos y proyectos aplicados.
+
+Python ha sido seleccionado como lenguaje de enseñanza por su sintaxis clara y legible, su amplia aplicabilidad en diversos dominios profesionales (desarrollo web, ciencia de datos, inteligencia artificial, automatización), y por contar con una comunidad global robusta que facilita el aprendizaje continuo.
+
+A lo largo de las 10 semanas de instrucción, los estudiantes desarrollarán competencias fundamentales en pensamiento computacional, resolución de problemas algorítmicos, y buenas prácticas de programación. El curso culmina con un proyecto final integrador que permite a los estudiantes demostrar y consolidar los conocimientos adquiridos mediante el desarrollo de una aplicación funcional.
+
+\subsection{Metodología de Enseñanza}
+
+El curso implementa una metodología activa y orientada a la práctica:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Aprendizaje incremental:} Cada semana construye sobre los conocimientos de la anterior, asegurando una progresión lógica y sostenible.
+    
+    \item \textbf{Teoría aplicada:} Los conceptos se presentan siempre acompañados de ejemplos prácticos y casos de uso reales.
+    
+    \item \textbf{Aprender haciendo:} Cada semana incluye una tarea práctica que refuerza el aprendizaje mediante la aplicación directa de conceptos.
+    
+    \item \textbf{Defensa oral de código:} Los estudiantes deben explicar su código durante las sesiones de defensa, asegurando comprensión profunda y evitando malas prácticas académicas.
+    
+    \item \textbf{Control de versiones con Git/GitHub:} Los estudiantes aprenderán buenas prácticas de desarrollo mediante el uso de repositorios Git, documentando su progreso con commits organizados.
+    
+    \item \textbf{Retroalimentación continua:} Las defensas semanales proporcionan feedback inmediato y personalizado.
+\end{itemize}
+
+\newpage
+
+\section{Objetivos del Curso}
+
+\subsection{Objetivo General}
+
+\begin{objetivobox}
+Desarrollar competencias fundamentales en programación mediante el aprendizaje de Python, capacitando a los estudiantes para diseñar, implementar y depurar soluciones algorítmicas a problemas computacionales de complejidad básica e intermedia, aplicando principios de pensamiento lógico, buenas prácticas de desarrollo y metodologías de testing.
+\end{objetivobox}
+
+\subsection{Objetivos Específicos}
+
+Al finalizar el curso, los estudiantes serán capaces de:
+
+\subsubsection{Fundamentos de Programación}
+\begin{itemize}[leftmargin=*]
+    \item Comprender y aplicar los conceptos fundamentales de programación: variables, tipos de datos, operadores y expresiones.
+    \item Utilizar estructuras de control de flujo (condicionales y bucles) para diseñar algoritmos básicos.
+    \item Manipular diferentes tipos de datos: números, strings, listas, tuplas, diccionarios y conjuntos.
+\end{itemize}
+
+\subsubsection{Desarrollo de Software}
+\begin{itemize}[leftmargin=*]
+    \item Implementar funciones reutilizables aplicando principios de modularización y abstracción.
+    \item Manejar excepciones para crear programas robustos y tolerantes a fallos.
+    \item Trabajar con módulos y librerías de Python, tanto estándar como de terceros.
+    \item Aplicar principios de Programación Orientada a Objetos (POO) para organizar código complejo.
+\end{itemize}
+
+\subsubsection{Herramientas y Buenas Prácticas}
+\begin{itemize}[leftmargin=*]
+    \item Leer y escribir archivos para persistencia de datos.
+    \item Implementar pruebas unitarias para validar el correcto funcionamiento del código.
+    \item Utilizar expresiones regulares para procesamiento avanzado de texto.
+    \item Consumir APIs REST básicas para integración con servicios externos.
+    \item Gestionar entornos virtuales y dependencias de proyectos.
+    \item Utilizar Git y GitHub para control de versiones y documentación de desarrollo.
+\end{itemize}
+
+\subsubsection{Competencias Transversales}
+\begin{itemize}[leftmargin=*]
+    \item Depurar código identificando y corrigiendo errores de sintaxis, lógica y ejecución.
+    \item Documentar código de manera clara y profesional.
+    \item Aplicar técnicas de comprehensions, funciones lambda y generadores para escribir código Python idiomático.
+    \item Desarrollar pensamiento algorítmico para descomponer problemas complejos en soluciones programáticas.
+\end{itemize}
+
+\newpage
+
+\section{Contenidos por Semana}
+
+\subsection{Semana 0: Conceptos Fundamentales}
+
+\begin{objetivobox}
+Familiarizarse con el entorno de Python y dominar los elementos básicos del lenguaje: entrada/salida, variables, tipos de datos primitivos y operaciones aritméticas.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué es Python? Características y aplicaciones
+    \item Instalación y configuración del entorno (Python, IDE)
+    \item Función \texttt{print()}: salida de datos
+    \item Función \texttt{input()}: entrada de datos del usuario
+    \item Variables y asignación
+    \item Tipos de datos básicos: strings, integers, floats, booleans
+    \item Comentarios en el código (\# y """)
+    \item Formateo de strings (f-strings, format(), concatenación)
+    \item Métodos de strings: \texttt{strip()}, \texttt{title()}, \texttt{capitalize()}, \texttt{lower()}, \texttt{upper()}, \texttt{split()}
+    \item Operadores aritméticos: +, -, *, /, //, \%, **
+    \item Conversión de tipos (type casting): \texttt{int()}, \texttt{float()}, \texttt{str()}
+    \item Función \texttt{type()} para identificar tipos de datos
+\end{itemize}
+
+\textbf{Proyecto semanal:} Calculadora de propinas o programa interactivo simple
+
+\subsection{Semana 1: Condicionales y Control de Flujo}
+
+\begin{objetivobox}
+Implementar lógica de decisión en programas mediante estructuras condicionales, utilizando operadores de comparación y lógicos para crear flujos de ejecución alternativos.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item Operadores de comparación: \texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{==}, \texttt{!=}
+    \item Valores booleanos: \texttt{True} y \texttt{False}
+    \item Sentencia \texttt{if}: ejecución condicional
+    \item Sentencia \texttt{elif}: múltiples condiciones
+    \item Sentencia \texttt{else}: caso por defecto
+    \item Operadores lógicos: \texttt{and}, \texttt{or}, \texttt{not}
+    \item Anidamiento de condicionales
+    \item Operador ternario (expresión condicional)
+    \item Operador \texttt{match} (pattern matching en Python 3.10+)
+    \item Truthy y Falsy values
+    \item Validación de entrada con condicionales
+\end{itemize}
+
+\textbf{Proyecto semanal:} Sistema de calificaciones o validador de entrada
+
+\subsection{Semana 2: Bucles y Estructuras de Repetición}
+
+\begin{objetivobox}
+Automatizar tareas repetitivas mediante bucles, comprendiendo cuándo usar \texttt{while} vs \texttt{for}, y aplicar control de flujo dentro de iteraciones.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué es un bucle? Conceptos de iteración
+    \item Bucle \texttt{while}: iteración condicional
+    \item Bucle \texttt{for}: iteración sobre secuencias
+    \item Función \texttt{range()}: generación de secuencias numéricas
+    \item Iteración sobre strings, listas y otros iterables
+    \item Sentencia \texttt{break}: salir de un bucle
+    \item Sentencia \texttt{continue}: saltar a la siguiente iteración
+    \item Sentencia \texttt{else} en bucles
+    \item Bucles anidados
+    \item Bucles infinitos y cómo evitarlos
+    \item Validación de entrada con bucles
+    \item Patrones comunes de iteración
+\end{itemize}
+
+\textbf{Proyecto semanal:} Juego de adivinanzas o generador de patrones
+
+\subsection{Semana 3: Excepciones y Manejo de Errores}
+
+\begin{objetivobox}
+Desarrollar programas robustos mediante el manejo apropiado de excepciones, anticipando y gestionando errores de ejecución de manera controlada.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué son las excepciones? Diferencia entre errores de sintaxis y de ejecución
+    \item Tipos de errores comunes: \texttt{SyntaxError}, \texttt{ValueError}, \texttt{NameError}, \texttt{TypeError}, \texttt{ZeroDivisionError}, \texttt{IndexError}, \texttt{KeyError}
+    \item Bloque \texttt{try}: código que puede fallar
+    \item Bloque \texttt{except}: captura de excepciones
+    \item Captura de excepciones específicas vs genéricas
+    \item Bloque \texttt{else}: código si no hubo excepciones
+    \item Bloque \texttt{finally}: código que siempre se ejecuta
+    \item Sentencia \texttt{raise}: lanzar excepciones manualmente
+    \item Creación de excepciones personalizadas
+    \item Buenas prácticas en manejo de errores
+    \item Debugging básico
+\end{itemize}
+
+\textbf{Proyecto semanal:} Validador robusto de datos de usuario
+
+\subsection{Semana 4: Librerías y Módulos}
+
+\begin{objetivobox}
+Ampliar la funcionalidad de los programas mediante el uso de módulos de la biblioteca estándar y librerías de terceros, comprendiendo los mecanismos de importación y organización de código.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué son módulos y paquetes?
+    \item Diferencia entre módulo, paquete y librería
+    \item Importación de módulos: \texttt{import}
+    \item Importación con alias: \texttt{import ... as}
+    \item Importación selectiva: \texttt{from ... import}
+    \item Módulo \texttt{math}: funciones matemáticas avanzadas
+    \item Módulo \texttt{random}: generación de números aleatorios
+    \item Módulo \texttt{datetime}: manejo de fechas y horas
+    \item Módulo \texttt{os}: interacción con el sistema operativo
+    \item Instalación de paquetes con \texttt{pip}
+    \item Exploración de PyPI (Python Package Index)
+    \item Creación de módulos propios
+    \item Variable \texttt{\_\_name\_\_} y \texttt{if \_\_name\_\_ == "\_\_main\_\_"}
+\end{itemize}
+
+\textbf{Proyecto semanal:} Programa que utiliza múltiples módulos
+
+\subsection{Semana 5: Pruebas Unitarias y Testing}
+
+\begin{objetivobox}
+Garantizar la calidad del código mediante la implementación de pruebas unitarias, aplicando metodologías de testing para validar el comportamiento esperado de funciones y módulos.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué es el testing? Importancia de las pruebas
+    \item Tipos de pruebas: unitarias, integración, sistema
+    \item Framework \texttt{pytest}: instalación y configuración
+    \item Estructura básica de una prueba
+    \item Aserciones con \texttt{assert}
+    \item Convenciones de nombrado para tests
+    \item Casos de prueba: normales, límite y excepcionales
+    \item Testing de excepciones con \texttt{pytest.raises()}
+    \item Fixtures básicas
+    \item Ejecución de pruebas
+    \item Interpretación de resultados de tests
+    \item Test-Driven Development (TDD) conceptos básicos
+    \item Coverage: medición de cobertura de código
+\end{itemize}
+
+\textbf{Proyecto semanal:} Suite de pruebas para código previo
+
+\subsection{Semana 6: Entrada/Salida de Archivos}
+
+\begin{objetivobox}
+Implementar persistencia de datos mediante lectura y escritura de archivos, manejando diferentes formatos y aplicando buenas prácticas de gestión de recursos.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Por qué trabajar con archivos? Persistencia de datos
+    \item Función \texttt{open()}: apertura de archivos
+    \item Modos de apertura: lectura (\texttt{r}), escritura (\texttt{w}), añadir (\texttt{a}), lectura/escritura (\texttt{r+})
+    \item Modos texto vs binario
+    \item Métodos de lectura: \texttt{read()}, \texttt{readline()}, \texttt{readlines()}
+    \item Métodos de escritura: \texttt{write()}, \texttt{writelines()}
+    \item Cierre de archivos: método \texttt{close()}
+    \item Bloque \texttt{with}: gestor de contexto para archivos
+    \item Rutas de archivos: absolutas y relativas
+    \item Módulo \texttt{os.path}: manipulación de rutas
+    \item Módulo \texttt{pathlib}: rutas orientadas a objetos
+    \item Archivos CSV: lectura y escritura
+    \item Módulo \texttt{csv}: \texttt{DictReader}, \texttt{DictWriter}
+    \item Codificación de caracteres (UTF-8)
+    \item Manejo de errores al trabajar con archivos
+\end{itemize}
+
+\textbf{Proyecto semanal:} Agenda de contactos con persistencia
+
+\subsection{Semana 7: Expresiones Regulares}
+
+\begin{objetivobox}
+Procesar y validar texto de manera avanzada mediante expresiones regulares, aplicando patrones para búsqueda, extracción y manipulación de strings complejos.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué son las expresiones regulares (regex)?
+    \item Módulo \texttt{re}: funciones principales
+    \item Función \texttt{search()}: buscar patrón
+    \item Función \texttt{match()}: verificar patrón al inicio
+    \item Función \texttt{findall()}: encontrar todas las coincidencias
+    \item Función \texttt{sub()}: reemplazar con patrón
+    \item Función \texttt{split()}: dividir por patrón
+    \item Patrones básicos: literales y metacaracteres
+    \item Clases de caracteres: \texttt{\textbackslash d}, \texttt{\textbackslash w}, \texttt{\textbackslash s}, \texttt{\textbackslash D}, \texttt{\textbackslash W}, \texttt{\textbackslash S}
+    \item Cuantificadores: \texttt{*}, \texttt{+}, \texttt{?}, \texttt{\{n\}}, \texttt{\{n,m\}}
+    \item Anclas: \texttt{\^}, \texttt{\$}, \texttt{\textbackslash b}
+    \item Grupos de captura: \texttt{()}, grupos nombrados
+    \item Alternación: \texttt{|}
+    \item Raw strings: prefijo \texttt{r""}
+    \item Compilación de patrones: \texttt{re.compile()}
+    \item Flags: \texttt{re.IGNORECASE}, \texttt{re.MULTILINE}
+    \item Casos de uso: validación de emails, teléfonos, URLs
+\end{itemize}
+
+\textbf{Proyecto semanal:} Extractor/validador de información con regex
+
+\subsection{Semana 8: Programación Orientada a Objetos (POO)}
+
+\begin{objetivobox}
+Diseñar y implementar soluciones utilizando el paradigma de Programación Orientada a Objetos, aplicando conceptos de encapsulación, herencia y polimorfismo para organizar código complejo de manera modular y reutilizable.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item ¿Qué es la POO? Paradigmas de programación
+    \item Conceptos fundamentales: clases y objetos
+    \item Definición de clases con \texttt{class}
+    \item Método \texttt{\_\_init\_\_()}: constructor
+    \item Parámetro \texttt{self}: referencia a la instancia
+    \item Atributos de instancia vs atributos de clase
+    \item Métodos de instancia
+    \item Encapsulación: convenciones de privacidad (\texttt{\_}, \texttt{\_\_})
+    \item Propiedades con decorador \texttt{@property}
+    \item Setters con \texttt{@propiedad.setter}
+    \item Métodos especiales (dunder methods): \texttt{\_\_str\_\_}, \texttt{\_\_repr\_\_}, \texttt{\_\_eq\_\_}, \texttt{\_\_add\_\_}, etc.
+    \item Herencia: clases padre e hija
+    \item Función \texttt{super()}: acceso a la clase padre
+    \item Sobrescritura de métodos (method overriding)
+    \item Métodos de clase: decorador \texttt{@classmethod}
+    \item Métodos estáticos: decorador \texttt{@staticmethod}
+    \item Composición vs herencia
+    \item Principios SOLID (introducción)
+\end{itemize}
+
+\textbf{Proyecto semanal:} Sistema de gestión (biblioteca, inventario, estudiantes)
+
+\subsection{Semana 9: Conceptos Avanzados}
+
+\begin{objetivobox}
+Aplicar técnicas avanzadas de Python para escribir código más eficiente, expresivo y pythonic, incluyendo comprehensions, generadores, decoradores y consumo de APIs.
+\end{objetivobox}
+
+\textbf{Contenidos:}
+\begin{itemize}[leftmargin=*]
+    \item Conjuntos (\texttt{set}): operaciones y usos
+    \item Métodos avanzados de diccionarios
+    \item Funciones lambda: sintaxis y aplicaciones
+    \item Funciones \texttt{map()}, \texttt{filter()}, \texttt{reduce()}
+    \item List comprehensions: sintaxis y casos de uso
+    \item Dictionary comprehensions
+    \item Set comprehensions
+    \item Argumentos variables: \texttt{*args} y \texttt{**kwargs}
+    \item Desempaquetado de argumentos
+    \item Generadores: palabra clave \texttt{yield}
+    \item Expresiones generadoras vs listas
+    \item Iteradores: protocolo de iteración
+    \item Decoradores: concepto y sintaxis básica
+    \item Decoradores con argumentos
+    \item Uso práctico de decoradores (timing, logging)
+    \item Introducción a APIs REST
+    \item Librería \texttt{requests}: GET, POST, PUT, DELETE
+    \item Procesamiento de respuestas JSON
+    \item Manejo de códigos de estado HTTP
+    \item Entornos virtuales: \texttt{venv}, \texttt{virtualenv}
+    \item Gestión de dependencias: \texttt{requirements.txt}
+    \item Buenas prácticas de desarrollo
+\end{itemize}
+
+\textbf{Proyecto semanal:} Analizador de datos desde API
+
+\newpage
+
+\section{Evaluación}
+
+\subsection{Distribución de la Calificación}
+
+La calificación final del curso se distribuye de la siguiente manera:
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|l|c|X|}
+\hline
+\textbf{Componente} & \textbf{Porcentaje} & \textbf{Descripción} \\
+\hline
+\textbf{Tareas Semanales} & 60\% & 10 tareas (Semanas 0-9), 6\% cada una \\
+\hline
+\textbf{Proyecto Final} & 30\% & Proyecto integrador individual \\
+\hline
+\textbf{Participación} & 10\% & Asistencia y quizzes \\
+\hline
+\end{tabularx}
+\caption{Distribución de calificación}
+\end{table}
+
+\subsection{Tareas Semanales (60\%)}
+
+Cada semana (de la 0 a la 9) incluye una tarea práctica que debe ser entregada y defendida. La evaluación de cada tarea se divide en:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Código (40\%):} Evaluación del código fuente entregado considerando:
+    \begin{itemize}
+        \item Funcionalidad: el programa cumple con los requisitos especificados
+        \item Corrección: el código ejecuta sin errores
+        \item Calidad: aplicación de buenas prácticas, código limpio y legible
+        \item Organización: estructura lógica y modular del código
+        \item Documentación: comentarios y docstrings apropiados
+    \end{itemize}
+    
+    \item \textbf{Defensa (60\%):} Presentación oral donde el estudiante debe:
+    \begin{itemize}
+        \item Explicar la lógica y funcionamiento de su código
+        \item Responder preguntas sobre decisiones de diseño e implementación
+        \item Demostrar comprensión de los conceptos aplicados
+        \item Identificar y explicar secciones específicas del código
+        \item Proponer mejoras o alternativas de implementación
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Entrega de Tareas mediante GitHub}
+
+\begin{infobox}
+Todas las tareas semanales deben entregarse a través de GitHub siguiendo el protocolo establecido.
+\end{infobox}
+
+\textbf{Repositorio de Tareas Semanales:}
+\begin{enumerate}[leftmargin=*]
+    \item Cada estudiante creará un repositorio público en GitHub con el nombre: \texttt{NLPY-1-nombreEstudiante}
+    
+    \item El repositorio debe incluir en su descripción: ``Repositorio de entregas del curso NLPY-1 (Introducción a la Programación con Python) de Nablabs''
+    
+    \item Estructura del repositorio:
+    
+    {\small
+    \begin{verbatim}
+NLPY-1-nombreEstudiante/
+├── README.md
+├── S0/
+│   ├── tarea0.py
+│   └── README.md (opcional)
+├── S1/
+│   ├── tarea1.py
+│   └── README.md (opcional)
+├── S2/
+│   └── ...
+└── S9/
+    └── ...
+    \end{verbatim}
+    }
+    
+    \item Cada carpeta \texttt{SX} (donde X es el número de semana) debe contener todo el código y archivos relacionados con la tarea de esa semana.
+    
+    \item El README.md principal debe incluir:
+    \begin{itemize}
+        \item Nombre del estudiante
+        \item Información del curso (NLPY-1)
+        \item Índice de tareas con enlaces a cada carpeta
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Repositorio del Proyecto Final:}
+\begin{enumerate}[leftmargin=*]
+    \item Crear un repositorio separado para el proyecto final: \texttt{NLPY-1-ProyectoFinal-nombreEstudiante}
+    
+    \item El repositorio debe incluir en su descripción: ``Proyecto Final del curso NLPY-1 (Introducción a la Programación con Python) de Nablabs''
+    
+    \item Debe contener:
+    \begin{itemize}
+        \item Todo el código fuente bien estructurado
+        \item README.md completo con descripción del proyecto, instrucciones de instalación y uso
+        \item requirements.txt con todas las dependencias
+        \item Documentación apropiada
+        \item Carpeta de tests (si aplica)
+    \end{itemize}
+\end{enumerate}
+
+\begin{notabox}
+\textbf{Importancia de los Commits Organizados}
+
+Los commits en GitHub son una evidencia fundamental del proceso de desarrollo y aprendizaje. Se espera que los estudiantes:
+
+\begin{itemize}[leftmargin=*]
+    \item Realicen \textbf{commits frecuentes y organizados} a medida que avanzan en el desarrollo de sus tareas y proyecto.
+    
+    \item Cada commit debe tener un \textbf{mensaje descriptivo} que explique claramente qué cambios se realizaron.
+    
+    \item El historial de commits debe mostrar \textbf{progreso incremental}, reflejando el proceso de desarrollo paso a paso.
+    
+    \item \textbf{Un solo commit masivo con todo el código} es indicador de actividad fraudulenta (plagio, copia, o trabajo realizado por terceros) y será motivo de investigación académica.
+    
+    \item Los commits deben ser \textbf{regulares y distribuidos en el tiempo}, no concentrados en las últimas horas antes de la entrega.
+\end{itemize}
+
+\textbf{Ejemplos de buenos commits:}
+\begin{itemize}
+    \item ``Implementa función de validación de entrada''
+    \item ``Agrega manejo de excepciones para división por cero''
+    \item ``Refactoriza código de bucle principal''
+    \item ``Corrige error en cálculo de promedio''
+    \item ``Agrega documentación a funciones principales''
+\end{itemize}
+
+El historial de commits forma parte de la evaluación del código y puede ser revisado durante la defensa oral. Los estudiantes deben estar preparados para explicar el proceso de desarrollo reflejado en sus commits.
+\end{notabox}
+
+\subsubsection{Justificación del Modelo de Evaluación}
+
+La ponderación mayor en la defensa oral (60\%) responde a objetivos pedagógicos fundamentales:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Garantizar aprendizaje genuino:} El estudiante debe comprender profundamente su código, no solo ejecutarlo.
+    
+    \item \textbf{Prevenir plagio:} La explicación oral evidencia autoría y comprensión real del trabajo entregado.
+    
+    \item \textbf{Evitar uso inadecuado de IA:} Si bien las herramientas de IA pueden asistir en el aprendizaje, la defensa asegura que el estudiante comprende y puede explicar cada línea de código.
+    
+    \item \textbf{Desarrollar competencias comunicativas:} Explicar código técnicamente es una habilidad profesional esencial.
+    
+    \item \textbf{Retroalimentación inmediata:} La defensa permite identificar y corregir malentendidos conceptuales en tiempo real.
+\end{enumerate}
+
+\textbf{Modalidad de defensa:}
+\begin{itemize}[leftmargin=*]
+    \item Sesión individual de 5-10 minutos por estudiante
+    \item Realizada en la segunda sesión de cada semana
+    \item El estudiante presenta su código y responde preguntas del instructor
+    \item Se evalúa en tiempo real durante la sesión
+\end{itemize}
+
+\subsection{Proyecto Final (30\%)}
+
+El proyecto final es un trabajo integrador individual que se desarrolla durante las semanas 10-13, con entrega y presentación en la semana 14. Requiere aplicar múltiples conceptos del curso en una aplicación funcional completa.
+
+\textbf{Criterios de evaluación:}
+\begin{itemize}[leftmargin=*]
+    \item Complejidad y completitud de la solución (30\%)
+    \item Aplicación correcta de conceptos de POO (20\%)
+    \item Manejo de errores y robustez (15\%)
+    \item Calidad del código y buenas prácticas (15\%)
+    \item Documentación y README (10\%)
+    \item Presentación y defensa del proyecto (10\%)
+\end{itemize}
+
+\textit{(Las especificaciones detalladas del proyecto se proporcionan en documento aparte)}
+
+\subsection{Participación (10\%)}
+
+Evaluación continua basada en:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Asistencia (5\%):} Presencia y puntualidad en sesiones sincrónicas
+    \begin{itemize}
+        \item 90-100\% de asistencia: 5\%
+        \item 80-89\% de asistencia: 4\%
+        \item 70-79\% de asistencia: 3\%
+        \item Menos de 70\%: 0\%
+    \end{itemize}
+    
+    \item \textbf{Quizzes y actividades en clase (5\%):} Ejercicios cortos durante las sesiones para verificar comprensión de conceptos
+\end{itemize}
+
+\subsection{Escala de Calificación}
+
+Se utiliza la escala estándar del 0 al 100:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Rango} & \textbf{Calificación} \\
+\midrule
+90-100 & Excelente \\
+80-89 & Muy bueno \\
+70-79 & Bueno \\
+60-69 & Satisfactorio \\
+0-59 & Insuficiente \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Nota mínima aprobatoria:} 70
+
+\newpage
+
+\section{Cronograma y Estructura de Sesiones}
+
+\subsection{Distribución Temporal}
+
+\textbf{Fase de Instrucción:} Semanas 1-10 (10 semanas)
+\begin{itemize}[leftmargin=*]
+    \item 2 sesiones por semana
+    \item 4 horas totales de clase semanal
+    \item Tarea semanal asignada
+\end{itemize}
+
+\textbf{Fase de Proyecto:} Semanas 11-14 (4 semanas)
+\begin{itemize}[leftmargin=*]
+    \item Desarrollo individual del proyecto final
+    \item Sesiones de consulta y seguimiento
+    \item Entrega y presentación final en semana 14
+\end{itemize}
+
+\subsection{Estructura de Sesiones Semanales}
+
+\subsubsection{Primera Sesión (2 horas) - Teoría y Práctica}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Duración:} 2 horas completas
+    \item \textbf{Formato:} Teoría y ejemplos
+    \item \textbf{Contenido:}
+    \begin{itemize}
+        \item Presentación de conceptos nuevos (45-60 min)
+        \item Ejemplos demostrativos en vivo (30-40 min)
+        \item Ejercicios guiados grupales (20-30 min)
+        \item Asignación de tarea semanal (10 min)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Segunda Sesión (2 horas) - Defensas y Complemento Teórico}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Duración:} 2 horas totales
+    \item \textbf{Formato:} Mixto
+    \item \textbf{Contenido:}
+    \begin{itemize}
+        \item Complemento teórico y aclaraciones (40 min)
+        \item Defensas de tareas individuales (80 min)
+        \begin{itemize}
+            \item 5-10 minutos por estudiante
+            \item El estudiante presenta su código
+            \item Responde preguntas del instructor
+            \item Recibe retroalimentación inmediata
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Cronograma General}
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|c|X|l|}
+\hline
+\textbf{Semana} & \textbf{Tema} & \textbf{Entregable} \\
+\hline
+0 & Conceptos Fundamentales & Tarea 0 \\
+\hline
+1 & Condicionales y Control de Flujo & Tarea 1 \\
+\hline
+2 & Bucles y Estructuras de Repetición & Tarea 2 \\
+\hline
+3 & Excepciones y Manejo de Errores & Tarea 3 \\
+\hline
+4 & Librerías y Módulos & Tarea 4 \\
+\hline
+5 & Pruebas Unitarias y Testing & Tarea 5 \\
+\hline
+6 & Entrada/Salida de Archivos & Tarea 6 \\
+\hline
+7 & Expresiones Regulares & Tarea 7 \\
+\hline
+8 & Programación Orientada a Objetos & Tarea 8 \\
+\hline
+9 & Conceptos Avanzados & Tarea 9 \\
+\hline
+10-13 & Desarrollo de Proyecto Final & Avances semanales \\
+\hline
+14 & Presentaciones Finales & Entrega Proyecto Final \\
+\hline
+\end{tabularx}
+\caption{Cronograma del curso}
+\end{table}
+
+\newpage
+
+\section{Aspectos Operativos}
+
+\subsection{Modalidad del Curso}
+
+\textbf{Formato:} Virtual Sincrónico
+
+Las clases se imparten en tiempo real a través de plataforma de videoconferencia, permitiendo interacción directa entre instructor y estudiantes. Se requiere participación activa durante las sesiones programadas.
+
+\textbf{Ventajas de la modalidad sincrónica:}
+\begin{itemize}[leftmargin=*]
+    \item Interacción en tiempo real con el instructor
+    \item Resolución inmediata de dudas
+    \item Aprendizaje colaborativo con compañeros
+    \item Defensas de tareas en vivo para feedback personalizado
+    \item Sesiones de programación en vivo (live coding)
+\end{itemize}
+
+\subsection{Requisitos Técnicos}
+
+Para participar efectivamente en el curso, cada estudiante debe contar con:
+
+\subsubsection{Hardware}
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Computadora:} PC, laptop, Mac, o computadora con Linux
+    \item \textbf{Procesador:} Mínimo dual-core (recomendado i5 o superior)
+    \item \textbf{RAM:} Mínimo 4 GB (recomendado 8 GB o más)
+    \item \textbf{Almacenamiento:} Al menos 10 GB de espacio libre en disco
+    \item \textbf{Conectividad:} Acceso estable a Internet (recomendado mínimo 5 Mbps)
+    \item \textbf{Periféricos:} Micrófono y cámara web (para participación en sesiones)
+\end{itemize}
+
+\subsubsection{Software}
+
+Los estudiantes deberán instalar (con guía proporcionada):
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Python 3.10 o superior}
+    \item \textbf{Editor de código o IDE:} Visual Studio Code, PyCharm, Sublime Text, o similar
+    \item \textbf{Git:} Para control de versiones
+    \item \textbf{Cuenta en GitHub:} Para entrega de tareas y proyecto
+    \item \textbf{Navegador web moderno:} Chrome, Firefox, Edge, o Safari
+\end{itemize}
+
+\subsubsection{Plataformas}
+\begin{itemize}[leftmargin=*]
+    \item Acceso a plataforma de videoconferencia del curso (Zoom, Google Meet, Microsoft Teams, según se indique)
+    \item Cuenta en GitHub (gratuita)
+    \item Cuenta en plataforma de gestión del curso (si aplica)
+\end{itemize}
+
+\subsection{Justificación de Requisitos}
+
+\textbf{¿Por qué se requiere una computadora con sistema operativo completo?}
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Entorno de desarrollo real:} Los estudiantes trabajarán en el mismo tipo de ambiente que utilizarán profesionalmente.
+    
+    \item \textbf{Instalación de herramientas:} Python y sus librerías requieren instalación y configuración en el sistema operativo.
+    
+    \item \textbf{Gestión de archivos:} Las tareas incluyen lectura/escritura de archivos, operaciones con sistema de archivos, y gestión de proyectos.
+    
+    \item \textbf{Terminal/consola:} Muchas operaciones requieren uso de línea de comandos.
+    
+    \item \textbf{Debugging y testing:} Herramientas de depuración y testing funcionan mejor en entornos de desarrollo completos.
+    
+    \item \textbf{Control de versiones:} Git requiere instalación local y gestión de repositorios.
+    
+    \item \textbf{Proyecto final:} El proyecto requiere capacidad de crear aplicaciones con múltiples archivos, módulos y dependencias.
+\end{enumerate}
+
+\begin{notabox}
+No es posible completar satisfactoriamente el curso utilizando únicamente dispositivos móviles (tablets, smartphones) o entornos de navegador web, ya que estos limitan significativamente las capacidades de desarrollo, instalación de herramientas, uso de Git, y ejecución de proyectos complejos.
+\end{notabox}
+
+\subsection{Carga de Trabajo}
+
+\textbf{Tiempo en clase:} 4 horas semanales
+\begin{itemize}[leftmargin=*]
+    \item Primera sesión: 2 horas (lunes/martes)
+    \item Segunda sesión: 2 horas (jueves/viernes)
+\end{itemize}
+
+\textbf{Tiempo extraclase recomendado:} 4 horas semanales
+\begin{itemize}[leftmargin=*]
+    \item Realización de tarea semanal: 2-3 horas
+    \item Estudio y práctica adicional: 1-2 horas
+    \item Preparación para defensa de tarea: 30-60 minutos
+\end{itemize}
+
+\textbf{Total estimado:} 8 horas semanales de dedicación
+
+\textbf{Durante fase de proyecto (semanas 10-14):}
+\begin{itemize}[leftmargin=*]
+    \item Se recomienda dedicar 6-8 horas semanales al desarrollo del proyecto
+    \item Sesiones de consulta disponibles según cronograma
+\end{itemize}
+
+\subsection{Recursos de Aprendizaje}
+
+\subsubsection{Recursos Obligatorios}
+\begin{itemize}[leftmargin=*]
+    \item Presentaciones de clase (proporcionadas semanalmente)
+    \item Especificaciones de tareas (documento por semana)
+    \item Material de lectura complementario (según se indique)
+\end{itemize}
+
+\subsubsection{Recursos Recomendados}
+\begin{itemize}[leftmargin=*]
+    \item Documentación oficial de Python: \url{https://docs.python.org/es/}
+    \item Tutorial oficial de Python: \url{https://docs.python.org/es/3/tutorial/}
+    \item Real Python: \url{https://realpython.com/}
+    \item Python Tutor (visualizador de código): \url{https://pythontutor.com/}
+    \item Stack Overflow: Para consultas y resolución de problemas
+    \item GitHub Docs: \url{https://docs.github.com/es}
+\end{itemize}
+
+\subsubsection{Herramientas de Apoyo}
+\begin{itemize}[leftmargin=*]
+    \item Plataformas de práctica: LeetCode, HackerRank, Codewars
+    \item Entornos online (para práctica rápida): Replit, Google Colab
+    \item Foros y comunidades: Reddit r/learnpython, Discord de Python
+\end{itemize}
+
+\subsection{Políticas del Curso}
+
+\subsubsection{Asistencia}
+\begin{itemize}[leftmargin=*]
+    \item Se requiere asistencia a las sesiones sincrónicas
+    \item La asistencia impacta directamente la calificación de participación
+    \item Faltas justificadas deben notificarse con anticipación
+\end{itemize}
+
+\subsubsection{Entregas}
+\begin{itemize}[leftmargin=*]
+    \item Las tareas deben entregarse antes de la fecha y hora límite especificada
+    \item La entrega consiste en compartir el enlace del repositorio de GitHub
+    \item Entregas tardías tendrán penalización según políticas a definir
+    \item No se aceptan entregas después de realizada la defensa
+    \item El repositorio debe estar público para permitir revisión
+\end{itemize}
+
+\subsubsection{Integridad Académica}
+\begin{itemize}[leftmargin=*]
+    \item Se espera trabajo individual en todas las tareas y proyecto
+    \item El plagio o copia resultará en calificación de cero
+    \item El uso de IA generativa está permitido como herramienta de aprendizaje, pero el estudiante debe poder explicar y defender todo su código
+    \item La defensa oral es obligatoria y determinante para la calificación
+    \item El historial de commits en GitHub será revisado como evidencia de trabajo propio
+    \item Commits sospechosos (un solo commit masivo, commits copiados, etc.) serán investigados
+\end{itemize}
+
+\subsubsection{Comunicación}
+\begin{itemize}[leftmargin=*]
+    \item Canal oficial de comunicación: [especificar plataforma]
+    \item Tiempo de respuesta a consultas: 24-48 horas hábiles
+    \item Horarios de consulta: [especificar según disponibilidad]
+\end{itemize}
+
+\newpage
+
+\section{Criterios de Aprobación}
+
+Para aprobar el curso, el estudiante debe:
+
+\begin{enumerate}[leftmargin=*]
+    \item Obtener una calificación final mínima de \textbf{70 puntos} (sobre 100)
+    \item Completar y defender satisfactoriamente al menos \textbf{8 de 10 tareas semanales}
+    \item Entregar y presentar el \textbf{proyecto final}
+    \item Mantener al menos \textbf{70\% de asistencia} a las sesiones sincrónicas
+    \item Contar con repositorios de GitHub activos con historial de commits apropiado
+\end{enumerate}
+
+\section{Perfil del Egresado}
+
+Al completar exitosamente este curso, el estudiante habrá desarrollado las siguientes competencias:
+
+\subsection{Competencias Técnicas}
+\begin{itemize}[leftmargin=*]
+    \item Escribir programas funcionales en Python aplicando sintaxis correcta
+    \item Diseñar algoritmos para resolver problemas computacionales
+    \item Implementar estructuras de datos apropiadas para diferentes contextos
+    \item Desarrollar aplicaciones orientadas a objetos con diseño modular
+    \item Crear y ejecutar pruebas unitarias para validar código
+    \item Manejar archivos y persistencia de datos
+    \item Consumir APIs REST básicas
+    \item Utilizar Git y GitHub para control de versiones
+    \item Gestionar entornos virtuales y dependencias
+\end{itemize}
+
+\subsection{Competencias Metodológicas}
+\begin{itemize}[leftmargin=*]
+    \item Descomponer problemas complejos en componentes manejables
+    \item Depurar código sistemáticamente
+    \item Aplicar pensamiento algorítmico y lógico
+    \item Leer y comprender documentación técnica
+    \item Investigar y aprender nuevas librerías de forma autónoma
+    \item Documentar procesos de desarrollo mediante commits organizados
+\end{itemize}
+
+\subsection{Competencias Comunicativas}
+\begin{itemize}[leftmargin=*]
+    \item Explicar código y decisiones de diseño técnicamente
+    \item Documentar código de manera clara y profesional
+    \item Presentar proyectos técnicos efectivamente
+    \item Escribir mensajes de commit descriptivos y profesionales
+\end{itemize}
+
+\subsection{Preparación para Continuar Aprendiendo}
+
+El egresado estará preparado para:
+\begin{itemize}[leftmargin=*]
+    \item Explorar frameworks web (Django, Flask)
+    \item Iniciarse en ciencia de datos (Pandas, NumPy, Matplotlib)
+    \item Aprender desarrollo de APIs (FastAPI, REST)
+    \item Continuar con programación avanzada y patrones de diseño
+    \item Participar en proyectos open source
+    \item Colaborar en proyectos mediante GitHub
+    \item Desarrollar proyectos personales o profesionales con Python
+\end{itemize}
+
+\newpage
+
+\section{Información de Contacto}
+
+\begin{center}
+\large
+\textbf{$\nabla$ Nablabs}\\
+\vspace{0.5cm}
+\textbf{Curso:} Introducción a la Programación con Python (NLPY-1)\\
+\textbf{Nivel:} Principiante\\
+\vspace{1cm}
+\textit{Para más información, consulte los canales oficiales del curso}
+\end{center}
+
+\section{Anexos}
+
+\subsection{Anexo A: Calendario de Entregas}
+\textit{(A completar con fechas específicas al inicio del curso)}
+
+\subsection{Anexo B: Rúbricas de Evaluación}
+\textit{(Documentos detallados de criterios de evaluación por tarea)}
+
+\subsection{Anexo C: Especificaciones de Tareas Semanales}
+\textit{(Documentos individuales por semana)}
+
+\subsection{Anexo D: Especificaciones del Proyecto Final}
+\textit{(Documento detallado con requisitos del proyecto integrador)}
+
+\subsection{Anexo E: Tutorial de GitHub para el Curso}
+\textit{(Guía paso a paso para crear repositorios y realizar commits)}
+
+\vspace{2cm}
+
+\begin{center}
+\hrule
+\vspace{0.5cm}
+\textbf{Última actualización:} Octubre 2025\\
+\textbf{Versión:} 1.0
+\vspace{0.5cm}
+\hrule
+\end{center}
+
+\newpage
+
+\section*{Notas Finales}
+
+Este programa de curso está diseñado para proporcionar una experiencia de aprendizaje estructurada, práctica y orientada al desarrollo de competencias reales en programación. La combinación de teoría, práctica supervisada, defensa oral de código, y uso de control de versiones garantiza que los estudiantes no solo aprendan a programar, sino que comprendan profundamente los conceptos y puedan aplicarlos de manera autónoma.
+
+El enfoque en la defensa oral (60\% de cada tarea) refleja nuestro compromiso con el aprendizaje genuino y la formación de programadores que comprenden su código, no solo lo ejecutan. Esta metodología prepara a los estudiantes para entornos profesionales donde la capacidad de explicar y defender decisiones técnicas es tan importante como la habilidad de escribir código.
+
+La integración de GitHub como plataforma de entrega introduce a los estudiantes en herramientas profesionales de desarrollo, fomentando buenas prácticas desde el inicio de su formación. El historial de commits no solo sirve como evidencia de trabajo propio, sino como registro del proceso de aprendizaje y evolución como programadores.
+
+\vspace{1cm}
+
+\begin{center}
+\Large\textcolor{nablabrownmain}{\textbf{¡Bienvenidos al curso y éxito en su viaje de aprendizaje en programación!}}
+\end{center}
+
+\end{document}
